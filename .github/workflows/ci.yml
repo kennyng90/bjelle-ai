@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Ny push til samme gren avbryter forrige kjøring. Tilbakemeldingen som teller
+# er den på siste commit.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kvalitet:
+    name: Lint og typer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/oppsett
+      - run: pnpm check
+      - run: pnpm typecheck
+
+  bygg:
+    name: Bygg
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/oppsett
+      # Alle fire apper. Typesjekken fanger ikke alt: bundleren finner
+      # importer som ikke lar seg løse, og workers bygges som en tørrkjøring
+      # av wrangler deploy.
+      - run: pnpm build
+
+  komponenttester:
+    name: Komponenttester
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/oppsett
+
+      # Bare chromium: vitest-prosjektet i apps/designsystem/vite.config.ts
+      # har én browser-instans. --with-deps henter systembibliotekene runneren
+      # mangler.
+      - run: pnpm --filter @bjelle/designsystem exec playwright install --with-deps chromium
+
+      # Kjører vitest-prosjektet "storybook": hver story monteres i en ekte
+      # nettleser, play-funksjoner spilles av, og addon-a11y kjører axe med
+      # `test: "error"` fra .storybook/preview.tsx - et brudd feller kjøringen.
+      #
+      # Dette er kommandoen Storybooks onboarding peker på
+      # (`vitest --project storybook`), bare med filteret lagt i pnpm.
+      - run: pnpm --filter @bjelle/designsystem test
+
+  e2e:
+    name: E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/oppsett
+      - run: pnpm --filter @bjelle/e2e exec playwright install --with-deps chromium
+
+      # De samme spesifikasjonene mot begge apper. Playwright starter
+      # dev-serverne selv, se packages/e2e/playwright.config.ts.
+      #
+      # Prosjektet "visuell" er bevisst utelatt: baselinene i repoet er
+      # win32-only, og fontrasterisering på Linux gir andre piksler. Skal det
+      # inn i CI, må Linux-baseline genereres her først.
+      - run: pnpm test:e2e
+
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: packages/e2e/playwright-report
+          retention-days: 7

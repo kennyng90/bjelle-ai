@@ -24,7 +24,16 @@ export default defineConfig({
 			 * i packages/ui/node_modules, ikke i appens eget tre, og Vite gir
 			 * da "Failed to resolve dependency" og bundler ingenting.
 			 */
-			include: ["@bjelle/ui > lucide-react"],
+			/*
+			 * Astros egen dev-toolbar har nøyaktig samme problem, men av en annen
+			 * grunn: den injiseres i siden etter at serveren har startet, så den
+			 * er ikke med i skanningen ved oppstart. Første sidelast oppdager den,
+			 * optimizeren kjører om igjen, og forespørselen etter entrypointet
+			 * svarer 504. Verktøylinja er dev-pynt og påvirker ikke siden - men
+			 * konsollfeilen er ikke til å skille fra en ekte, og e2e-testen som
+			 * vokter mot hydreringsfeil feilet på den hver eneste kjøring.
+			 */
+			include: ["@bjelle/ui > lucide-react", "astro/runtime/client/dev-toolbar/entrypoint.js"],
 		},
 	},
 });
