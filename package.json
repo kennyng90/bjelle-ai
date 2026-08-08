@@ -1,0 +1,27 @@
+{
+	"name": "bjelle",
+	"private": true,
+	"type": "module",
+	"packageManager": "pnpm@11.20.0",
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": "24.x",
+			"onFail": "download"
+		}
+	},
+	"scripts": {
+		"dev": "pnpm -r --parallel --stream dev",
+		"build": "pnpm -r build",
+		"check": "biome check",
+		"check:fix": "biome check --write",
+		"format": "biome format --write",
+		"lint": "biome lint",
+		"typecheck": "pnpm -r typecheck"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@bjelle/biome-config": "workspace:*",
+		"typescript": "catalog:"
+	}
+}

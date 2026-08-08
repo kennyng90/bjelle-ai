@@ -1,0 +1,11 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+	"root": false,
+	"extends": ["@bjelle/biome-config/base", "@bjelle/biome-config/react"],
+	"html": {
+		"experimentalFullSupportEnabled": true
+	},
+	"files": {
+		"includes": ["**", "!**/dist", "!**/.astro"]
+	}
+}

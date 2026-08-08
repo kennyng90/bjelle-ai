@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@import "@bjelle/tokens/theme.css";
+
+@import "@bjelle/ui/styles.css";
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	background-color: var(--color-ink-50);
+	color: var(--color-ink-900);
+	font-family: var(--font-sans);
+}

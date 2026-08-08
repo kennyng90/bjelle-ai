@@ -1,0 +1,31 @@
+{
+	"name": "@bjelle/designsystem",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "storybook dev -p 6006 --no-open",
+		"build": "storybook build",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@bjelle/tokens": "workspace:*",
+		"@bjelle/ui": "workspace:*",
+		"react": "catalog:",
+		"react-dom": "catalog:"
+	},
+	"devDependencies": {
+		"@bjelle/biome-config": "workspace:*",
+		"@bjelle/tsconfig": "workspace:*",
+		"@storybook/addon-a11y": "catalog:",
+		"@storybook/addon-docs": "catalog:",
+		"@storybook/react-vite": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"storybook": "catalog:",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}

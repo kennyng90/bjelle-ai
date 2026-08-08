@@ -1,0 +1,26 @@
+node_modules
+.DS_Store
+
+# build output
+dist
+dist-ssr
+.output
+.vercel
+storybook-static
+
+# framework caches
+.astro
+.nitro
+.tanstack
+.vinxi
+.wrangler
+.turbo
+*.tsbuildinfo
+
+# local
+*.local
+.env
+.env.*
+!.env.example
+__unconfig*
+todos.json

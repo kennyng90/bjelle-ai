@@ -1,0 +1,4 @@
+{
+	"extends": "@bjelle/tsconfig/react-app.json",
+	"include": [".storybook/**/*.ts", ".storybook/**/*.tsx", "vite.config.ts"]
+}

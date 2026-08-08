@@ -1,0 +1,9 @@
+/*
+ * Registrerer komponentkildene hos Tailwind.
+ *
+ * Konsumenter kan ikke bruke @source "@bjelle/ui" direkte: Tailwind hopper over
+ * alt som ligger under node_modules fordi det står i .gitignore, og pnpm linker
+ * workspace-pakker nettopp dit. Her ligger @source i samme pakke som koden, så
+ * den relative stien peker rett på ekte filer uansett hvem som importerer.
+ */
+@source "./src";

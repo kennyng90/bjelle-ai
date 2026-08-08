@@ -1,0 +1,42 @@
+{
+	"name": "@bjelle/dashboard",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"imports": {
+		"#/*": "./src/*"
+	},
+	"scripts": {
+		"dev": "vite dev --port 3000",
+		"build": "vite build",
+		"preview": "vite preview",
+		"start": "node .output/server/index.mjs",
+		"generate-routes": "tsr generate",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@bjelle/tokens": "workspace:*",
+		"@bjelle/ui": "workspace:*",
+		"@tailwindcss/vite": "catalog:",
+		"@tanstack/react-devtools": "^0.10.9",
+		"@tanstack/react-router": "^1.170.23",
+		"@tanstack/react-router-devtools": "^1.167.1",
+		"@tanstack/react-start": "^1.168.40",
+		"nitro": "3.0.260610-beta",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"tailwindcss": "catalog:"
+	},
+	"devDependencies": {
+		"@bjelle/biome-config": "workspace:*",
+		"@bjelle/tsconfig": "workspace:*",
+		"@tanstack/devtools-vite": "^0.8.3",
+		"@tanstack/router-cli": "^1.167.25",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vitejs/plugin-react": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}

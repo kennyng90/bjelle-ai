@@ -1,0 +1,11 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+	"linter": {
+		"rules": {
+			"correctness": {
+				"useExhaustiveDependencies": "warn",
+				"useHookAtTopLevel": "error"
+			}
+		}
+	}
+}

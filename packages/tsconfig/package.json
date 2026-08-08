@@ -1,0 +1,17 @@
+{
+	"name": "@bjelle/tsconfig",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		"./base.json": "./base.json",
+		"./react-lib.json": "./react-lib.json",
+		"./react-app.json": "./react-app.json",
+		"./worker.json": "./worker.json"
+	},
+	"files": [
+		"base.json",
+		"react-lib.json",
+		"react-app.json",
+		"worker.json"
+	]
+}

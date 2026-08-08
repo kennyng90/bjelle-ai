@@ -1,0 +1,16 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "bjelle-workers",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-08-08",
+	"compatibility_flags": ["nodejs_compat"],
+	"observability": {
+		"enabled": true
+	},
+	"triggers": {
+		// Newsweb-polling. Fem minutter er innenfor "varsler innen minutter"-løftet
+		// i konseptet, uten å hamre kilden.
+		"crons": ["*/5 * * * *"]
+	}
+	// Bindings (D1, KV, Queues) legges til når datamodellen er bestemt.
+}

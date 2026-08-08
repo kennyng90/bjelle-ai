@@ -1,0 +1,12 @@
+{
+	"extends": ["@bjelle/tsconfig/base.json", "astro/tsconfigs/strict"],
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "react",
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+		"noUnusedLocals": true,
+		"noUnusedParameters": true
+	},
+	"include": [".astro/types.d.ts", "**/*"],
+	"exclude": ["dist"]
+}

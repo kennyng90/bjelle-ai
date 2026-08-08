@@ -1,0 +1,60 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+sharedWorkspaceLockfile: true
+
+# Én versjon per delt avhengighet. Refereres som "catalog:" i package.json.
+catalog:
+  '@astrojs/react': ^6.0.2
+  '@biomejs/biome': 2.5.7
+  '@fontsource-variable/inter': ^5.3.0
+  '@storybook/addon-a11y': ^10.5.7
+  '@storybook/addon-docs': ^10.5.7
+  '@storybook/react-vite': ^10.5.7
+  '@tailwindcss/vite': ^4.3.3
+  '@types/node': ^24.13.3
+  '@types/react': ^19.2.18
+  '@types/react-dom': ^19.2.4
+  '@vitejs/plugin-react': ^6.0.5
+  astro: ^7.2.0
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  storybook: ^10.5.7
+  tailwindcss: ^4.3.3
+  typescript: ^6.0.3
+  vite: ^8.2.1
+  wrangler: ^4.119.0
+
+# Byggeskript kjøres ikke uten eksplisitt godkjenning (erstatter onlyBuiltDependencies).
+allowBuilds:
+  esbuild: true
+  lightningcss: true
+  '@biomejs/biome': true
+  '@tailwindcss/oxide': true
+  workerd: true
+
+# Forsyningskjede. minimumReleaseAge står på pnpm 11-standarden (1 døgn) med vilje:
+# settes den eksplisitt blir den strict og install feiler i stedet for å falle
+# tilbake til nest nyeste versjon.
+trustPolicy: no-downgrade
+# Sjekken skal fange ferske overtakelser. Pakkeversjoner som har ligget ute i
+# over et år kan ikke bli kompromittert med tilbakevirkende kraft, og uten dette
+# blir trustPolicy en evig voksende unntaksliste (f.eks. chokidar@4.0.3).
+trustPolicyIgnoreAfter: 525600
+minimumReleaseAgeExclude:
+  - '@tanstack/react-router@1.170.23'
+  - '@tanstack/react-start-client@1.168.21'
+  - '@tanstack/react-start-rsc@0.1.39'
+  - '@tanstack/react-start-server@1.167.28'
+  - '@tanstack/react-start@1.168.40'
+  - '@tanstack/router-cli@1.167.25'
+  - '@tanstack/router-core@1.171.19'
+  - '@tanstack/router-generator@1.167.25'
+  - '@tanstack/router-plugin@1.168.27'
+  - '@tanstack/start-client-core@1.170.19'
+  - '@tanstack/start-plugin-core@1.171.31'
+  - '@tanstack/start-server-core@1.169.23'
+  - '@tanstack/start-storage-context@1.167.21'

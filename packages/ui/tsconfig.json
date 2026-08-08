@@ -1,0 +1,4 @@
+{
+	"extends": "@bjelle/tsconfig/react-lib.json",
+	"include": ["src/**/*.ts", "src/**/*.tsx"]
+}

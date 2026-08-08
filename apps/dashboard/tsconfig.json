@@ -1,0 +1,10 @@
+{
+	"extends": "@bjelle/tsconfig/react-app.json",
+	"include": ["**/*.ts", "**/*.tsx"],
+	"compilerOptions": {
+		"paths": {
+			"#/*": ["./src/*"],
+			"@/*": ["./src/*"]
+		}
+	}
+}

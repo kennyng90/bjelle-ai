@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@bjelle/tokens/theme.css";
+@import "@bjelle/ui/styles.css";
+
+body {
+	background-color: var(--color-ink-50);
+	color: var(--color-ink-900);
+	font-family: var(--font-sans);
+}

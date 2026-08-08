@@ -1,0 +1,65 @@
+/*
+ * Bjelle designtokens. Kilde til sannhet for farger, typografi og radius.
+ *
+ * Tailwind v4 er CSS-first: hver --color-* her blir automatisk til utilities
+ * (bg-bjelle-500, text-ink-700, ...). Konsumenter importerer denne filen etter
+ * "tailwindcss" og trenger ingen tailwind.config.
+ *
+ * Inter selvhostes her, i samme pakke som --font-sans peker på. Ellers ville
+ * tokenet love en font ingen leverer, og hver app ville rendre ulikt.
+ */
+
+@import "@fontsource-variable/inter";
+
+@theme {
+	/* Messing. Åpningsbjella på børsen. Primærfarge. */
+	--color-bjelle-50: oklch(0.977 0.021 89.5);
+	--color-bjelle-100: oklch(0.947 0.049 90.2);
+	--color-bjelle-200: oklch(0.895 0.096 90.5);
+	--color-bjelle-300: oklch(0.837 0.136 88.6);
+	--color-bjelle-400: oklch(0.775 0.152 82.4);
+	--color-bjelle-500: oklch(0.702 0.146 76.1);
+	--color-bjelle-600: oklch(0.601 0.128 71.3);
+	--color-bjelle-700: oklch(0.492 0.105 68.2);
+	--color-bjelle-800: oklch(0.412 0.085 67.4);
+	--color-bjelle-900: oklch(0.353 0.069 68.1);
+	--color-bjelle-950: oklch(0.221 0.046 69.3);
+
+	/* Blekk. Nøytral for tekst, flater og kantlinjer. Kjølig blåtone. */
+	--color-ink-50: oklch(0.981 0.005 247.9);
+	--color-ink-100: oklch(0.955 0.011 247.9);
+	--color-ink-200: oklch(0.909 0.019 245.6);
+	--color-ink-300: oklch(0.842 0.031 244.3);
+	--color-ink-400: oklch(0.688 0.041 246.1);
+	--color-ink-500: oklch(0.567 0.043 247.2);
+	--color-ink-600: oklch(0.464 0.041 249.1);
+	--color-ink-700: oklch(0.386 0.038 251.4);
+	--color-ink-800: oklch(0.315 0.035 253.6);
+	--color-ink-900: oklch(0.254 0.033 256.1);
+	--color-ink-950: oklch(0.176 0.031 259.7);
+
+	/*
+	 * Signalfarger for "Trenger jeg bry meg?"-merkingen fra konseptet.
+	 * Tre nivåer, aldri flere. Bruk disse framfor generisk red/amber/gray
+	 * så merkingen ser lik ut i dashboard, nyhetsbrev og landingsside.
+	 */
+	--color-signal-viktig: oklch(0.577 0.216 27.3);
+	--color-signal-viktig-flate: oklch(0.958 0.033 24.6);
+	--color-signal-greit: oklch(0.681 0.162 63.5);
+	--color-signal-greit-flate: oklch(0.966 0.041 79.8);
+	--color-signal-stoy: oklch(0.554 0.041 257.4);
+	--color-signal-stoy-flate: oklch(0.968 0.007 247.9);
+
+	/* Kursretning. Egne tokens, ikke gjenbruk av signalfargene. */
+	--color-opp: oklch(0.627 0.157 155.9);
+	--color-ned: oklch(0.577 0.216 27.3);
+
+	/* Typografi */
+	--font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+	/* Form */
+	--radius-card: 0.75rem;
+	--radius-control: 0.5rem;
+	--radius-pill: 9999px;
+}

@@ -1,0 +1,20 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+	"extends": ["@bjelle/biome-config/base"],
+	"root": true,
+	"files": {
+		"includes": [
+			"**",
+			"!**/node_modules",
+			"!**/dist",
+			"!**/.output",
+			"!**/.astro",
+			"!**/.wrangler",
+			"!**/storybook-static",
+			"!**/pnpm-lock.yaml",
+			"!.claude",
+			"!.agents",
+			"!skills-lock.json"
+		]
+	}
+}
