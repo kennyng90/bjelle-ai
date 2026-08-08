@@ -1,0 +1,20 @@
+name: Oppsett
+description: pnpm, Node og installerte avhengigheter - likt for alle jobber i CI.
+
+runs:
+  using: composite
+  steps:
+    # Leser versjonen fra "packageManager" i package.json, så CI og maskinen
+    # din aldri kan havne på hver sin pnpm.
+    - uses: pnpm/action-setup@v6
+
+    - uses: actions/setup-node@v7
+      with:
+        node-version-file: .node-version
+        cache: pnpm
+
+    # --frozen-lockfile er standard i CI, men skrives ut her fordi det er
+    # poenget: en lockfile som ikke matcher package.json skal stoppe bygget,
+    # ikke bli stilltiende oppdatert.
+    - run: pnpm install --frozen-lockfile
+      shell: bash

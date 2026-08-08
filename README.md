@@ -35,6 +35,26 @@ pnpm --filter @bjelle/dashboard dev
 pnpm --filter @bjelle/workers dev
 ```
 
+## CI
+
+`.github/workflows/ci.yml` kjører på hver push til `main` og hver pull request, i fire
+parallelle jobber:
+
+| Jobb | Kommando | Hva den vokter |
+| --- | --- | --- |
+| Lint og typer | `pnpm check`, `pnpm typecheck` | Biome og TypeScript i alle prosjekter |
+| Bygg | `pnpm build` | At alle fire apper bygger |
+| Komponenttester | `pnpm --filter @bjelle/designsystem test` | Hver story i `@bjelle/ui`, montert i chromium, med axe-sjekk |
+| E2E | `pnpm test:e2e` | Button gjennom SSR og hydrering i både web og dashboard |
+
+Komponenttestene er Storybooks egne: `@storybook/addon-vitest` gjør hver story til en
+test, spiller av `play`-funksjonen og kjører `addon-a11y` med `test: "error"`. Samme
+kommando lokalt, uten filteret: `pnpm --filter @bjelle/designsystem test`.
+
+Skjermbildetestene (`pnpm test:visuell`) er utenfor CI. Baselinene i repoet er tatt på
+Windows, og Linux rasteriserer fonter annerledes - de må genereres på nytt i CI før
+prosjektet kan slås på der.
+
 ## Konvensjoner
 
 - **Delte versjoner går i `catalog:`.** Legg nye felles avhengigheter i `catalog`-blokken
