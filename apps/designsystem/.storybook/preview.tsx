@@ -1,53 +1,25 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
 import { useEffect } from "react";
-import { addons } from "storybook/preview-api";
-import { DARK_MODE_EVENT_NAME } from "storybook-dark-mode";
 import { darkTheme, lightTheme } from "./theme.ts";
 import "./preview.css";
 
 /*
- * Temaet bor på `<html>` som `data-theme`, ikke på en wrapper rundt storyen.
+ * Temaet bor på `<html>`, ikke på en wrapper rundt storyen.
  *
- * Tokenene i @bjelle/tokens byttes av `:root[data-theme="dark"]`, og overlegg
- * som rendres i topplaget - native `<dialog>`, `::backdrop` - ligger utenfor
- * enhver wrapper. Satt lenger inn ville de beholdt lyst tema.
- */
-
-/*
- * Bryterens tilstand har nøyaktig én eier: kanalhendelsen fra addonen.
+ * Tokenene i @bjelle/tokens byttes av `.dark` på rotelementet, og overlegg som
+ * rendres i topplaget - native `<dialog>`, `::backdrop` - ligger utenfor enhver
+ * wrapper. Satt lenger inn ville de beholdt lyst tema.
  *
- * Første forsøk lot dekoratøren skrive tilbake fra `useDarkMode()` også. Det
- * ga to skrivere: på en docs-side tegnes ikke storiene på nytt når temaet
- * endres, så hooken der er foreldet - og neste vilkårlige re-render skrev den
- * gamle verdien tilbake. Resultatet var sidebar og preview i utakt, i tilfeldig
- * retning. Hooken brukes derfor ikke her i det hele tatt.
+ * Selve byttet gjør storybook-dark-mode med `classTarget`, `darkClass`,
+ * `lightClass` og `stylePreview` nederst i denne fila. Det er addonens
+ * dokumenterte oppsett, og det er poenget: bryteren har da nøyaktig én eier.
+ *
+ * Her lå det tidligere en håndskrevet variant som leste addonens localStorage-
+ * nøkkel og lyttet på kanalhendelsen selv. Den ga to skrivere på samme
+ * attributt, og de kunne komme i utakt fordi kanalhendelsen og React-rendringen
+ * ikke har noen garantert rekkefølge: sidebaren sto lys mens preview-en var
+ * mørk. Koden er borte, og med den hele feilklassen.
  */
-const STORAGE_KEY = "sb-addon-themes-3";
-
-function storedTheme(): boolean {
-	// Addonen husker valget mellom økter. Uten dette blinker preview-en lys
-	// før kanalen rekker å si fra ved innlasting.
-	try {
-		return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}").current === "dark";
-	} catch {
-		return false;
-	}
-}
-
-let toggleIsDark = storedTheme();
-let override: string | undefined;
-
-function apply() {
-	const dark = override ? override === "dark" : toggleIsDark;
-	document.documentElement.dataset.theme = dark ? "dark" : "light";
-}
-
-apply();
-
-addons.getChannel().on(DARK_MODE_EVENT_NAME, (dark: boolean) => {
-	toggleIsDark = dark;
-	apply();
-});
 
 /**
  * Lar en enkelt story tvinge et tema, uavhengig av bryteren.
@@ -55,15 +27,26 @@ addons.getChannel().on(DARK_MODE_EVENT_NAME, (dark: boolean) => {
  * Brukes av dark-tema-storyene, som er regresjonstester: axe skal kjøre
  * kontrastsjekken mot de mørke verdiene uansett hva bryteren står på.
  *
+ * Overstyringen bruker `data-theme` og ikke klassen addonen eier, nettopp så de
+ * to ikke skriver på samme sted. Attributtet har høyere spesifisitet enn
+ * klassen i tokenfila, så det vinner så lenge det står der - og forsvinner i det
+ * en story uten overstyring rendres.
+ *
  * Kun i story-visning. På en docs-side står flere stories under hverandre på
  * samme `<html>`, og da kan ikke én av dem eie temaet for hele siden - der
  * bestemmer bryteren.
  */
 const withTheme: Decorator = (Story, context) => {
-	override =
+	const forced =
 		context.viewMode === "story" ? (context.globals.theme as string | undefined) : undefined;
 
-	useEffect(apply);
+	useEffect(() => {
+		if (forced) {
+			document.documentElement.dataset.theme = forced;
+		} else {
+			document.documentElement.removeAttribute("data-theme");
+		}
+	});
 
 	return <Story />;
 };
@@ -106,10 +89,31 @@ const preview: Preview = {
 			dark: darkTheme,
 			light: lightTheme,
 			current: "light",
-			// Vi setter data-theme selv. Lar vi addonen style preview-en også,
-			// får vi to mekanismer som kan komme i utakt.
-			stylePreview: false,
+			/*
+			 * Addonen bytter temaet i preview-en også, ikke bare i sidebaren.
+			 * `stylePreview` er bryteren for det, `classTarget` peker på
+			 * rotelementet framfor `<body>` (overlegg i topplaget ligger utenfor
+			 * body), og klassenavnene er de tokenfila allerede lytter på.
+			 */
+			classTarget: "html",
+			darkClass: "dark",
+			lightClass: "light",
+			stylePreview: true,
 		},
+		/*
+		 * Tømmer Storybooks innebygde bakgrunnsvelger.
+		 *
+		 * Den maler en fast farge på storyen og kjenner ikke temaet. Med begge
+		 * påslått sto det to velgere i verktøylinja som så ut til å gjøre det
+		 * samme: valgte du bakgrunnen "light" mens temaet var mørkt, ble
+		 * story-ruta lysegrå mens resten av siden - og komponenten i den - var
+		 * mørk. Temaet eier bakgrunnen.
+		 *
+		 * En tom `options` og ikke `disable: true`: flagget slår av hele addonen,
+		 * og rutenettet ligger i den samme. Uten valg å velge mellom skjuler
+		 * velgeren seg selv, mens "Grid visibility" blir stående.
+		 */
+		backgrounds: { options: {} },
 		options: {
 			/*
 			 * Uten dette sorterer Storybook etter rekkefølgen stories lastes i,

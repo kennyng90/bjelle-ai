@@ -118,7 +118,19 @@
 /* 2. Roller - lyst tema                                                     */
 /* ------------------------------------------------------------------------ */
 
-:root {
+/*
+ * `[data-theme="light"]` står ved siden av `:root` fordi en enkelt story skal
+ * kunne tvinge lyst tema selv når hele siden står i mørkt. Attributtet gir
+ * (0,2,0) mot `.dark`-klassens (0,1,0), så overstyringen vinner uten
+ * !important. Uten det ville en lys story vært umulig å be om.
+ */
+:root,
+:root[data-theme="light"] {
+	/* Forteller nettleseren hvilken grunnstemning den skal tegne native ting i:
+	   rullefelt, tekstmarkør, avkryssingsbokser, datovelgerens kalender. Uten
+	   dette blir rullefeltet i mørkt tema stående hvitt. */
+	color-scheme: light;
+
 	/* Flater. Sidens grunn, kort som løftes, søkk. */
 	--background-base: var(--grey-solid-0);
 	--background-raised: var(--grey-solid-0);
@@ -238,8 +250,15 @@
 /* 2b. Roller - mørkt tema                                                   */
 /* ------------------------------------------------------------------------ */
 
+/*
+ * To selektorer, én sannhet. `.dark` er den storybook-dark-mode setter på
+ * `<html>`, `[data-theme="dark"]` er den en enkelt story kan tvinge - og som
+ * apps setter selv. De skal alltid gi samme verdier.
+ */
 :root[data-theme="dark"],
 .dark {
+	color-scheme: dark;
+
 	--background-base: var(--grey-solid-900);
 	--background-raised: var(--grey-solid-850);
 	--background-sunken: var(--grey-solid-1000);

@@ -14,7 +14,7 @@
  * `parameters.docs.container` med et eget tema ble forsøkt - containeren
  * kjører, men `DocsContainer` tegner ikke på nytt når en global endres, så
  * kromet låser seg til temaet som gjaldt ved første render. CSS henger på
- * `data-theme` og har ikke det problemet.
+ * temaklassen som ligger på `<html>`, og har ikke det problemet.
  *
  * `html` foran hver selektor er nødvendig, ikke pynt: Storybook injiserer
  * stilene med emotion i runtime, altså etter dette arket, og med lik
