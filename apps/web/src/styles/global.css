@@ -2,8 +2,12 @@
 @import "@bjelle/tokens/theme.css";
 @import "@bjelle/ui/styles.css";
 
+/*
+ * Rollene, ikke primitivene. Da følger sida temaet uten en egen dark-regel:
+ * bytter noen data-theme på <html>, snur disse to av seg selv.
+ */
 body {
-	background-color: var(--color-ink-50);
-	color: var(--color-ink-900);
+	background-color: var(--background-sunken);
+	color: var(--text-strong);
 	font-family: var(--font-sans);
 }

@@ -7,3 +7,47 @@
  * den relative stien peker rett på ekte filer uansett hvem som importerer.
  */
 @source "./src";
+
+/*
+ * Animasjoner komponentene eier selv.
+ *
+ * Tailwind har ingen ferdig sveip, og en ubestemt ProgressBar må ha en. Den
+ * hører hjemme her og ikke i tokenpakken: det er en komponentdetalj, ikke et
+ * designtoken. Ligger den i en <style>-tagg inne i komponenten i stedet, blir
+ * den duplisert per instans og forsvinner ved SSR.
+ */
+@theme {
+	--animate-progress-sweep: progress-sweep 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+	@keyframes progress-sweep {
+		from {
+			transform: translateX(-100%);
+		}
+		to {
+			transform: translateX(300%);
+		}
+	}
+}
+
+/*
+ * Overstyrer Tailwinds egen transition-colors.
+ *
+ * Den innebygde varianten tar med `outline-color`. Siden hvert interaktivt
+ * element i dette biblioteket har `focus-visible:outline-stroke-focus`, betyr
+ * det at fokusringen toner inn over 180ms: i det øyeblikket fokus lander har
+ * ringen fortsatt forrige farge, og tastaturbrukeren ser ingen ring. Målt til
+ * ~400ms før riktig farge var på plass.
+ *
+ * Fikset her framfor i hver komponent fordi `transition-colors` er det man
+ * skriver av vane. Et eget klassenavn ville bare flyttet fella.
+ *
+ * Må være `@layer utilities` og ikke `@utility`: en `@utility`-definisjon med
+ * samme navn som en innebygd taper mot Tailwinds egen. Her ligger regelen sist
+ * i samme lag med lik spesifisitet, og da vinner den på kilderekkefølge.
+ * Verifisert med en sonde som leste `transitionProperty` i ekte Chromium.
+ */
+@layer utilities {
+	.transition-colors {
+		transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+	}
+}

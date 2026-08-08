@@ -1,65 +1,521 @@
 /*
- * Bjelle designtokens. Kilde til sannhet for farger, typografi og radius.
+ * Bjelle designtokens - portert fra Practical UI Design System.
  *
- * Tailwind v4 er CSS-first: hver --color-* her blir automatisk til utilities
- * (bg-bjelle-500, text-ink-700, ...). Konsumenter importerer denne filen etter
- * "tailwindcss" og trenger ingen tailwind.config.
+ * Tre lag, i denne rekkefølgen:
  *
- * Inter selvhostes her, i samme pakke som --font-sans peker på. Ellers ville
- * tokenet love en font ingen leverer, og hver app ville rendre ulikt.
+ *   1. PRIMITIVER   Rå farger. Aldri brukt direkte i komponentkode.
+ *   2. ROLLER       Semantiske navn (--fill-brand-strong, --text-weak, ...).
+ *                   Ligger i vanlig :root, ikke i @theme, nettopp fordi de
+ *                   må kunne byttes av [data-theme="dark"].
+ *   3. @theme       Eksponerer rollene som Tailwind-utilities.
+ *
+ * Hvorfor rollene ikke ligger i @theme: Tailwind skriver @theme-variabler én
+ * gang i :root. Bytter du dem i en dark-blokk, får du to kilder til sannhet og
+ * utilities som peker på feil lag. Med `@theme inline` peker utilityen rett på
+ * var(--rolle), og temabyttet skjer der rollen defineres. Ett bytte, alt følger.
+ *
+ * Inter selvhostes her, i samme pakke som --font-sans peker på. Practical UI
+ * henter den fra Google Fonts; det gjør vi ikke - tokenet skal ikke love en
+ * font en tredjepart leverer.
  */
 
 @import "@fontsource-variable/inter";
 
-@theme {
-	/* Messing. Åpningsbjella på børsen. Primærfarge. */
-	--color-bjelle-50: oklch(0.977 0.021 89.5);
-	--color-bjelle-100: oklch(0.947 0.049 90.2);
-	--color-bjelle-200: oklch(0.895 0.096 90.5);
-	--color-bjelle-300: oklch(0.837 0.136 88.6);
-	--color-bjelle-400: oklch(0.775 0.152 82.4);
-	--color-bjelle-500: oklch(0.702 0.146 76.1);
-	--color-bjelle-600: oklch(0.601 0.128 71.3);
-	--color-bjelle-700: oklch(0.492 0.105 68.2);
-	--color-bjelle-800: oklch(0.412 0.085 67.4);
-	--color-bjelle-900: oklch(0.353 0.069 68.1);
-	--color-bjelle-950: oklch(0.221 0.046 69.3);
+/* ------------------------------------------------------------------------ */
+/* 1. Primitiver                                                             */
+/* ------------------------------------------------------------------------ */
 
-	/* Blekk. Nøytral for tekst, flater og kantlinjer. Kjølig blåtone. */
-	--color-ink-50: oklch(0.981 0.005 247.9);
-	--color-ink-100: oklch(0.955 0.011 247.9);
-	--color-ink-200: oklch(0.909 0.019 245.6);
-	--color-ink-300: oklch(0.842 0.031 244.3);
-	--color-ink-400: oklch(0.688 0.041 246.1);
-	--color-ink-500: oklch(0.567 0.043 247.2);
-	--color-ink-600: oklch(0.464 0.041 249.1);
-	--color-ink-700: oklch(0.386 0.038 251.4);
-	--color-ink-800: oklch(0.315 0.035 253.6);
-	--color-ink-900: oklch(0.254 0.033 256.1);
-	--color-ink-950: oklch(0.176 0.031 259.7);
+:root {
+	/* Brand. Practical UI-blå. */
+	--blue-light-1000: rgb(76, 100, 217);
+	--blue-light-800: rgba(76, 100, 217, 0.8);
+	--blue-light-200: rgba(76, 100, 217, 0.2);
+	--blue-light-50: rgba(89, 117, 255, 0.05);
+	--blue-dark-1000: rgb(163, 178, 255);
+	--blue-dark-800: rgba(163, 178, 255, 0.8);
+	--blue-dark-200: rgba(163, 178, 255, 0.2);
+	--blue-dark-50: rgba(163, 178, 255, 0.06);
+
+	/* Hover på fylte flater. Egne verdier, ikke en tint av brand. */
+	--brand-hover-light: rgb(74, 83, 128);
+	--brand-hover-dark: rgb(191, 202, 255);
+	--red-hover-light: rgb(150, 51, 51);
+	--red-hover-dark: rgb(255, 186, 186);
+
+	/* Nøytraler. Slate - kjølig, ikke ekte grå. */
+	--grey-light-1000: rgba(0, 6, 38, 0.9);
+	--grey-light-700: rgba(0, 9, 51, 0.65);
+	--grey-light-500: rgba(0, 13, 77, 0.45);
+	--grey-light-100: rgba(0, 17, 102, 0.1);
+	--grey-light-50: rgba(0, 21, 128, 0.04);
+	--grey-light-25: rgba(0, 21, 128, 0.02);
+	--grey-dark-1000: rgb(255, 255, 255);
+	--grey-dark-700: rgba(255, 255, 255, 0.78);
+	--grey-dark-500: rgba(255, 255, 255, 0.6);
+	--grey-dark-100: rgba(255, 255, 255, 0.12);
+	--grey-dark-50: rgba(255, 255, 255, 0.06);
+	--grey-dark-25: rgba(255, 255, 255, 0.03);
+
+	/* Ugjennomsiktige flater. Må være solide - transparente nøytraler
+	   stables og blir mørkere for hvert lag. */
+	--grey-solid-0: rgb(255, 255, 255);
+	--grey-solid-50: rgb(245, 246, 250);
+	--grey-solid-800: rgb(41, 43, 51);
+	--grey-solid-850: rgb(29, 30, 38);
+	--grey-solid-900: rgb(18, 19, 26);
+	--grey-solid-1000: rgb(0, 0, 0);
+
+	/* Status. */
+	--red-light-1000: rgb(199, 58, 58);
+	--red-light-800: rgba(199, 58, 58, 0.8);
+	--red-light-200: rgba(199, 58, 58, 0.14);
+	--red-light-50: rgba(255, 74, 74, 0.05);
+	--red-dark-1000: rgb(255, 156, 156);
+	--red-dark-800: rgba(255, 156, 156, 0.8);
+	--red-dark-200: rgba(255, 156, 156, 0.2);
+	--red-dark-50: rgba(255, 156, 156, 0.08);
+
+	--green-light-1000: rgb(6, 122, 87);
+	--green-light-800: rgba(6, 122, 87, 0.8);
+	--green-light-200: rgba(6, 122, 87, 0.2);
+	--green-light-50: rgba(10, 204, 146, 0.05);
+	--green-dark-1000: rgb(119, 199, 175);
+	--green-dark-800: rgba(119, 199, 175, 0.8);
+	--green-dark-200: rgba(119, 199, 175, 0.2);
+	--green-dark-50: rgba(119, 199, 175, 0.08);
+
+	--amber-light-1000: rgb(143, 108, 26);
+	--amber-light-800: rgba(143, 108, 26, 0.8);
+	--amber-light-200: rgba(143, 108, 26, 0.2);
+	--amber-light-50: rgba(255, 192, 46, 0.05);
+	--amber-dark-1000: rgb(224, 190, 112);
+	--amber-dark-800: rgba(224, 190, 112, 0.8);
+	--amber-dark-200: rgba(224, 190, 112, 0.2);
+	--amber-dark-50: rgba(224, 190, 112, 0.08);
+
+	--teal-light-1000: rgb(26, 116, 168);
+	--teal-light-800: rgba(26, 116, 168, 0.8);
+	--teal-light-200: rgba(26, 116, 168, 0.2);
+	--teal-light-50: rgba(38, 176, 255, 0.05);
+	--teal-dark-1000: rgb(126, 192, 229);
+	--teal-dark-800: rgba(126, 192, 229, 0.8);
+	--teal-dark-200: rgba(126, 192, 229, 0.2);
+	--teal-dark-50: rgba(126, 192, 229, 0.08);
+
+	--purple-light-1000: rgb(126, 71, 204);
+	--purple-light-800: rgba(126, 71, 204, 0.8);
+	--purple-light-200: rgba(126, 71, 204, 0.2);
+	--purple-light-50: rgba(126, 71, 204, 0.05);
+	--purple-dark-1000: rgb(210, 178, 255);
+	--purple-dark-800: rgba(210, 178, 255, 0.8);
+	--purple-dark-200: rgba(210, 178, 255, 0.2);
+	--purple-dark-50: rgba(210, 178, 255, 0.05);
+
+	--yellow-solid-1000: rgb(254, 198, 46);
+}
+
+/* ------------------------------------------------------------------------ */
+/* 2. Roller - lyst tema                                                     */
+/* ------------------------------------------------------------------------ */
+
+:root {
+	/* Flater. Sidens grunn, kort som løftes, søkk. */
+	--background-base: var(--grey-solid-0);
+	--background-raised: var(--grey-solid-0);
+	--background-sunken: var(--grey-solid-50);
+	--background-alternate: var(--grey-solid-50);
+	--background-overlay: var(--grey-solid-0);
+	--background-inverse: var(--grey-solid-900);
+	--background-brand: var(--blue-light-1000);
+
+	/* Fyll. Knapper, brikker, markeringer. */
+	--fill-brand-strong: var(--blue-light-1000);
+	--fill-brand-strong-hover: var(--brand-hover-light);
+	--fill-brand-weak: var(--blue-light-50);
+	--fill-error-strong: var(--red-light-1000);
+	--fill-error-strong-hover: var(--red-hover-light);
+	--fill-error-weak: var(--red-light-50);
+	--fill-success-strong: var(--green-light-1000);
+	--fill-success-weak: var(--green-light-50);
+	--fill-warning-strong: var(--amber-light-1000);
+	--fill-warning-weak: var(--amber-light-50);
+	--fill-information-strong: var(--teal-light-1000);
+	--fill-information-weak: var(--teal-light-50);
+	--fill-strong: var(--grey-light-1000);
+	--fill-weak: var(--grey-light-50);
+	--fill-weaker: var(--grey-light-25);
+	--fill-hover: var(--grey-light-50);
+	--fill-press: var(--grey-light-100);
+	--fill-selected: var(--blue-light-1000);
+	--fill-disabled: var(--grey-light-100);
+	--fill-overlay: var(--grey-light-500);
+	--fill-white: var(--grey-solid-0);
+	--fill-yellow: var(--yellow-solid-1000);
+	--fill-inverse-strong: var(--grey-solid-0);
+	--fill-inverse-weak: var(--grey-dark-50);
+	--fill-inverse-hover: var(--grey-dark-50);
+	--fill-inverse-press: var(--grey-dark-100);
+	--fill-inverse-disabled: var(--grey-dark-100);
+
+	/* Tekst. */
+	--text-strong: var(--grey-light-1000);
+	--text-weak: var(--grey-light-700);
+	--text-brand: var(--blue-light-1000);
+	--text-error: var(--red-light-1000);
+	--text-success: var(--green-light-1000);
+	--text-warning: var(--amber-light-1000);
+	--text-information: var(--teal-light-1000);
+	--text-disabled: var(--grey-light-500);
+	--text-inverse-strong: var(--grey-dark-1000);
+	--text-inverse-weak: var(--grey-dark-700);
+	--text-inverse-disabled: var(--grey-dark-500);
 
 	/*
-	 * Signalfarger for "Trenger jeg bry meg?"-merkingen fra konseptet.
-	 * Tre nivåer, aldri flere. Bruk disse framfor generisk red/amber/gray
-	 * så merkingen ser lik ut i dashboard, nyhetsbrev og landingsside.
+	 * Tekst og ikoner oppå fylte statusflater.
+	 *
+	 * Practical UI hardkoder #fff her. Det holder i lyst tema, men i mørkt
+	 * tema er de samme flatene lyse (fill-brand-strong blir rgb(163,178,255)),
+	 * og hvit tekst gir ca 1.4:1. Derfor er dette et eget token som snur.
 	 */
-	--color-signal-viktig: oklch(0.577 0.216 27.3);
-	--color-signal-viktig-flate: oklch(0.958 0.033 24.6);
-	--color-signal-greit: oklch(0.681 0.162 63.5);
-	--color-signal-greit-flate: oklch(0.966 0.041 79.8);
-	--color-signal-stoy: oklch(0.554 0.041 257.4);
-	--color-signal-stoy-flate: oklch(0.968 0.007 247.9);
+	--text-on-strong: var(--grey-solid-0);
 
-	/* Kursretning. Egne tokens, ikke gjenbruk av signalfargene. */
-	--color-opp: oklch(0.627 0.157 155.9);
-	--color-ned: oklch(0.577 0.216 27.3);
+	/* Ikoner. Egne roller fordi et ikon tåler lavere kontrast enn brødtekst,
+	   men skal ikke arve tekstfargen ukritisk. */
+	--icon-neutral: var(--grey-light-500);
+	--icon-strong: var(--grey-light-1000);
+	--icon-brand: var(--blue-light-800);
+	--icon-error: var(--red-light-800);
+	--icon-success: var(--green-light-800);
+	--icon-warning: var(--amber-light-800);
+	--icon-information: var(--teal-light-800);
+	--icon-disabled: var(--grey-light-500);
+	--icon-inverse: var(--grey-dark-500);
+	--icon-inverse-strong: var(--grey-dark-1000);
+	--icon-inverse-disabled: var(--grey-dark-500);
+	/*
+	 * Statusikoner på en invertert flate (Toast, Tooltip). Egne roller fordi
+	 * --icon-success og slektningene er valgt mot den vanlige flaten: på en
+	 * nesten svart toast gir de 1.8-2.0:1. Disse er de samme fargene speilet,
+	 * så tonen overlever inverteringen.
+	 */
+	--icon-inverse-success: var(--green-dark-1000);
+	--icon-inverse-warning: var(--amber-dark-1000);
+	--icon-inverse-error: var(--red-dark-1000);
+	--icon-inverse-information: var(--teal-dark-1000);
 
-	/* Typografi */
-	--font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
-	--font-mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+	/* Kantlinjer og fokus. */
+	--stroke-weak: var(--grey-light-100);
+	--stroke-strong: var(--grey-light-500);
+	--stroke-stronger: var(--grey-light-1000);
+	--stroke-focus: var(--blue-light-1000);
+	--stroke-selected: var(--blue-light-1000);
+	--stroke-brand-strong: var(--blue-light-800);
+	--stroke-brand-weak: var(--blue-light-200);
+	--stroke-error-strong: var(--red-light-800);
+	--stroke-error-weak: var(--red-light-200);
+	--stroke-success-strong: var(--green-light-800);
+	--stroke-success-weak: var(--green-light-200);
+	--stroke-warning-strong: var(--amber-light-800);
+	--stroke-warning-weak: var(--amber-light-200);
+	--stroke-information-strong: var(--teal-light-800);
+	--stroke-information-weak: var(--teal-light-200);
+	--stroke-disabled: var(--grey-light-100);
+	--stroke-overlay-weak: rgba(0, 0, 0, 0.1);
+	--stroke-inverse-weak: var(--grey-dark-100);
+	--stroke-inverse-strong: var(--grey-dark-500);
+	--stroke-inverse-stronger: var(--grey-dark-1000);
+	--stroke-inverse-disabled: var(--grey-dark-100);
 
-	/* Form */
-	--radius-card: 0.75rem;
-	--radius-control: 0.5rem;
-	--radius-pill: 9999px;
+	/* Skygger. Lave alfaverdier - Practical UI løfter med lys, ikke med sot. */
+	--shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.08);
+	--shadow-md: 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.08);
+	--shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.04), 0 12px 24px rgba(0, 0, 0, 0.08);
+	--shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.04), 0 24px 48px rgba(0, 0, 0, 0.12);
+}
+
+/* ------------------------------------------------------------------------ */
+/* 2b. Roller - mørkt tema                                                   */
+/* ------------------------------------------------------------------------ */
+
+:root[data-theme="dark"],
+.dark {
+	--background-base: var(--grey-solid-900);
+	--background-raised: var(--grey-solid-850);
+	--background-sunken: var(--grey-solid-1000);
+	--background-alternate: var(--grey-solid-850);
+	--background-overlay: var(--grey-solid-800);
+	--background-inverse: var(--grey-solid-0);
+	--background-brand: var(--blue-dark-1000);
+
+	--fill-brand-strong: var(--blue-dark-1000);
+	--fill-brand-strong-hover: var(--brand-hover-dark);
+	--fill-brand-weak: var(--blue-dark-50);
+	--fill-error-strong: var(--red-dark-1000);
+	--fill-error-strong-hover: var(--red-hover-dark);
+	--fill-error-weak: var(--red-dark-50);
+	--fill-success-strong: var(--green-dark-1000);
+	--fill-success-weak: var(--green-dark-50);
+	--fill-warning-strong: var(--amber-dark-1000);
+	--fill-warning-weak: var(--amber-dark-50);
+	--fill-information-strong: var(--teal-dark-1000);
+	--fill-information-weak: var(--teal-dark-50);
+	--fill-strong: var(--grey-dark-1000);
+	--fill-weak: var(--grey-dark-50);
+	--fill-weaker: var(--grey-dark-25);
+	--fill-hover: var(--grey-dark-50);
+	--fill-press: var(--grey-dark-100);
+	--fill-selected: var(--blue-dark-1000);
+	--fill-disabled: var(--grey-dark-100);
+	--fill-overlay: var(--grey-light-1000);
+	--fill-white: var(--grey-solid-0);
+	--fill-yellow: var(--yellow-solid-1000);
+	--fill-inverse-strong: var(--grey-solid-900);
+	--fill-inverse-weak: var(--grey-light-50);
+	--fill-inverse-hover: var(--grey-light-50);
+	--fill-inverse-press: var(--grey-light-100);
+	--fill-inverse-disabled: var(--grey-light-100);
+
+	--text-strong: var(--grey-dark-1000);
+	--text-weak: var(--grey-dark-700);
+	--text-brand: var(--blue-dark-1000);
+	--text-error: var(--red-dark-1000);
+	--text-success: var(--green-dark-1000);
+	--text-warning: var(--amber-dark-1000);
+	--text-information: var(--teal-dark-1000);
+	--text-disabled: var(--grey-dark-500);
+	--text-inverse-strong: var(--grey-light-1000);
+	--text-inverse-weak: var(--grey-light-700);
+	--text-inverse-disabled: var(--grey-light-500);
+
+	/* Snur. De fylte flatene er lyse i mørkt tema. */
+	--text-on-strong: var(--grey-solid-900);
+
+	--icon-neutral: var(--grey-dark-500);
+	--icon-strong: var(--grey-dark-1000);
+	--icon-brand: var(--blue-dark-800);
+	--icon-error: var(--red-dark-800);
+	--icon-success: var(--green-dark-800);
+	--icon-warning: var(--amber-dark-800);
+	--icon-information: var(--teal-dark-800);
+	--icon-disabled: var(--grey-dark-500);
+	--icon-inverse: var(--grey-light-500);
+	--icon-inverse-strong: var(--grey-light-1000);
+	--icon-inverse-disabled: var(--grey-light-500);
+	--icon-inverse-success: var(--green-light-1000);
+	--icon-inverse-warning: var(--amber-light-1000);
+	--icon-inverse-error: var(--red-light-1000);
+	--icon-inverse-information: var(--teal-light-1000);
+
+	--stroke-weak: var(--grey-dark-100);
+	--stroke-strong: var(--grey-dark-500);
+	--stroke-stronger: var(--grey-dark-1000);
+	--stroke-focus: var(--blue-dark-1000);
+	--stroke-selected: var(--blue-dark-1000);
+	--stroke-brand-strong: var(--blue-dark-800);
+	--stroke-brand-weak: var(--blue-dark-200);
+	--stroke-error-strong: var(--red-dark-800);
+	--stroke-error-weak: var(--red-dark-200);
+	--stroke-success-strong: var(--green-dark-800);
+	--stroke-success-weak: var(--green-dark-200);
+	--stroke-warning-strong: var(--amber-dark-800);
+	--stroke-warning-weak: var(--amber-dark-200);
+	--stroke-information-strong: var(--teal-dark-800);
+	--stroke-information-weak: var(--teal-dark-200);
+	--stroke-disabled: var(--grey-dark-100);
+	--stroke-overlay-weak: rgba(255, 255, 255, 0.1);
+	--stroke-inverse-weak: var(--grey-light-100);
+	--stroke-inverse-strong: var(--grey-light-500);
+	--stroke-inverse-stronger: var(--grey-light-1000);
+	--stroke-inverse-disabled: var(--grey-light-100);
+
+	/* Skygger må være kraftigere på mørk grunn - 4 % svart er usynlig der. */
+	--shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+	--shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4);
+	--shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(0, 0, 0, 0.45);
+	--shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.35), 0 24px 48px rgba(0, 0, 0, 0.55);
+}
+
+/* ------------------------------------------------------------------------ */
+/* 3. Tailwind-utilities                                                     */
+/* ------------------------------------------------------------------------ */
+
+/*
+ * `inline` gjør at utilityen skriver var(--rolle) rett ut i regelen i stedet
+ * for å gå veien om en egen --color-*-variabel. Uten det ville temabyttet i
+ * blokkene over ikke nå fram.
+ */
+@theme inline {
+	/* Nullstiller Tailwinds standardpalett. Ingen bg-red-500 eller text-slate-700
+	   skal kunne snike seg inn - da har vi to systemer, og bare det ene snur i
+	   mørkt tema. Alt som trengs finnes som rolle nedenfor. */
+	--color-*: initial;
+
+	--color-transparent: transparent;
+	--color-current: currentColor;
+
+	--color-background-base: var(--background-base);
+	--color-background-raised: var(--background-raised);
+	--color-background-sunken: var(--background-sunken);
+	--color-background-alternate: var(--background-alternate);
+	--color-background-overlay: var(--background-overlay);
+	--color-background-inverse: var(--background-inverse);
+	--color-background-brand: var(--background-brand);
+
+	--color-fill-brand-strong: var(--fill-brand-strong);
+	--color-fill-brand-strong-hover: var(--fill-brand-strong-hover);
+	--color-fill-brand-weak: var(--fill-brand-weak);
+	--color-fill-error-strong: var(--fill-error-strong);
+	--color-fill-error-strong-hover: var(--fill-error-strong-hover);
+	--color-fill-error-weak: var(--fill-error-weak);
+	--color-fill-success-strong: var(--fill-success-strong);
+	--color-fill-success-weak: var(--fill-success-weak);
+	--color-fill-warning-strong: var(--fill-warning-strong);
+	--color-fill-warning-weak: var(--fill-warning-weak);
+	--color-fill-information-strong: var(--fill-information-strong);
+	--color-fill-information-weak: var(--fill-information-weak);
+	--color-fill-strong: var(--fill-strong);
+	--color-fill-weak: var(--fill-weak);
+	--color-fill-weaker: var(--fill-weaker);
+	--color-fill-hover: var(--fill-hover);
+	--color-fill-press: var(--fill-press);
+	--color-fill-selected: var(--fill-selected);
+	--color-fill-disabled: var(--fill-disabled);
+	--color-fill-overlay: var(--fill-overlay);
+	--color-fill-white: var(--fill-white);
+	--color-fill-yellow: var(--fill-yellow);
+	--color-fill-inverse-strong: var(--fill-inverse-strong);
+	--color-fill-inverse-weak: var(--fill-inverse-weak);
+	--color-fill-inverse-hover: var(--fill-inverse-hover);
+	--color-fill-inverse-press: var(--fill-inverse-press);
+	--color-fill-inverse-disabled: var(--fill-inverse-disabled);
+
+	--color-text-strong: var(--text-strong);
+	--color-text-weak: var(--text-weak);
+	--color-text-brand: var(--text-brand);
+	--color-text-error: var(--text-error);
+	--color-text-success: var(--text-success);
+	--color-text-warning: var(--text-warning);
+	--color-text-information: var(--text-information);
+	--color-text-disabled: var(--text-disabled);
+	--color-text-on-strong: var(--text-on-strong);
+	--color-text-inverse-strong: var(--text-inverse-strong);
+	--color-text-inverse-weak: var(--text-inverse-weak);
+	--color-text-inverse-disabled: var(--text-inverse-disabled);
+
+	--color-icon-neutral: var(--icon-neutral);
+	--color-icon-strong: var(--icon-strong);
+	--color-icon-brand: var(--icon-brand);
+	--color-icon-error: var(--icon-error);
+	--color-icon-success: var(--icon-success);
+	--color-icon-warning: var(--icon-warning);
+	--color-icon-information: var(--icon-information);
+	--color-icon-disabled: var(--icon-disabled);
+	--color-icon-inverse: var(--icon-inverse);
+	--color-icon-inverse-strong: var(--icon-inverse-strong);
+	--color-icon-inverse-disabled: var(--icon-inverse-disabled);
+	--color-icon-inverse-success: var(--icon-inverse-success);
+	--color-icon-inverse-warning: var(--icon-inverse-warning);
+	--color-icon-inverse-error: var(--icon-inverse-error);
+	--color-icon-inverse-information: var(--icon-inverse-information);
+
+	--color-stroke-weak: var(--stroke-weak);
+	--color-stroke-strong: var(--stroke-strong);
+	--color-stroke-stronger: var(--stroke-stronger);
+	--color-stroke-focus: var(--stroke-focus);
+	--color-stroke-selected: var(--stroke-selected);
+	--color-stroke-brand-strong: var(--stroke-brand-strong);
+	--color-stroke-brand-weak: var(--stroke-brand-weak);
+	--color-stroke-error-strong: var(--stroke-error-strong);
+	--color-stroke-error-weak: var(--stroke-error-weak);
+	--color-stroke-success-strong: var(--stroke-success-strong);
+	--color-stroke-success-weak: var(--stroke-success-weak);
+	--color-stroke-warning-strong: var(--stroke-warning-strong);
+	--color-stroke-warning-weak: var(--stroke-warning-weak);
+	--color-stroke-information-strong: var(--stroke-information-strong);
+	--color-stroke-information-weak: var(--stroke-information-weak);
+	--color-stroke-disabled: var(--stroke-disabled);
+	--color-stroke-overlay-weak: var(--stroke-overlay-weak);
+	--color-stroke-inverse-weak: var(--stroke-inverse-weak);
+	--color-stroke-inverse-strong: var(--stroke-inverse-strong);
+	--color-stroke-inverse-stronger: var(--stroke-inverse-stronger);
+	--color-stroke-inverse-disabled: var(--stroke-inverse-disabled);
+
+	/* Skyggene snur også, så de må gjennom `inline`. */
+	--shadow-xs: var(--shadow-xs);
+	--shadow-sm: var(--shadow-sm);
+	--shadow-md: var(--shadow-md);
+	--shadow-lg: var(--shadow-lg);
+	--shadow-xl: var(--shadow-xl);
+}
+
+@theme {
+	/*
+	 * Spacing. Practical UI ligger på et 4 px-rutenett, som er nøyaktig
+	 * Tailwinds standardsteg. p-1 = 4px, p-4 = 16px, p-6 = 24px.
+	 * Tillatte trinn: 0 2 4 8 12 16 20 24 32 40 48 56 64 80 96 128 192 256 px
+	 * = 0 0.5 1 2 3 4 5 6 8 10 12 14 16 20 24 32 48 64 i Tailwind-tall.
+	 */
+	--spacing: 0.25rem;
+
+	/* Radius. Navngitt etter px, som i Figma. rounded-12, rounded-full. */
+	--radius-*: initial;
+	--radius-0: 0px;
+	--radius-4: 4px;
+	--radius-8: 8px;
+	--radius-12: 12px;
+	--radius-16: 16px;
+	--radius-20: 20px;
+	--radius-24: 24px;
+	--radius-32: 32px;
+	--radius-full: 9999px;
+
+	/* Typografi. Én ramp, ikke Tailwinds xs-9xl. text-h2 gir størrelse,
+	   linjehøyde og sperring i ett - de tre hører sammen. */
+	--text-*: initial;
+	--text-display: 56px;
+	--text-display--line-height: 64px;
+	--text-display--letter-spacing: -0.03em;
+	--text-h1: 40px;
+	--text-h1--line-height: 48px;
+	--text-h1--letter-spacing: -0.025em;
+	--text-h2: 32px;
+	--text-h2--line-height: 40px;
+	--text-h2--letter-spacing: -0.02em;
+	--text-h3: 24px;
+	--text-h3--line-height: 32px;
+	--text-h3--letter-spacing: -0.015em;
+	--text-h4: 20px;
+	--text-h4--line-height: 28px;
+	--text-h4--letter-spacing: -0.01em;
+	--text-lead: 20px;
+	--text-lead--line-height: 31px;
+	--text-body: 16px;
+	--text-body--line-height: 24px;
+	--text-small: 14px;
+	--text-small--line-height: 20px;
+	--text-tiny: 13px;
+	--text-tiny--line-height: 18px;
+	--text-uppercase: 14px;
+	--text-uppercase--line-height: 20px;
+	--text-uppercase--letter-spacing: 0.06em;
+
+	/* Vekter. Practical UIs "strong" er 600, ikke 700. */
+	--font-weight-*: initial;
+	--font-weight-regular: 400;
+	--font-weight-medium: 500;
+	--font-weight-strong: 600;
+	--font-weight-bold: 700;
+
+	--font-sans:
+		"Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+		Arial, sans-serif;
+	--font-mono: "Menlo", "SF Mono", "SFMono-Regular", ui-monospace, Consolas, monospace;
+
+	/* Bevegelse. Satt som Tailwind-standard, så `transition-colors` uten
+	   duration-klasse allerede treffer riktig kurve og tempo. */
+	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+	--default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	--default-transition-duration: 180ms;
 }

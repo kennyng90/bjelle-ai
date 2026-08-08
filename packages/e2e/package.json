@@ -4,7 +4,8 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"test:e2e": "playwright test",
+		"test:e2e": "playwright test --project=web --project=dashboard",
+		"test:visuell": "playwright test --project=visuell",
 		"test:e2e:ui": "playwright test --ui",
 		"typecheck": "tsc --noEmit"
 	},

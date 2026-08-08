@@ -40,8 +40,22 @@ pnpm typecheck
   i designsystemet.
 - Importer typer fra `@storybook/react-vite`, **ikke** `@storybook/react`. Den generiske
   storybook-skillen sier `@storybook/react`; den tar feil for dette repoet.
-- Titler og story-navn er på norsk: `title: "Primitiver/Button"`, `name: "Størrelser"`.
-  Bruk `name` når eksportnavnet ikke kan inneholde æøå.
+- **All kode er på engelsk.** Det gjelder story-titler, story-eksportnavn og hver
+  eneste lokale `const`, funksjon og hjelpekomponent - også de som bare finnes
+  inni en story. `title: "Components/Button"`, `export const Sizes`,
+  `const focusRing = ...`.
+- Titlene har to røtter: `Primitives/*` for tokensidene i `foundations/`, og
+  `Components/*` for alt annet. Rekkefølgen i sidemenyen styres av `storySort` i
+  `apps/designsystem/.storybook/preview.tsx` og må oppdateres hvis en rot endres.
+- Eksportnavnet er story-navnet. Trenger du ikke en annen etikett enn den
+  Storybook utleder (`WithSupportingText` → "With Supporting Text"), skal
+  `name:` ikke stå der i det hele tatt. Bruk den kun når den utledede formen
+  blir feil, og skriv den da på engelsk.
+- Grunnstoryen heter `Default`, ikke `Standard`.
+- **Kommentarer, JSDoc og demo-innhold er på norsk.** Doc-kommentaren over `meta`
+  blir beskrivelsen på autodocs-siden, og produktet er norsk. Args, JSX-tekst og
+  strengene i `getByRole(..., { name: "..." })` er innhold, ikke kode - de skal
+  vise ekte ordlengder og æøå.
 - `tags: ["autodocs"]` gir dokumentasjonssiden. Det finnes ingen `.mdx`-filer, og
   `main.ts` matcher dem ikke lenger. Legg globben tilbake hvis MDX-docs skal innføres.
 - Skjul arvede DOM-props som designeren ikke skal skru på:
@@ -73,14 +87,100 @@ Tailwind-klasser med lik spesifisitet avgjøres av rekkefølgen i stilarket, ikk
 rekkefølgen i `className`. En `className`-override av `text-*` slår ikke nødvendigvis
 gjennom.
 
+## Dekning (coverage)
+
+`@vitest/coverage-v8` er installert fordi Storybooks testpanel i nettleseren
+ikke starter uten den - uten pakka får du `Failed to initialize Vitest` /
+`Cannot find package '@vitest/coverage-v8'`. CLI-kjøringen (`pnpm test`) er
+upåvirket og trenger den ikke.
+
+**Rapporten er foreløpig verdiløs, og det er ikke konfigurert bort.** Den måler
+bare `apps/designsystem` sine egne filer (`preview.tsx`) og viser 100 %.
+Komponentene ligger i `packages/ui`, altså utenfor Vite-roten, og v8 i
+browser-modus attribuerer dem ikke dit. Prøvd uten hell:
+
+- `coverage.include` med `../../packages/ui/src/**`
+- `coverage.root` satt til monorepo-roten
+- glob med `**/`-prefiks
+- absolutt sti med skråstrek (Windows-baklengsskråstrek var ikke årsaken)
+
+Alle fire ga `All files 0 %` uten feilmelding. Ikke stol på tallet, og ikke sett
+en terskel på det før noen får det til å måle riktig pakke. Dekning sier uansett
+lite her: hver story *er* en test, så dekningen følger av at komponenten har
+stories i det hele tatt.
+
 ## Styling
 
-- Kun designtokens fra `packages/tokens/theme.css`. Ingen rå hex, rgb eller oklch i
-  komponentkode.
-- Tailwind når `packages/ui` via `@import "@bjelle/ui/styles.css"`. Uten den hopper
-  Tailwind over `node_modules` og komponentene blir ustilt.
+Designsystemet er portert fra Practical UI. Tokenene ligger i tre lag i
+`packages/tokens/theme.css`:
+
+1. **Primitiver** - rå farger (`--blue-light-1000`, `--grey-solid-50`).
+   Aldri brukt direkte i komponentkode.
+2. **Roller** - semantiske navn (`--fill-brand-strong`, `--text-weak`,
+   `--stroke-focus`). Ligger i vanlig `:root`, ikke i `@theme`, nettopp fordi
+   `:root[data-theme="dark"]` må kunne bytte dem.
+3. **`@theme inline`** - eksponerer rollene som Tailwind-utilities.
+
+`inline` er ikke pynt. Uten det peker utilityen på en `--color-*`-variabel
+Tailwind skriver én gang i `:root`, og temabyttet når aldri fram. Med `inline`
+skriver utilityen `var(--rolle)` rett ut, og ett bytte på `<html>` snur alt.
+
+- **Tailwinds standardpalett er slått av** (`--color-*: initial`). `bg-red-500`
+  og `text-slate-700` finnes ikke og gir ingen stil. Det er med vilje: to
+  fargesystemer der bare det ene snur i mørkt tema er verre enn ingen.
+  Standard `--text-*` og `--radius-*` er også nullstilt - `text-xl` og
+  `rounded-lg` finnes ikke.
+- Klassenavnene dobler opp prefikset: `text-text-strong`, `bg-fill-weak`,
+  `border-stroke-weak`. Det ser rart ut, men navnene er identiske med Figma-
+  tokenene, så `text-weak` i designfila er greppbar som `text-text-weak` i koden.
+- `text-text-on-strong` er tekst oppå en fylt statusflate. Bruk den, ikke hvit:
+  fylte flater er lyse i mørkt tema, og hardkodet `#fff` gir da 1.4:1.
+- Typerampen setter størrelse, linjehøyde og sperring i ett. `text-h2` er alt du
+  trenger - ikke legg på `leading-*` eller `tracking-*` i tillegg.
+- `font-strong` er 600, ikke 700. Practical UI bruker Semi Bold på overskrifter.
+- Spacing er 4px-rutenettet, som er Tailwinds standard. `p-6` = 24px.
+- Radius er navngitt etter piksler: `rounded-8` for kontroller, `rounded-12`
+  eller `rounded-16` for kort, `rounded-full` for piller og avatarer.
+- **To roller ligger rett på gulvet. Velg riktig av dem:**
+  - `stroke-weak` er 1.23:1. Den er dekor - skillelinjer og korthårstrek. Er
+    kanten det eneste som viser hvor en kontroll begynner og slutter, bruk
+    `stroke-strong` (3.06:1). Skjemafeltene gjør dette riktig; kopier dem.
+  - `icon-neutral` er 3.06:1, altså 0.06 over kravet i WCAG 1.4.11. Greit for
+    ikoner ved siden av tekst. Bærer ikonet meningen alene - sammenslått
+    sidemeny, ikonknapp uten etikett - bruk `icon-strong`.
+  - `text-disabled` er 3.06:1 og når ikke 4.5. Kun på noe som faktisk er
+    `disabled`, der WCAG 1.4.3 gir unntak. Aldri som dempet brødtekst; til det
+    finnes `text-weak` (6.27:1).
 - Interaktive elementer trenger synlig fokusring:
-  `focus-visible:outline-2 focus-visible:outline-offset-2`.
+  `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stroke-focus`.
+- `transition-*` treffer allerede 180ms og `cubic-bezier(.4,0,.2,1)`. Ingen
+  bounce, ingen uendelig dekorativ animasjon.
+
+Konsistensen i tokenfila kan sjekkes maskinelt: hver rolle skal ha en
+motpart i mørkt tema, og ingen `var()` skal peke på noe udefinert.
+
+## Ikoner
+
+`Icon` wrapper lucide-react. `IconName` er utledet fra biblioteket, så en
+skrivefeil blir en typefeil. Ikoner er dekorative og `aria-hidden` som standard.
+Bærer ikonet mening ingen nærliggende tekst dekker, gi det `label` - da blir det
+`role="img"` med `aria-label`.
+
+Practical UI bruker Feather. Lucide er det vedlikeholdte supersettet med samme
+navn og geometri, men navnene er ikke alltid ett-til-ett. Lucide har både
+`Loader` (Feathers åtte eiker), `LoaderCircle` (én bue) og `LoaderPinwheel`.
+Practical UIs spinner er `Loader`. Slå opp i
+`node_modules/.pnpm/lucide-react@*/node_modules/lucide-react/dist/esm/icons/`
+når du er i tvil - filnavnet er kebab-case av ikonnavnet.
+
+## Temaer
+
+Lyst tema er standard. Mørkt tema slås på med `data-theme="dark"` på
+`<html>` (eller klassen `.dark`). I Storybook ligger bryteren i verktøylinja.
+
+Attributtet må stå på `<html>`, ikke på en wrapper rundt innholdet: native
+`<dialog>` og `::backdrop` rendres i topplaget, utenfor enhver wrapper, og
+ville ellers beholdt lyst tema.
 
 ## Avhengigheter
 

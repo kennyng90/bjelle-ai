@@ -81,7 +81,28 @@ som ikke kunne blitt rød er verre enn ingen suite.
 
 Last `storybook`-skillen kun når du står fast på decorators, argTypes eller docs.
 For vanlige variant-stories er `packages/ui/src/button/Button.stories.tsx` det bedre
-forbildet: norske titler, `@storybook/react-vite`, skjulte arvede DOM-props.
+forbildet: `Components/*`-tittel, `@storybook/react-vite`, skjulte arvede DOM-props.
+
+## Språk: engelsk kode, norsk prosa
+
+Repoet har én språkregel, og den er delt på midten. Bryter du den, blir den neste
+komponenten inkonsistent med de 51 som allerede står der.
+
+**Engelsk - all kode.** Story-titler (`Components/Button`, `Primitives/Colors`),
+story-eksportnavn (`Sizes`, `WithIcon`, `KeyboardNavigation`), og hver eneste
+lokale `const`, `let`, funksjon, parameter og hjelpekomponent - også de som bare
+finnes inni en story. Ingen `flyttFokus`, `handterTast` eller `bryterMork`.
+
+**Norsk - all prosa.** Kommentarer og JSDoc. Doc-kommentaren over `meta` blir
+beskrivelsen på autodocs-siden, og den skal være norsk.
+
+**Norsk - alt demo-innhold.** `label="Send meg oppdateringer"`, JSX-tekst, og
+strengene i `getByRole(..., { name: "..." })`. Dette er produktinnhold, ikke kode.
+Det skal vise komponenten med ekte ordlengder og æøå - engelsk plassholdertekst
+skjuler layoutfeil som først dukker opp på norsk.
+
+Grunnstoryen heter `Default`. Trenger du ikke en annen etikett enn den Storybook
+utleder av eksportnavnet, skal `name:` ikke stå der - og står den, er den engelsk.
 
 ## Ferdig når
 
@@ -92,6 +113,7 @@ forbildet: norske titler, `@storybook/react-vite`, skjulte arvede DOM-props.
 - [ ] Interaktive komponenter dokumenterer hvilken `client:*`-direktiv `apps/web` trenger
 - [ ] Tastaturnavigasjon og fokusring fungerer
 - [ ] Kun designtokens, ingen rå fargeverdier
+- [ ] Engelsk kode, norsk prosa og norsk demo-innhold - ingen norske identifikatorer
 - [ ] `pnpm check` og `pnpm typecheck` er grønne
 
 ## Stil

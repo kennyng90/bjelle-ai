@@ -17,7 +17,7 @@ body,
 
 body {
 	margin: 0;
-	background-color: var(--color-ink-50);
-	color: var(--color-ink-900);
+	background-color: var(--background-sunken);
+	color: var(--text-strong);
 	font-family: var(--font-sans);
 }

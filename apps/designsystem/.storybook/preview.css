@@ -2,8 +2,199 @@
 @import "@bjelle/tokens/theme.css";
 @import "@bjelle/ui/styles.css";
 
+/*
+ * Hele preview-iframen følger tema-velgeren - også Storybooks docs-krom.
+ *
+ * Kromet (overskrifter, beskrivelser, props-tabell, kodeblokker, rammen rundt
+ * storyen) tegnes av emotion ut fra Storybooks eget temaobjekt, som står fast
+ * på lyst. Uten reglene under blir resultatet en mørk verktøylinje, en hvit
+ * side og en mørk komponent - tre ulike temaer på samme skjerm.
+ *
+ * Hvorfor CSS og ikke `parameters.docs.theme`: det objektet er statisk.
+ * `parameters.docs.container` med et eget tema ble forsøkt - containeren
+ * kjører, men `DocsContainer` tegner ikke på nytt når en global endres, så
+ * kromet låser seg til temaet som gjaldt ved første render. CSS henger på
+ * `data-theme` og har ikke det problemet.
+ *
+ * `html` foran hver selektor er nødvendig, ikke pynt: Storybook injiserer
+ * stilene med emotion i runtime, altså etter dette arket, og med lik
+ * spesifisitet vinner den som kommer sist. `html` gir én ekstra type-selektor.
+ *
+ * Bare stabile klassenavn her. Emotion-klassene (.css-1esgs33 og slektningene)
+ * er innholdshashet og bytter navn ved neste oppgradering.
+ */
+
 body {
-	background-color: var(--color-ink-50);
-	color: var(--color-ink-900);
+	background-color: var(--background-base);
+	color: var(--text-strong);
 	font-family: var(--font-sans);
+}
+
+html .sbdocs,
+html .sbdocs-wrapper,
+html .sb-wrapper,
+html .sb-preparing-docs,
+html .sbdocs-content {
+	background-color: var(--background-base);
+	color: var(--text-strong);
+}
+
+/* Overskrifter og skillelinjene under dem. */
+html .sbdocs-title:not(.docs-story *),
+html .sbdocs-h1:not(.docs-story *),
+html .sbdocs-h2:not(.docs-story *),
+html .sbdocs-h3:not(.docs-story *),
+html .sbdocs-h4:not(.docs-story *),
+html .sbdocs-content h1:not(.docs-story *),
+html .sbdocs-content h2:not(.docs-story *),
+html .sbdocs-content h3:not(.docs-story *) {
+	color: var(--text-strong);
+	border-bottom-color: var(--stroke-weak);
+}
+
+/*
+ * Brødtekst og beskrivelser. Storybook setter en dempet farge valgt for hvit
+ * bakgrunn; på mørk flate ble den nesten usynlig. Elementene treffes både på
+ * klasse og på tag, fordi ikke alle avsnitt får .sbdocs-p.
+ */
+/*
+ * `:not(.docs-story ...)` er kritisk, ikke pynt.
+ *
+ * `.sbdocs-content p` er (0,1,2) og slår en Tailwind-klasse som `text-text-weak`
+ * (0,1,0). Uten skjermingen ville disse reglene stille overstyre komponentenes
+ * egne farger - men bare på docs-sider, ikke i story-visning. Det er den verste
+ * sorten feil: komponenten ser riktig ut der du tester den, og feil der du
+ * dokumenterer den.
+ */
+html .sbdocs-p:not(.docs-story *),
+html .sbdocs-li:not(.docs-story *),
+html .sbdocs-subtitle:not(.docs-story *),
+html .sbdocs-content p:not(.docs-story *),
+html .sbdocs-content li:not(.docs-story *) {
+	color: var(--text-weak);
+}
+
+html .sbdocs-content strong:not(.docs-story *),
+html .sbdocs-content b:not(.docs-story *) {
+	color: var(--text-strong);
+}
+
+html .sbdocs-a:not(.docs-story *),
+html .sbdocs-content a:not(.docs-story *) {
+	color: var(--text-brand);
+}
+
+/* Rammen rundt storyen, og verktøylinja over den. */
+html .sbdocs-preview,
+html .sbdocs-preview > div {
+	background-color: var(--background-raised);
+	border-color: var(--stroke-weak);
+	box-shadow: none;
+}
+
+/* Selve ruta komponenten står i skal være grunnflaten, ikke den hevede. */
+html .docs-story {
+	background-color: var(--background-base);
+	color: var(--text-strong);
+	font-family: var(--font-sans);
+}
+
+/*
+ * Props-tabellen. Klassen er docblock-argstable, ikke sb-argstableBlock -
+ * begge finnes i DOM-en, men på ulike elementer.
+ *
+ * `!important` kun her: Storybook setter cellebakgrunnen gjennom sin egen
+ * .sb-unstyled-reset, som vinner uansett hvor mye spesifisitet vi legger på.
+ * Uten det ble tabellen stående hvit mens teksten ble hvit av vårt tekstoken.
+ */
+html .docblock-argstable,
+html .docblock-argstable-head,
+html .docblock-argstable-body {
+	color: var(--text-strong);
+	background-color: transparent;
+}
+
+html .docblock-argstable-body tr,
+html .docblock-argstable-body td,
+html .docblock-argstable-body th,
+html .docblock-argstable-head th {
+	/* biome-ignore lint/complexity/noImportantStyles: Storybook setter cellebakgrunnen
+	   gjennom sin egen .sb-unstyled-reset, som vinner uansett spesifisitet. Uten dette
+	   blir tabellen hvit mens teksten er hvit. Eneste !important i repoet. */
+	background-color: var(--background-base) !important;
+	border-bottom-color: var(--stroke-weak);
+	box-shadow: none;
+}
+
+/*
+ * Teksten i tabellen ligger i <span> inne i cellene, ikke i cellen selv, så en
+ * regel på td/th treffer ingenting. Målt i mørkt tema før dette: kolonne-
+ * overskriftene lå på 3.13:1 og typelappene ("string", "union") på 1.45:1.
+ */
+html .docblock-argstable span,
+html .docblock-argstable code,
+html .docblock-argstable-body td span {
+	color: var(--text-strong);
+}
+
+html .docblock-argstable-head th,
+html .docblock-argstable-head th span {
+	color: var(--text-weak);
+}
+
+/* Typelappene er kodechips og skal ha en flate å stå på. */
+html .docblock-argstable code,
+html .docblock-argstable-body td span[class*="css-"] {
+	background-color: transparent;
+}
+
+/* Kontrollene i tabellen. */
+html .docblock-argstable-body input,
+html .docblock-argstable-body textarea,
+html .docblock-argstable-body select,
+html .docblock-argstable-body button {
+	background-color: var(--background-raised);
+	border-color: var(--stroke-strong);
+	color: var(--text-strong);
+	box-shadow: none;
+}
+
+/*
+ * Kodelapper i dokumentasjonsteksten. Skjermet mot storyene: uten det fikk
+ * <code> inne i en komponent en grå boks den ikke skal ha - synlig på
+ * fargesiden, der hver rute har et kodenavn under seg.
+ */
+html .sbdocs code:not(.docs-story *),
+html .sbdocs-pre:not(.docs-story *),
+html .sbdocs-content pre:not(.docs-story *) {
+	background-color: var(--fill-weak);
+	border-color: var(--stroke-weak);
+	color: var(--text-strong);
+}
+
+html .sbdocs-hr,
+html .sbdocs-divider {
+	border-color: var(--stroke-weak);
+}
+
+/*
+ * Objektinspektøren i kontrollkolonnen.
+ *
+ * Den tegnes av react-inspector med et eget fargesett valgt for hvit bakgrunn.
+ * Målt på en mørk docs-side: nøkkelnavnene lå på 3.87:1 og verdiene på
+ * 1.45:1 - altså nesten svart tekst på nesten svart flate.
+ *
+ * De fleste av disse er borte etter at ReactNode-props mistet kontrollen sin
+ * (se argTypesEnhancers i preview.tsx), men inspektøren dukker fortsatt opp
+ * bak "Set object" og for andre objektverdier.
+ */
+html .docblock-argstable td ol,
+html .docblock-argstable td ol * {
+	color: var(--text-strong);
+}
+
+html .docblock-argstable td ol span[style*="color"] {
+	/* react-inspector setter nøkkelfarge per element. Rollen vår er lesbar i
+	   begge temaer; den blå fra biblioteket er det ikke på mørk flate. */
+	color: var(--text-brand);
 }

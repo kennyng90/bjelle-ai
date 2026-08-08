@@ -29,3 +29,6 @@ playwright-report
 !.env.example
 __unconfig*
 todos.json
+
+# Dekningsrapporter fra vitest
+coverage/
