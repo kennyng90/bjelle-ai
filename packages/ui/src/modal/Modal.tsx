@@ -36,22 +36,46 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDialogElement>, "tit
  * event.target, mens ::backdrop står for selve mørkleggingen.
  */
 const dialogBase = [
-	"fixed inset-0 m-0 h-full max-h-none w-full max-w-none",
+	// `group`: panelet inni leser dialogens open-tilstand for å vite om det skal
+	// stå framme eller være på vei bort. Se `panelBase`.
+	"group fixed inset-0 m-0 h-full max-h-none w-full max-w-none",
 	// hidden/open:flex, ikke bare flex: en klasse med display ville slått
 	// nettleserens `dialog:not([open]) { display: none }`, og en lukket dialog
 	// ville blitt liggende usynlig over siden - og i tilgjengelighetstreet.
 	"hidden items-center justify-center overflow-hidden p-6 open:flex",
 	"bg-transparent font-sans",
+	// `display` og `overlay` er diskrete egenskaper: de hopper mellom to verdier
+	// uten mellomsteg, og uten `allow-discrete` skjer begge hoppene i samme
+	// frame som close(). Da er dialogen borte fra skjermen og ut av topplaget
+	// før panelet har rukket å tone ned. Med `transition-discrete` holder
+	// nettleseren begge på åpen verdi til overgangen er ferdig.
+	"transition-[display,overlay] transition-discrete",
 	"backdrop:bg-fill-overlay backdrop:backdrop-blur-[2px]",
-	"backdrop:transition-opacity starting:backdrop:opacity-0",
-	"motion-reduce:backdrop:transition-none",
+	// Samme to diskrete egenskapene på bakteppet: ::backdrop finnes kun mens
+	// dialogen er i topplaget, så uten dem slukner mørkleggingen momentant.
+	"backdrop:transition-[opacity,display,overlay] backdrop:transition-discrete",
+	// Inn: fra gjennomsiktig ved første frame. Ut: til gjennomsiktig når
+	// [open] faller bort.
+	"starting:backdrop:opacity-0 not-open:backdrop:opacity-0",
+	"motion-reduce:transition-none motion-reduce:backdrop:transition-none",
 ].join(" ");
 
+/*
+ * Bevegelsen står tre ganger fordi de tre tilstandene er tre ulike CSS-regler:
+ *
+ * - `scale-95 opacity-0` - hvilestillingen. Den gjelder når `[open]` ikke står
+ *   der, altså også hele veien ut igjen, og er derfor det som gir utgangen.
+ * - `group-open:*` - slik panelet står mens dialogen er åpen.
+ * - `starting:group-open:*` - hva inngangen starter fra. Hvilestillingen duger
+ *   ikke: panelets første frame er også dets første rendering, siden forelderen
+ *   kom fra `display: none`, og da finnes det ingen forrige verdi å gå ut fra.
+ */
 const panelBase = [
 	"relative flex max-h-full w-full flex-col overflow-hidden",
 	"rounded-16 bg-background-overlay shadow-xl",
-	"transition-[opacity,scale] starting:scale-95 starting:opacity-0",
-	"motion-reduce:transition-none",
+	"transition-[opacity,scale] motion-reduce:transition-none",
+	"scale-95 opacity-0 group-open:scale-100 group-open:opacity-100",
+	"starting:group-open:scale-95 starting:group-open:opacity-0",
 ].join(" ");
 
 // Bredder fra Practical UI. Maksbredder, ikke faste: på små skjermer krymper

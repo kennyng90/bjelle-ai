@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent } from "storybook/test";
+import { expect, fn, userEvent, waitFor } from "storybook/test";
 import { DropdownMenu, type DropdownMenuEntry } from "./DropdownMenu.tsx";
 
 const options: DropdownMenuEntry[] = [
@@ -23,7 +23,10 @@ const meta: Meta<typeof DropdownMenu> = {
 					'med `aria-haspopup="menu"` og `aria-expanded`; menyen er `role="menu"` med',
 					'`role="menuitem"`. Piltaster flytter mellom valgene, Escape lukker og',
 					"returnerer fokus til utløseren, Tab lukker, og klikk utenfor lukker.",
-					"Menyen finnes ikke i DOM-en når den er lukket.",
+					"Lukket meny blir stående i DOM-en med `display: none`, `inert` og",
+					"`aria-hidden`. Det er det som gjør at den kan tone ut i stedet for å",
+					"blinke bort, og den er utenfor tilgjengelighetstreet og tabrekkefølgen",
+					"hele tiden den er lukket - også de 180 millisekundene utgangen varer.",
 					"",
 					"Menu-rollen er valgt fordi valgene er handlinger. Er innholdet",
 					"navigasjonslenker, bruk en `<ul>` med `<a>` i stedet - menu-rollen forteller",
@@ -56,7 +59,7 @@ export const Default: Story = {
 
 		await expect(trigger).toHaveAttribute("aria-haspopup", "menu");
 		await expect(trigger).toHaveAttribute("aria-expanded", "false");
-		// Lukket meny skal ikke ligge i DOM-en i det hele tatt.
+		// Lukket meny skal være ute av tilgjengelighetstreet.
 		await expect(canvas.queryByRole("menu")).toBeNull();
 	},
 };
@@ -65,9 +68,76 @@ export const Open: Story = {
 	args: { defaultOpen: true },
 	play: async ({ canvas }) => {
 		const menu = canvas.getByRole("menu");
-		await expect(menu).toBeVisible();
+		// waitFor og ikke en naken assert: menyen toner inn, og `toBeVisible`
+		// leser opacity - det første framet er den fortsatt gjennomsiktig.
+		await waitFor(() => expect(menu).toBeVisible());
 		await expect(canvas.getAllByRole("menuitem")).toHaveLength(4);
 		await expect(canvas.getByRole("separator")).toBeInTheDocument();
+	},
+};
+
+/**
+ * Menyen skal tone ut, ikke blinke bort. Rives noden ut av DOM-en når menyen
+ * lukkes, forsvinner enhver overgang med den.
+ */
+export const FadesOutOnClose: Story = {
+	play: async ({ canvas }) => {
+		await userEvent.click(canvas.getByRole("button", { name: /Handlinger/ }));
+		const menu = canvas.getByRole("menu");
+
+		const started: string[] = [];
+		menu.addEventListener("transitionstart", (event) => started.push(event.propertyName));
+
+		// Åpningen må være ferdig før vi lukker. Skjer begge deler i samme frame,
+		// står menyen fortsatt på verdien den skal tilbake til, og nettleseren
+		// avlyser overgangen i stedet for å starte en ny.
+		await waitFor(() => expect(getComputedStyle(menu).opacity).toBe("1"));
+
+		started.length = 0;
+		await userEvent.keyboard("{Escape}");
+
+		// Ute av tilgjengelighetstreet med én gang, selv om den fortsatt tegnes.
+		await expect(canvas.queryByRole("menu")).toBeNull();
+		await expect(menu).toHaveAttribute("inert");
+
+		await waitFor(() => {
+			expect(started).toContain("opacity");
+			expect(started).toContain("translate");
+		});
+		// ...og skjult for godt når overgangen er over.
+		await waitFor(() => expect(getComputedStyle(menu).display).toBe("none"));
+	},
+};
+
+/**
+ * Å åpne menyen skal ikke flytte siden. Fokus går inn i menyen, og uten
+ * `preventScroll` ruller nettleseren den inn i synsranden - da rykker utløseren
+ * oppover under pekeren i samme øyeblikk som man klikker på den.
+ */
+export const OpeningDoesNotScrollThePage: Story = {
+	parameters: { layout: "padded" },
+	render: (args) => (
+		<div
+			className="h-48 overflow-y-auto rounded-12 border border-stroke-weak px-4"
+			data-testid="scroller"
+		>
+			{/* Menyen er høyere enn det som er igjen under utløseren, så
+			    nettleseren har noe den vil rulle til. */}
+			<div className="h-96 pt-24">
+				<DropdownMenu {...args} />
+			</div>
+		</div>
+	),
+	play: async ({ canvas }) => {
+		const scroller = canvas.getByTestId("scroller");
+		await expect(scroller.scrollTop).toBe(0);
+
+		await userEvent.click(canvas.getByRole("button", { name: /Handlinger/ }));
+		await expect(canvas.getAllByRole("menuitem")[0]).toHaveFocus();
+
+		// Målt før fiksen: 13 piksler, nok til at utløseren rykket oppover idet
+		// den ble klikket.
+		await expect(scroller.scrollTop).toBe(0);
 	},
 };
 
@@ -149,7 +219,7 @@ export const ClosesOnOutsideClick: Story = {
 	),
 	play: async ({ canvas }) => {
 		await userEvent.click(canvas.getByRole("button", { name: /Handlinger/ }));
-		await expect(canvas.getByRole("menu")).toBeVisible();
+		await waitFor(() => expect(canvas.getByRole("menu")).toBeVisible());
 
 		await userEvent.click(canvas.getByRole("button", { name: "Utenfor" }));
 		await expect(canvas.queryByRole("menu")).toBeNull();

@@ -34,14 +34,16 @@ export interface DrawerProps extends Omit<HTMLAttributes<HTMLDialogElement>, "ti
  * aria-modal="true". Forskjellen er at panelet er festet til en kant.
  */
 const dialogBase = [
-	"fixed inset-0 m-0 h-full max-h-none w-full max-w-none",
+	// `group`: panelet inni leser dialogens open-tilstand for å vite om det skal
+	// stå ved kanten eller utenfor den. Se `sides`.
+	"group fixed inset-0 m-0 h-full max-h-none w-full max-w-none",
 	// hidden/open:flex, ikke bare flex: en klasse med display ville slått
 	// nettleserens `dialog:not([open]) { display: none }`, og en lukket skuff
 	// ville blitt liggende usynlig over siden - og i tilgjengelighetstreet.
 	//
 	// `overflow-clip`, ikke `overflow-hidden`: hidden lager en scrollflate selv
 	// om rullefeltet er skjult. Panelet står utenfor kanten det første framet
-	// (`starting:translate-*`), og for right/bottom er det overflow i positiv
+	// (`starting:group-open:translate-*`), og for right/bottom er det overflow i positiv
 	// retning - altså 400px scrollbart innhold. showModal() flytter fokus inn i
 	// panelet, nettleseren scroller dialogen dit for å vise det fokuserte
 	// elementet, og da følger scrollposisjonen animasjonen nedover mens
@@ -50,9 +52,22 @@ const dialogBase = [
 	// skje. left/top var upåvirket fordi negativ overflow ikke er scrollbar.
 	"hidden overflow-clip open:flex",
 	"bg-transparent font-sans",
+	// `display` og `overlay` er diskrete egenskaper: de hopper mellom to verdier
+	// uten mellomsteg, og uten `allow-discrete` skjer begge hoppene i samme
+	// frame som close(). Da er dialogen `display: none` og ute av topplaget før
+	// panelet har flyttet seg en piksel - skuffen blir bare borte. Med
+	// `transition-discrete` holder nettleseren begge på åpen verdi til
+	// overgangen er ferdig, og utglidningen under rekker å spille.
+	"transition-[display,overlay] transition-discrete",
 	"backdrop:bg-fill-overlay backdrop:backdrop-blur-[2px]",
-	"backdrop:transition-opacity starting:backdrop:opacity-0",
-	"motion-reduce:backdrop:transition-none",
+	// Bakteppet trenger de samme to diskrete egenskapene: ::backdrop finnes kun
+	// mens dialogen er i topplaget, så uten dem forsvinner mørkleggingen
+	// momentant mens panelet fortsatt glir ut.
+	"backdrop:transition-[opacity,display,overlay] backdrop:transition-discrete",
+	// Inn: fra gjennomsiktig ved første frame. Ut: til gjennomsiktig når
+	// [open] faller bort.
+	"starting:backdrop:opacity-0 not-open:backdrop:opacity-0",
+	"motion-reduce:transition-none motion-reduce:backdrop:transition-none",
 ].join(" ");
 
 const panelBase = [
@@ -63,25 +78,46 @@ const panelBase = [
 /**
  * Per kant: hvor panelet står i viewporten, hvordan det måles, og hvilken vei
  * det glir inn fra. Bevegelsen er en egenskap ved kanten, ikke en egen prop.
+ *
+ * `motion` sier det samme tre ganger fordi de tre tilstandene er tre ulike
+ * CSS-regler, og hver av dem svarer på ett spørsmål:
+ *
+ * - `-translate-x-full` - hvilestillingen utenfor kanten. Den gjelder når
+ *   `[open]` ikke står der, altså også hele veien ut igjen, og er derfor det
+ *   som gir utglidningen. Uten den ville panelet stått ved kanten til dialogen
+ *   ble `display: none` og bare blitt borte.
+ * - `group-open:translate-x-0` - plassen ved kanten mens skuffen er åpen.
+ * - `starting:group-open:-translate-x-full` - hva innglidningen starter fra.
+ *   Hvilestillingen duger ikke: panelets første frame er også dets første
+ *   rendering (forelderen gikk fra `display: none`), og da finnes det ingen
+ *   forrige verdi å gå ut fra. `@starting-style` er den verdien.
+ *
+ * Klassenavnene står med vilje uforkortet i hver gren. Bygget dem opp fra
+ * `side` og en akse, ville Tailwinds skanner - som leser kildeteksten, ikke
+ * kjøretiden - aldri sett dem, og ingen av reglene hadde blitt generert.
  */
-const sides: Record<DrawerSide, { dialog: string; panel: string }> = {
+const sides: Record<DrawerSide, { dialog: string; panel: string; motion: string }> = {
 	left: {
 		dialog: "justify-start",
-		panel: "h-full max-w-[90vw] starting:-translate-x-full",
+		panel: "h-full max-w-[90vw]",
+		motion: "-translate-x-full group-open:translate-x-0 starting:group-open:-translate-x-full",
 	},
 	right: {
 		dialog: "justify-end",
-		panel: "h-full max-w-[90vw] starting:translate-x-full",
+		panel: "h-full max-w-[90vw]",
+		motion: "translate-x-full group-open:translate-x-0 starting:group-open:translate-x-full",
 	},
 	top: {
 		dialog: "flex-col justify-start",
 		// Avrundet mot innsiden: kanten mot viewporten står flatt, kanten mot
 		// innholdet leses som et ark som er dratt ut.
-		panel: "max-h-[90vh] w-full rounded-b-16 starting:-translate-y-full",
+		panel: "max-h-[90vh] w-full rounded-b-16",
+		motion: "-translate-y-full group-open:translate-y-0 starting:group-open:-translate-y-full",
 	},
 	bottom: {
 		dialog: "flex-col justify-end",
-		panel: "max-h-[90vh] w-full rounded-t-16 starting:translate-y-full",
+		panel: "max-h-[90vh] w-full rounded-t-16",
+		motion: "translate-y-full group-open:translate-y-0 starting:group-open:translate-y-full",
 	},
 };
 
@@ -147,7 +183,9 @@ export function Drawer({
 			tabIndex={-1}
 		>
 			<div
-				className={[panelBase, edge.panel, sizes[side][size], className].filter(Boolean).join(" ")}
+				className={[panelBase, edge.panel, edge.motion, sizes[side][size], className]
+					.filter(Boolean)
+					.join(" ")}
 			>
 				{hasHeader && (
 					<div className="flex shrink-0 items-center gap-4 border-stroke-weak border-b px-6 py-5">

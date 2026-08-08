@@ -150,6 +150,47 @@ export const Default: Story = {
 	},
 };
 
+/**
+ * Dialogen skal tone ut, ikke bli borte. En `<dialog>` er `display: none` i det
+ * `[open]` faller bort, og display og overlay er diskrete egenskaper - uten
+ * `allow-discrete` er panelet slukket før det har rukket å tone ned.
+ */
+export const FadesOutOnClose: Story = {
+	play: async ({ canvas }) => {
+		await userEvent.click(canvas.getByRole("button", { name: "Åpne dialogen" }));
+		const dialog = await canvas.findByRole("dialog");
+
+		// Overgangene måles på hendelsene nettleseren faktisk starter. De bobler
+		// opp til dialogen, og bakteppet kjenner vi igjen på pseudoElement.
+		const started: string[] = [];
+		dialog.addEventListener("transitionstart", (event) => {
+			started.push(`${event.pseudoElement}|${event.propertyName}`);
+		});
+
+		// Inngangen må være ferdig før vi lukker. Skjer begge deler i samme
+		// frame, står panelet fortsatt på verdien det skal tilbake til, og
+		// nettleseren avlyser overgangen i stedet for å starte en ny. Ventingen
+		// er samtidig dekning for veien inn.
+		const panel = dialog.firstElementChild as HTMLElement;
+		await waitFor(() => expect(getComputedStyle(panel).opacity).toBe("1"));
+
+		started.length = 0;
+		await userEvent.keyboard("{Escape}");
+
+		await waitFor(() => {
+			// Uten hvilestillingen har opacity ingen ny verdi å gå til når
+			// `[open]` faller bort, og ingen overgang starter.
+			expect(started).toContain("|opacity");
+			// Bakteppet skal tone ut sammen med panelet, ikke slukke momentant.
+			expect(started).toContain("::backdrop|opacity");
+		});
+
+		// ...og dialogen skal faktisk bli borte når overgangen er over, ikke bli
+		// liggende i topplaget fordi display aldri slår om.
+		await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
+	},
+};
+
 export const Open: Story = {
 	parameters: ownFrame,
 	render: (args) => <OpenDemo {...args} />,

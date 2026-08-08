@@ -61,6 +61,31 @@ export interface DropdownMenuProps
 const itemBase =
 	"flex w-full items-center gap-2.5 rounded-8 px-2.5 py-2.5 text-left text-small font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stroke-focus";
 
+/*
+ * Menyen ligger i DOM-en hele tiden og skjules med `display`, i stedet for å
+ * rives ut når den lukkes. Grunnen er utgangen: en node som forsvinner tar
+ * enhver overgang med seg, og menyen ville blinket bort uten å tone ut.
+ *
+ * `display` er en diskret egenskap - den hopper mellom to verdier uten
+ * mellomsteg. `transition-discrete` (`transition-behavior: allow-discrete`)
+ * lar nettleseren utsette hoppet til `none` til opacity og translate er
+ * ferdige. `@starting-style` gjør det samme for veien inn: uten den finnes det
+ * ingen forrige verdi å tone opp fra, siden elementet ikke ble rendret i det
+ * hele tatt mens det sto på `display: none`.
+ *
+ * Skjult meny er `inert` og `aria-hidden`: `display: none` holder den ute av
+ * tilgjengelighetstreet når den står i ro, men de 180 millisekundene den toner
+ * ut er den fortsatt tegnet. Uten dem ville en skjermleser og en tastaturbruker
+ * fått tak i en meny som er på vei bort.
+ */
+const menuBase = [
+	"absolute top-full z-50 mt-1.5 min-w-48 rounded-12 border border-stroke-weak bg-background-overlay p-1.5 shadow-lg",
+	"transition-[opacity,translate,display] transition-discrete motion-reduce:transition-none",
+	// Faller ned på plass. Fire piksler er nok til å gi retning uten at
+	// menyen føles treg - den skal svare på et klikk, ikke annonsere seg.
+	"starting:-translate-y-1 starting:opacity-0",
+].join(" ");
+
 function isDivider(entry: DropdownMenuEntry): entry is DropdownMenuDivider {
 	return "divider" in entry;
 }
@@ -105,12 +130,18 @@ export function DropdownMenu({
 
 	// Fokus følger activeIndex så lenge menyen er åpen. Hopper over første
 	// render, ellers stjeler en meny med defaultOpen fokus fra siden.
+	//
+	// `preventScroll`: menyen henger under utløseren, og får den fokus på vanlig
+	// vis ruller nettleseren den inn i synsranden. Da flytter utløseren seg opp
+	// under pekeren i samme øyeblikk som man klikker på den - målt til 13 piksler
+	// i en dokumentasjonsside. Menyen ruller ikke innvendig, så det finnes ikke
+	// noe å avdekke: rullingen flytter bare siden bak den.
 	useEffect(() => {
 		if (!hasMounted.current) {
 			hasMounted.current = true;
 			return;
 		}
-		if (open) itemRefs.current[activeIndex]?.focus();
+		if (open) itemRefs.current[activeIndex]?.focus({ preventScroll: true });
 	}, [open, activeIndex]);
 
 	// Klikk utenfor lukker. Lytteren finnes bare mens menyen er åpen, og
@@ -147,6 +178,10 @@ export function DropdownMenu({
 	}
 
 	function handleFocusOut(event: FocusEvent<HTMLDivElement>) {
+		// Menyen blir `inert` i det den lukkes, og nettleseren tar da fokus ut av
+		// den selv. Uten denne vakten ville den blaffen meldt fra om en lukking
+		// som allerede har skjedd, og `onOpenChange(false)` kommet to ganger.
+		if (!open) return;
 		const newTarget = event.relatedTarget;
 		// Fokus som bare flytter seg mellom valgene, eller tilbake til utløseren,
 		// skal ikke lukke noe.
@@ -220,82 +255,82 @@ export function DropdownMenu({
 				{trigger}
 			</Button>
 
-			{/* Menyen finnes ikke i DOM-en når den er lukket. */}
-			{open && (
-				<div
-					aria-label={label}
-					aria-labelledby={label === undefined ? triggerId : undefined}
-					className={[
-						"absolute top-full z-50 mt-1.5 min-w-48 rounded-12 border border-stroke-weak bg-background-overlay p-1.5 shadow-lg",
-						align === "end" ? "end-0" : "start-0",
-					].join(" ")}
-					onBlur={handleFocusOut}
-					onKeyDown={handleMenuKeyDown}
-					role="menu"
-				>
-					{options.length === 0 ? (
-						<button
-							aria-disabled="true"
-							className={`${itemBase} cursor-default text-text-weak`}
-							ref={(node) => {
-								itemRefs.current[0] = node;
-							}}
-							role="menuitem"
-							tabIndex={-1}
-							type="button"
-						>
-							{emptyLabel}
-						</button>
-					) : (
-						items.map((entry, i) => {
-							// Skillelinjer har ingen identitet, så posisjonen er nøkkelen.
-							if (isDivider(entry)) {
-								// -mx-1.5 spiser opp kortets egen polstring, så streken går
-								// helt ut til kanten. Med mx-1 stoppet den fire piksler fra
-								// kanten og seks fra teksten - verken flukt eller innrykk.
-								return (
-									<hr className="-mx-1.5 my-1.5 border-t border-stroke-weak" key={`divider-${i}`} />
-								);
-							}
-
-							const index = options.indexOf(entry);
+			<div
+				aria-hidden={!open || undefined}
+				aria-label={label}
+				aria-labelledby={label === undefined ? triggerId : undefined}
+				className={[
+					menuBase,
+					align === "end" ? "end-0" : "start-0",
+					open ? "block translate-y-0 opacity-100" : "hidden -translate-y-1 opacity-0",
+				].join(" ")}
+				inert={!open}
+				onBlur={handleFocusOut}
+				onKeyDown={handleMenuKeyDown}
+				role="menu"
+			>
+				{options.length === 0 ? (
+					<button
+						aria-disabled="true"
+						className={`${itemBase} cursor-default text-text-weak`}
+						ref={(node) => {
+							itemRefs.current[0] = node;
+						}}
+						role="menuitem"
+						tabIndex={-1}
+						type="button"
+					>
+						{emptyLabel}
+					</button>
+				) : (
+					items.map((entry, i) => {
+						// Skillelinjer har ingen identitet, så posisjonen er nøkkelen.
+						if (isDivider(entry)) {
+							// -mx-1.5 spiser opp kortets egen polstring, så streken går
+							// helt ut til kanten. Med mx-1 stoppet den fire piksler fra
+							// kanten og seks fra teksten - verken flukt eller innrykk.
 							return (
-								<button
-									className={[
-										itemBase,
-										entry.danger
-											? "text-text-error hover:bg-fill-error-weak"
-											: "text-text-strong hover:bg-fill-hover",
-									].join(" ")}
-									key={entry.label}
-									onClick={() => {
-										closeAndReturnFocus();
-										entry.onSelect?.();
-									}}
-									ref={(node) => {
-										itemRefs.current[index] = node;
-									}}
-									role="menuitem"
-									tabIndex={-1}
-									type="button"
-								>
-									{entry.icon && (
-										<Icon
-											className={entry.danger ? "text-icon-error" : "text-icon-neutral"}
-											name={entry.icon}
-											size={18}
-										/>
-									)}
-									<span className="flex-1">{entry.label}</span>
-									{entry.shortcut && (
-										<span className="ml-4 text-tiny text-text-weak">{entry.shortcut}</span>
-									)}
-								</button>
+								<hr className="-mx-1.5 my-1.5 border-t border-stroke-weak" key={`divider-${i}`} />
 							);
-						})
-					)}
-				</div>
-			)}
+						}
+
+						const index = options.indexOf(entry);
+						return (
+							<button
+								className={[
+									itemBase,
+									entry.danger
+										? "text-text-error hover:bg-fill-error-weak"
+										: "text-text-strong hover:bg-fill-hover",
+								].join(" ")}
+								key={entry.label}
+								onClick={() => {
+									closeAndReturnFocus();
+									entry.onSelect?.();
+								}}
+								ref={(node) => {
+									itemRefs.current[index] = node;
+								}}
+								role="menuitem"
+								tabIndex={-1}
+								type="button"
+							>
+								{entry.icon && (
+									<Icon
+										className={entry.danger ? "text-icon-error" : "text-icon-neutral"}
+										name={entry.icon}
+										size={18}
+									/>
+								)}
+								<span className="flex-1">{entry.label}</span>
+								{entry.shortcut && (
+									<span className="ml-4 text-tiny text-text-weak">{entry.shortcut}</span>
+								)}
+							</button>
+						);
+					})
+				)}
+			</div>
 		</div>
 	);
 }
