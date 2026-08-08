@@ -11,13 +11,21 @@ const meta: Meta<typeof Radio> = {
 		docs: {
 			description: {
 				component:
-					"Radioknapp for ett valg av flere. Den hører alltid hjemme i en gruppe: legg søsknene i et <fieldset> med <legend> og gi dem samme name, ellers får ikke brukeren vite hva valget gjelder. Kontrollen er interaktiv: i apps/web må øya monteres med client:load (client:visible under folden).",
+					"Radioknapp for ett valg av flere. Den hører alltid hjemme i en gruppe: legg søsknene i et <fieldset> med <legend> og gi dem samme name, ellers får ikke brukeren vite hva valget gjelder. name er påkrevd og grupperer på tvers av hele dokumentet, så to grupper på samme side må ha hvert sitt navn. Kontrollen er interaktiv: i apps/web må øya monteres med client:load (client:visible under folden).",
 			},
 		},
 	},
 	tags: ["autodocs"],
+	/*
+	 * `name` står med vilje ikke her. Denne siden rendres også som autodocs, der
+	 * alle storyene deler ett dokument - og nettleseren grupperer radioknapper
+	 * etter `name` på tvers av hele dokumentet. Arvet alle storyene samme navn,
+	 * ble de én gruppe: bare den siste forhåndsvalgte knappen overlevde, og
+	 * Selected sto tom på docs-siden mens den var grønn i isolert canvas.
+	 * Hver story eier derfor sitt eget gruppenavn.
+	 * Foundations/Guards vokter det.
+	 */
 	args: {
-		name: "abonnement",
 		value: "pro",
 		label: "Pro",
 		onChange: fn(),
@@ -32,6 +40,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	args: { name: "abonnement-standard" },
 	play: async ({ canvas }) => {
 		const button = canvas.getByRole<HTMLInputElement>("radio", { name: "Pro" });
 		await expect(button).not.toBeChecked();
@@ -46,6 +55,7 @@ export const Default: Story = {
 };
 
 export const Selected: Story = {
+	args: { name: "abonnement-valgt" },
 	render: (args) => (
 		<div className="flex flex-col gap-4">
 			<Radio {...args} label="Ikke valgt" value="av" />
@@ -68,11 +78,22 @@ export const Selected: Story = {
 		await expect(getComputedStyle(ringOn).backgroundColor).not.toBe(
 			getComputedStyle(ringOff).backgroundColor,
 		);
+		// Og den skal være merkefargen, ikke bare "en annen farge". Rollene
+		// snur i mørkt tema, så vi leser dem fra rotelementet framfor å skrive
+		// en rgb-verdi som bare stemmer i lyst tema.
+		const role = (token: string) =>
+			getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+		await expect(getComputedStyle(ringOn).backgroundColor).toBe(role("--fill-brand-strong"));
+		const dotOn = ringOn.nextElementSibling as HTMLElement;
+		await expect(getComputedStyle(dotOn).backgroundColor).toBe(role("--text-on-strong"));
 	},
 };
 
 export const WithSupportingText: Story = {
-	args: { supportingText: "Ubegrenset antall stillinger og fem brukere." },
+	args: {
+		name: "abonnement-hjelpetekst",
+		supportingText: "Ubegrenset antall stillinger og fem brukere.",
+	},
 	play: async ({ canvas }) => {
 		const button = canvas.getByRole("radio");
 		await expect(button).toHaveAccessibleName("Pro");
@@ -83,6 +104,7 @@ export const WithSupportingText: Story = {
 };
 
 export const Sizes: Story = {
+	args: { name: "abonnement-skala" },
 	render: (args) => (
 		<div className="flex flex-col gap-4">
 			<Radio {...args} label="Liten" size="sm" value="liten" />
@@ -92,6 +114,7 @@ export const Sizes: Story = {
 };
 
 export const Disabled: Story = {
+	args: { name: "abonnement-deaktivert" },
 	render: (args) => (
 		<div className="flex flex-col gap-4">
 			<Radio {...args} disabled label="Deaktivert og av" value="av" />
@@ -105,7 +128,7 @@ export const Disabled: Story = {
 
 export const ErrorState: Story = {
 	name: "Error",
-	args: { error: "Velg et abonnement for å fortsette." },
+	args: { name: "abonnement-feil", error: "Velg et abonnement for å fortsette." },
 	play: async ({ canvas }) => {
 		const button = canvas.getByRole("radio");
 		await expect(button).toHaveAttribute("aria-invalid", "true");
@@ -121,6 +144,7 @@ export const ErrorState: Story = {
 };
 
 export const Group: Story = {
+	args: { name: "abonnement-gruppe" },
 	render: (args) => (
 		<fieldset className="flex flex-col gap-3 border-0 p-0">
 			<legend className="mb-2 text-small font-strong text-text-strong">Velg abonnement</legend>
@@ -137,6 +161,7 @@ export const Group: Story = {
 };
 
 export const Keyboard: Story = {
+	args: { name: "abonnement-tastatur" },
 	render: (args) => (
 		<fieldset className="flex flex-col gap-3 border-0 p-0">
 			<legend className="mb-2 text-small font-strong text-text-strong">Velg abonnement</legend>
@@ -182,9 +207,39 @@ function ControlledGroup(args: ComponentProps<typeof Radio>) {
 }
 
 export const Controlled: Story = {
+	args: { name: "abonnement-styrt" },
 	render: (args) => <ControlledGroup {...args} />,
 	play: async ({ canvas }) => {
 		await userEvent.click(canvas.getByRole("radio", { name: "Pro" }));
 		await expect(canvas.getByText("Valgt: pro")).toBeInTheDocument();
+	},
+};
+
+/**
+ * Samme tilstander i mørkt tema. Egen story fordi axe kun kjører på det temaet
+ * storyen faktisk rendres i - lyst tema alene ville latt prikken oppå den
+ * fylte ringen være uprøvd, og den flaten er lys i mørkt tema.
+ */
+export const DarkTheme: Story = {
+	globals: { theme: "dark" },
+	args: { name: "abonnement-tema" },
+	render: (args) => (
+		<fieldset className="flex flex-col gap-3 border-0 p-0">
+			<legend className="mb-2 text-small font-strong text-text-strong">Velg abonnement</legend>
+			<Radio {...args} defaultChecked label="Gratis" value="gratis" />
+			<Radio {...args} label="Pro" value="pro" />
+			<Radio {...args} disabled label="Bedrift" value="bedrift" />
+		</fieldset>
+	),
+	play: async ({ canvas }) => {
+		const selected = canvas.getByRole("radio", { name: "Gratis" });
+		const ring = selected.nextElementSibling as HTMLElement;
+		const dot = ring.nextElementSibling as HTMLElement;
+		const role = (token: string) =>
+			getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+		// Kontrollprøve: sto vi i lyst tema, ville denne vært den lyse verdien.
+		await expect(role("--background-base")).toBe(role("--grey-solid-900"));
+		await expect(getComputedStyle(ring).backgroundColor).toBe(role("--fill-brand-strong"));
+		await expect(getComputedStyle(dot).backgroundColor).toBe(role("--text-on-strong"));
 	},
 };

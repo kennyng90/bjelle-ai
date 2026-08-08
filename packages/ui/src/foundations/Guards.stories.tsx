@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { composeStories, type Meta, type StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
+import * as radioStories from "../radio/Radio.stories.tsx";
 
 /**
  * Regresjonsvakter, ikke dokumentasjon.
@@ -69,5 +70,65 @@ export const DefaultPaletteIsOff: Story = {
 		await expect(fallback.backgroundColor).toBe("rgba(0, 0, 0, 0)");
 		// text-xl finnes ikke; da arves brødtekststørrelsen fra preview.
 		await expect(fallback.fontSize).not.toBe("20px");
+	},
+};
+
+/*
+ * Vakten under trenger alle Radio-storyene i ett og samme dokument, slik
+ * autodocs-siden rendrer dem. `composeStories` gir dem med args, decorators og
+ * alt fra meta påsatt - men uten play-funksjoner, som er poenget: det er
+ * markupen side om side som skal måles.
+ */
+const composedRadioStories = Object.entries(composeStories(radioStories));
+
+/**
+ * En autodocs-side rendrer samtlige stories for en komponent i samme dokument.
+ * `<input type="radio">` grupperes av `name` på tvers av hele dokumentet, så to
+ * stories som deler `name` smelter sammen til én gruppe: bare den siste
+ * forhåndsvalgte knappen overlever, og alle tidligere slås av. Isolert
+ * story-canvas - og dermed hver enkelt play-funksjon - ser det aldri, for der
+ * er storyen alene i dokumentet.
+ *
+ * Vakten setter storyene ved siden av hverandre og krever at hver gruppe
+ * beholder sitt eget valg, og at ingen `name` går på tvers av to stories.
+ */
+export const RadioGroupsDoNotLeakAcrossDocs: Story = {
+	name: "Radio groups do not leak across a docs page",
+	parameters: { layout: "padded" },
+	render: () => (
+		<div className="flex flex-col gap-6">
+			{composedRadioStories.map(([exportName, Story]) => (
+				<div data-story={exportName} key={exportName}>
+					<Story />
+				</div>
+			))}
+		</div>
+	),
+	play: async ({ canvas }) => {
+		const radios = canvas.getAllByRole<HTMLInputElement>("radio");
+
+		// Positiv kontroll: uten forhåndsvalgte knapper måler resten ingenting.
+		const preselected = radios.filter((radio) => radio.defaultChecked);
+		await expect(preselected.length).toBeGreaterThan(2);
+
+		for (const radio of preselected) {
+			const story = radio.closest("[data-story]")?.getAttribute("data-story");
+			// Meldingen navngir storyen, ellers står man igjen med "expected false".
+			await expect(radio, `${story}: ${radio.value} mistet valget sitt`).toBeChecked();
+		}
+
+		const owners = new Map<string, Set<string>>();
+		for (const radio of radios) {
+			const story = radio.closest("[data-story]")?.getAttribute("data-story") ?? "?";
+			// Uten navn grupperes knappen ikke i det hele tatt, og da kan brukeren
+			// velge alle alternativene samtidig.
+			await expect(radio.name, `${story}: radioknapp uten name`).not.toBe("");
+			const seen = owners.get(radio.name) ?? new Set<string>();
+			seen.add(story);
+			owners.set(radio.name, seen);
+		}
+		for (const [radioName, stories] of owners) {
+			await expect([...stories], `name="${radioName}" deles av flere stories`).toHaveLength(1);
+		}
 	},
 };
