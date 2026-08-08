@@ -4,7 +4,21 @@ import { Icon } from "../icon/Icon.tsx";
 export type RadioSize = "sm" | "md";
 
 export interface RadioProps
-	extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type" | "onChange"> {
+	extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type" | "onChange" | "name"> {
+	/**
+	 * Navnet på gruppa. Påkrevd, og med vilje uten fallback.
+	 *
+	 * Nettleseren grupperer radioknapper etter `name` på tvers av hele
+	 * dokumentet, ikke etter hvor de står i DOM-treet. Det gjør navnet til en
+	 * del av kontrakten forbrukeren eier: to grupper som deler navn smelter
+	 * sammen, og et manglende navn gir knapper som aldri slår hverandre av.
+	 *
+	 * Et generert fallback (`useId`) ville gjort hver knapp til sin egen gruppe.
+	 * Det ser riktig ut helt til brukeren huker av alle valgene samtidig, og
+	 * feltet ville dessuten fått et ulesbart navn i skjemadataene. Bedre at det
+	 * er en typefeil å glemme det.
+	 */
+	name: string;
 	label?: string;
 	supportingText?: string;
 	/** Feilmelding. Setter aria-invalid og vises med ikon og tekst, aldri farge alene. */
