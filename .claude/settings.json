@@ -1,5 +1,44 @@
 {
   "enabledPlugins": {
     "mattpocock-skills@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+
+      "Bash(pnpm install)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm check:*)",
+      "Bash(pnpm check *)",
+      "Bash(pnpm typecheck)",
+      "Bash(pnpm build)",
+      "Bash(pnpm lint)",
+      "Bash(pnpm format)",
+      "Bash(pnpm --filter:*)",
+      "Bash(pnpm --filter *)",
+      "Bash(pnpm exec playwright:*)",
+      "Bash(pnpm exec playwright *)",
+      "Bash(pnpm exec vitest:*)",
+      "Bash(pnpm exec tsc:*)",
+      "Bash(pnpm exec biome:*)",
+      "Bash(pnpm exec storybook:*)",
+
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(sed -n:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)"
+    ]
   }
 }

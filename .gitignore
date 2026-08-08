@@ -8,6 +8,11 @@ dist-ssr
 .vercel
 storybook-static
 
+# playwright
+test-results
+playwright-report
+.playwright
+
 # framework caches
 .astro
 .nitro
