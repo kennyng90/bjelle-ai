@@ -90,6 +90,56 @@ export const Default: Story = {
 	},
 };
 
+/**
+ * Skuffen skal gli ut igjen, ikke bare forsvinne. En `<dialog>` er
+ * `display: none` med én gang `[open]` faller bort, og display og overlay er
+ * diskrete egenskaper - uten `allow-discrete` er panelet borte før det har
+ * flyttet seg en piksel.
+ */
+export const SlidesOutOnClose: Story = {
+	play: async ({ canvas }) => {
+		await userEvent.click(canvas.getByRole("button", { name: "Åpne skuffen" }));
+		const dialog = await canvas.findByRole("dialog");
+
+		// Utglidningen kan ikke leses av en spørring mot DOM-en, så den måles på
+		// overgangene nettleseren faktisk starter. Hendelsene bobler opp til
+		// dialogen, og bakteppet kjenner vi igjen på pseudoElement.
+		const started: string[] = [];
+		dialog.addEventListener("transitionstart", (event) => {
+			started.push(`${event.pseudoElement}|${event.propertyName}`);
+		});
+
+		/*
+		 * Innglidningen må være ferdig før vi lukker, og det er ikke pynt.
+		 * Lukkes skuffen i samme frame som den åpnet, står panelet fortsatt på
+		 * utsiden - da er verdien det skal gå *til* den samme som verdien det
+		 * står på, og nettleseren avlyser overgangen i stedet for å starte en
+		 * ny. Testen ville vært rød uansett hvor riktig CSS-en var.
+		 *
+		 * Ventingen er samtidig dekning for veien inn: `0px` er hvilestillingen
+		 * ved kanten, og den nås bare hvis `@starting-style` ga innglidningen
+		 * noe å starte fra.
+		 */
+		const panel = dialog.firstElementChild as HTMLElement;
+		await waitFor(() => expect(getComputedStyle(panel).translate).toBe("0px"));
+
+		started.length = 0;
+		await userEvent.keyboard("{Escape}");
+
+		await waitFor(() => {
+			// Uten hvilestillingen utenfor kanten har translate ingen ny verdi å
+			// gå til når `[open]` faller bort, og ingen overgang starter.
+			expect(started).toContain("|translate");
+			// Bakteppet skal tone ut sammen med panelet, ikke slukke momentant.
+			expect(started).toContain("::backdrop|opacity");
+		});
+
+		// ...og skuffen skal faktisk bli borte når overgangen er over, ikke bli
+		// liggende i topplaget fordi display aldri slår om.
+		await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
+	},
+};
+
 export const Right: Story = {
 	args: { side: "right" },
 	parameters: ownFrame,
@@ -100,7 +150,7 @@ export const Right: Story = {
 		/*
 		 * Vaktpost: dialogen skal ikke være en rullflate.
 		 *
-		 * Panelet står utenfor kanten det første framet (`starting:translate-x-full`),
+		 * Panelet står utenfor kanten det første framet (`starting:group-open:translate-x-full`),
 		 * og for right/bottom er det overflow i positiv retning - 400px scrollbart
 		 * innhold. Med `overflow: hidden` blir det en ekte rullflate, og showModal()
 		 * flytter fokus inn i panelet: nettleseren ruller dialogen dit for å vise

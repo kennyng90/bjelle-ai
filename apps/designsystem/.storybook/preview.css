@@ -92,11 +92,20 @@ html .sbdocs-preview > div {
 	box-shadow: none;
 }
 
-/* Selve ruta komponenten står i skal være grunnflaten, ikke den hevede. */
+/*
+ * Selve ruta komponenten står i skal være grunnflaten, ikke den hevede.
+ *
+ * `scrollbar-gutter` her i tillegg til regelen på `html` i @bjelle/ui:
+ * `.docs-story` er sin egen rulleflate med `overflow: auto`, så et overlegg som
+ * vokser ut av storyen gir *den* et rullefelt. Målt før: en åpnet DropdownMenu
+ * tok ruta fra 803 til 788 piksler, og den midtstilte utløseren rykket 7,5
+ * piksler til venstre.
+ */
 html .docs-story {
 	background-color: var(--background-base);
 	color: var(--text-strong);
 	font-family: var(--font-sans);
+	scrollbar-gutter: stable;
 }
 
 /*
