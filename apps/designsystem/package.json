@@ -6,6 +6,8 @@
 	"scripts": {
 		"dev": "storybook dev -p 6006 --no-open",
 		"build": "storybook build",
+		"deploy": "wrangler deploy",
+		"preview": "wrangler dev",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"typecheck": "tsc --noEmit"
@@ -36,6 +38,7 @@
 		"tailwindcss": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:",
-		"vitest": "catalog:"
+		"vitest": "catalog:",
+		"wrangler": "catalog:"
 	}
 }

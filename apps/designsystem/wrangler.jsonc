@@ -1,0 +1,14 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "bjelle-designsystem",
+	"compatibility_date": "2026-08-08",
+	// Ingen "main": Storybook er statisk, så workeren serverer bare assets.
+	// Storybook ruter på ?path=, ikke på path-segmenter, så ingen SPA-fallback
+	// trengs - ukjente stier skal være ekte 404 (not_found_handling-default).
+	"assets": {
+		"directory": "./storybook-static"
+	},
+	"observability": {
+		"enabled": true
+	}
+}

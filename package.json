@@ -15,6 +15,7 @@
 		"build": "pnpm -r build",
 		"check": "biome check",
 		"check:fix": "biome check --write",
+		"deploy:designsystem": "pnpm --filter @bjelle/designsystem run build && pnpm --filter @bjelle/designsystem run deploy",
 		"format": "biome format --write",
 		"lint": "biome lint",
 		"test": "pnpm -r test",
