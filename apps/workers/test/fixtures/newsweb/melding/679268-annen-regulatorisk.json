@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "41b079ef-d3fd-489c-90e1-7988dc7ea45c",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679268,
+			"messageId": 679268,
+			"newsId": 631760,
+			"title": "ShaMaran Notice of Annual General Meeting 2026",
+			"body": "August 7, 2026\n\nHamilton, Bermuda - ShaMaran Petroleum Ltd. (“ShaMaran” or the “Company”) (Euronext Growth Oslo: SNM) (Nasdaq First North Stockholm: SNM) announces that the Company’s Annual General Meeting will be held at 9:00 a.m. Atlantic Daylight Time on September 22, 2026, at Richmond House, 12 Par-la-Ville Road, Hamilton HM08, Bermuda. \n\nThe notice of the Annual General Meeting is attached together with the guide for voting and participation.\n\n\nAbout ShaMaran Petroleum Ltd.\n\nShaMaran is an independent oil and gas company focused on the Kurdistan region of Iraq. The Company indirectly holds a 50% working interest in the Atrush Block and an 18% working interest in the Sarsang Block. The Company is listed in Oslo on Euronext Growth and in Stockholm on Nasdaq First North (ticker “SNM”). ShaMaran is part of the Lundin Group of Companies.\n\nElvis Pellumbi, CFO, +41 22 560 8600, info@shamaranpetroleum.com, www.shamaranpetroleum.com \n\n\n\nThis information is subject to the disclosure requirements pursuant to section 5-12 of the Norwegian Securities Trading Act. \n\nThe Company’s certified advisor on Nasdaq First North Growth Market is FNCA Sweden AB.\n",
+			"category": [
+				{
+					"id": 1010,
+					"category_no": "ANNEN INFORMASJONSPLIKTIG REGULATORISK INFORMASJON",
+					"category_en": "ADDITIONAL REGULATED INFORMATION REQUIRED TO BE DISCLOSED UNDER THE LAWS OF A MEMBER STATE"
+				}
+			],
+			"markets": [
+				"MERK"
+			],
+			"issuerId": 13154,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "SNM",
+			"issuerName": "ShaMaran Petroleum Ltd.",
+			"instrId": 2166233,
+			"instrumentName": "SNM",
+			"instrumentFullName": "SHAMARAN PETROLEUM",
+			"publishedTime": "2026-08-07T16:00:00.000Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330637,
+					"name": "ShaMaran Petroleum Ltd - Notice and Agenda 2026 AGM - Final.pdf"
+				}
+			],
+			"clientAnnouncementId": "74b6f952-0871-4e1d-b579-c500ef89e7cf",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}

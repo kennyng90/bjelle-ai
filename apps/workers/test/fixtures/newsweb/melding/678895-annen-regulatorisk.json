@@ -1,0 +1,51 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "d780aee1-7cbc-4287-a573-0d745ddfee5c",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 678895,
+			"messageId": 678895,
+			"newsId": 631386,
+			"title": "Independent Statement on the Mandatory Offer by Coral HoldCo AS for the Shares in Atlantic Sapphire ASA",
+			"body": "Reference is made to the announcement on 30 July 2026 by the Norwegian Financial Supervisory Authority (the \"NFSA\") that it has approved the offer document for the recommended mandatory offer by Coral HoldCo AS (the \"Offeror\") to acquire all shares in Atlantic Sapphire ASA (the \"Company\") not already owned by the Offeror (the “Offer”). Reference is furthermore made to the stock exchange announcement on 30 July 2026 regarding the launch of the Offer by the Offeror.\n\nThe board of directors of the Company (the \"Board\") is required under Section 6-16 of the Norwegian Securities Trading Act (the \"NSTA\") to issue a statement on the Offer. Pursuant to Section 6-16 (4) of the NSTA, the NFSA, in its capacity as the Norwegian takeover authority, may require that such statement is issued by an independent third party on behalf of the Company when an offer is made in agreement with the Board. \n\nThe Offer is made as part of the restructuring of the Company, pursuant to the restructuring agreement as announced by the Company on 23 May 2026. Due to their affiliation with two of the members of the ad-hoc investor group in the restructuring, Strawberry Capital AS and Nordlaks Holding AS, the respective board members Kenneth Andersen and Eirik Welde have been excused from all deliberations of the Board with respect to the refinancing (the remaining board members are referred to as the \"Qualified Board\").\n\nThe NFSA has decided that Pareto Securities AS (\"Pareto\") shall provide an independent statement on the Offer on behalf of the Company. Pareto has issued its statement on the Offer dated 31 July 2026, concluding that the Offer is fair from a financial point of view. The full statement from Pareto is attached to this announcement. \n\nThe Offer is unanimously recommended by the Qualified Board based on the offer price and the other terms of the Offer. The Qualified Board has also considered advice from Arctic Securities AS, obtained during the negotiation of the restructuring. The recommendation from the Qualified Board, which is not the statement provided under section 6-16 of the NSTA, is also attached to this announcement and is also attached to the Offer document, available digitally at https://atlanticsapphire.com/investor-relations/.\n\nFor further information, please contact: \nGunnar Aasbo-Skinderhaug, Atlantic Sapphire ASA, Deputy CEO / CFO \ngunnar@atlanticsapphire.com \ninvestorrelations@atlanticsapphire.com \n\nAbout Atlantic Sapphire ASA \nAtlantic Sapphire is pioneering Bluehouse® (land-raised) salmon farming, locally, and transforming protein production, globally. Atlantic Sapphire operated its innovation center in Denmark from 2011 until 2021 with a strong focus on R&D and innovation to equip the Company with the technology and procedures that enable the Company to commercially scale up production in end markets close to the consumer. In the US, the Company holds the requisite permits and patents to construct its Bluehouse® in an ideal location in Homestead, Florida, just south of Miami. The Company's Phase 1 facility is in operation, which provides the capacity to harvest up to approximately 7,500-8,500 tons (HOG) of salmon annually. The Company completed its first commercial harvest in the US in September 2020. Atlantic Sapphire’s Phase 2 expansion, will bring total annual production capacity to 25,000 tons and the Company has a long-term targeted harvest volume of >100,000 tons. \n\nThis information is subject to the disclosure requirements pursuant to the Norwegian Securities Trading Act section 5-12.",
+			"category": [
+				{
+					"id": 1010,
+					"category_no": "ANNEN INFORMASJONSPLIKTIG REGULATORISK INFORMASJON",
+					"category_en": "ADDITIONAL REGULATED INFORMATION REQUIRED TO BE DISCLOSED UNDER THE LAWS OF A MEMBER STATE"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 12625,
+			"correctionForMessageId": 678889,
+			"correctedByMessageId": 0,
+			"issuerSign": "ASA",
+			"issuerName": "Atlantic Sapphire ASA",
+			"instrId": 1304025,
+			"instrumentName": "ASA",
+			"instrumentFullName": "ATLANTIC SAPPHIRE",
+			"publishedTime": "2026-07-31T13:34:51.508Z",
+			"test": false,
+			"numbAttachments": 2,
+			"attachments": [
+				{
+					"id": 330353,
+					"name": "Atlantic Sapphire Independent Statment 6-16 Pareto.pdf"
+				},
+				{
+					"id": 330354,
+					"name": "Board Recommendation.pdf"
+				}
+			],
+			"clientAnnouncementId": "2b1a5ef1-2d8f-4352-ad9f-e1d43fb7a922",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

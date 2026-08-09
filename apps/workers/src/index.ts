@@ -1,14 +1,26 @@
 /**
- * Bakgrunnsjobber for Bjelle.
+ * Inntakstjenesten for Bjelle.
  *
- * Ansvar (jf. docs/CONCEPT.md):
- *  - polle Newsweb for nye børsmeldinger
- *  - hente shortposisjoner fra Finanstilsynets åpne API
- *  - oppsummere meldinger i klarspråk med en LLM
- *  - dytte varsler til brukere som følger selskapet
+ * Tre inngangspunkter, med hver sin harde regel:
+ *  - `scheduled`: poll kilden, lagre rått, sett viktighet, legg i kø. Aldri
+ *    språkmodellkall her, og alltid ferdig raskt.
+ *  - `queue`: berik én melding om gangen, med begrensede forsøk og dødbrevkø.
+ *  - `fetch`: helsesjekk og operatørendepunkter. Ingen offentlig flate ennå.
  *
  * Env-typen genereres av `pnpm --filter @bjelle/workers cf-typegen`.
  */
+import { ingest } from "./ingest.ts";
+import { NewswebSource } from "./source/newsweb.ts";
+
+/** Cron-uttrykket som styrer den løpende pollingen. */
+const POLL_CRON = "*/5 * * * *";
+
+/**
+ * Hvor langt tilbake pollingen ser. Kilden er dagsgranulær, så et døgn er det
+ * minste vinduet som ikke mister meldinger publisert like før midnatt.
+ */
+const POLL_VINDU_MS = 24 * 60 * 60 * 1000;
+
 export default {
 	async fetch(request) {
 		const url = new URL(request.url);
@@ -20,13 +32,22 @@ export default {
 		return new Response("Not found", { status: 404 });
 	},
 
-	async scheduled(controller, _env, ctx) {
-		ctx.waitUntil(pollNewsweb(controller.scheduledTime));
+	async scheduled(controller, env) {
+		const now = new Date(controller.scheduledTime);
+
+		if (controller.cron === POLL_CRON) {
+			// Bevisst ikke i waitUntil: en kjøring som feiler skal rapporteres som
+			// feilet av Cloudflare også, ikke bare i run-tabellen.
+			await ingest(
+				env,
+				new NewswebSource(),
+				"poll",
+				{
+					from: new Date(now.getTime() - POLL_VINDU_MS),
+					to: now,
+				},
+				now,
+			);
+		}
 	},
 } satisfies ExportedHandler<Env>;
-
-async function pollNewsweb(scheduledTime: number): Promise<void> {
-	// TODO: hent nye meldinger siden forrige kjøring, oppsummer, varsle.
-	// Sjekk Euronext/Newsweb sine vilkår for videredistribusjon før dette går live.
-	console.log(`Newsweb-polling planlagt ${new Date(scheduledTime).toISOString()}`);
-}

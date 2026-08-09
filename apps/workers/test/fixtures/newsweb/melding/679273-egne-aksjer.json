@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "39deaebc-ee46-4f5e-86ce-349cad0daa06",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679273,
+			"messageId": 679273,
+			"newsId": 631771,
+			"title": "Otello Corporation share buyback program status",
+			"body": "Reference is made to the stock exchange notice from 8 June 2026 announcing the initiation of the share buyback program for Otello Corporation ASA (the Company). From 3 August 2026 through 7 August 2026, Pareto Securities AS has bought 58,500 shares on behalf of the Company at an average price of NOK 17.55 and a total value of NOK 1,026,940. Since the initiation of this share buyback program a total of 540,881 shares at an average price of NOK 17.15 and a total value of NOK 9,278,364 have been acquired. The maximum consideration to be paid for shares acquired under this buyback program is NOK 20 per share and the maximum number of shares that can be purchased under this buyback program is 2,192,046. At present date, Otello owns 5,727,885 treasury shares in the Company, including those bought in the previous buyback programs. The shares are purchased in accordance with the authorization granted at the Company's annual general meeting on 3 June 2026.",
+			"category": [
+				{
+					"id": 1007,
+					"category_no": "UTSTEDERS MELDEPLIKT VED HANDEL I EGNE AKSJER",
+					"category_en": "ACQUISITION OR DISPOSAL OF AN ISSUER'S OWN SHARES"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 7759,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "OTEC",
+			"issuerName": "Otello Corporation ASA",
+			"instrId": 56454,
+			"instrumentName": "OTEC",
+			"instrumentFullName": "OTELLO CORPORATION",
+			"publishedTime": "2026-08-08T13:46:54.896Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330651,
+					"name": "OTEC Transaksjoner.pdf"
+				}
+			],
+			"clientAnnouncementId": "1715a76d-fd1a-4e09-8f26-2d2c790c7544",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

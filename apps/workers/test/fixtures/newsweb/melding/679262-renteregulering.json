@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "713ca636-47f3-4802-a13f-458205b3a736",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679262,
+			"messageId": 679262,
+			"newsId": 631756,
+			"title": "Ny rente",
+			"body": "Se vedlegg på www.newsweb.no",
+			"category": [
+				{
+					"id": 1105,
+					"category_no": "RENTEREGULERING",
+					"category_en": "ADJUSTMENT OF INTEREST RATE"
+				}
+			],
+			"markets": [
+				"XOAM"
+			],
+			"issuerId": 13123,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "MOBAN",
+			"issuerName": "Morrow Bank AB",
+			"instrId": 2163968,
+			"instrumentName": "KOMP06 PRO",
+			"instrumentFullName": "KOMP06 PRO",
+			"publishedTime": "2026-08-07T10:56:28.672Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330630,
+					"name": "Interests-2026-08-07.pdf"
+				}
+			],
+			"clientAnnouncementId": "130330db-5210-44d9-a48f-b4a7c8d5c549",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}

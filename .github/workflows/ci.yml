@@ -52,6 +52,18 @@ jobs:
       # (`vitest --project storybook`), bare med filteret lagt i pnpm.
       - run: pnpm --filter @bjelle/designsystem test
 
+  workers:
+    name: Workers-tester
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/oppsett
+
+      # Kjører inntakstjenesten inne i workerd via Miniflare, med ekte D1, R2
+      # og køer. Ingen nettleser og ingen nettverkstilgang: utgående HTTP mot
+      # Newsweb og Anthropic er stubbet i testene.
+      - run: pnpm --filter @bjelle/workers test
+
   e2e:
     name: E2E
     runs-on: ubuntu-latest

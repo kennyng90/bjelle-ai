@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "bae0a758-8095-445a-8fcc-467d6dcd1e39",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 664555,
+			"messageId": 664555,
+			"newsId": 616900,
+			"title": "Notification of Home Member State",
+			"body": "This information is subject to the disclosure requirements pursuant to the Continuing Obligations and Section 5-12 the Norwegian Securities Trading Act.\nMagellan BidCo 2 S.à r.l. has chosen Norway as its home Member State pursuant to Directive 2004/109/EC (Transparency Directive).\n \nPlease find attached ESMA’s standard form for disclosure of Home Member State\n",
+			"category": [
+				{
+					"id": 1004,
+					"category_no": "VALG AV HJEMSTAT",
+					"category_en": "HOME MEMBER STATE"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 13117,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "MGBC",
+			"issuerName": "Magellan BidCo 2 S.à r.l.",
+			"instrId": 2165821,
+			"instrumentName": "MGBC01",
+			"instrumentFullName": "MGBC01",
+			"publishedTime": "2026-01-30T14:54:15.304Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 318021,
+					"name": "esma-2015-1596_standard_form_for_disclosure_of_home_member_state(22081132.1).pdf"
+				}
+			],
+			"clientAnnouncementId": "aae64f7d-3bbb-4769-a961-ff42b74a6a60",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

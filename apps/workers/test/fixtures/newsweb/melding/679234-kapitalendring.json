@@ -1,0 +1,42 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "58516bc2-fa0c-43fc-b147-f59f73edc4c5",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679234,
+			"messageId": 679234,
+			"newsId": 631728,
+			"title": "New Share Capital Registered",
+			"body": "Ålesund, 7 August 2026: \n\nReference is made to the previous stock exchange announcements published by Golden Energy Offshore Services ASA regarding the capital reduction by way of reducing the par value of each of the company’s shares from NOK 8.00 to NOK 1.00. The share capital reduction has today been registered with the Norwegian Register of Business Enterprises.\n \nThe company’s registered share capital is NOK 70 709 494 divided into 70 709 494 shares, each with a nominal value of NOK 1.00.\n\nFor further information, please contact:\n\nPer Ivar Fagervoll \nCEO\npif@geoff.no \nMobile: + 47 974 28 884\n\nThis information is published in accordance with the requirements of the Continuing Obligations and section 5-12 of the Norwegian Securities Trading Act. \n",
+			"category": [
+				{
+					"id": 1008,
+					"category_no": "KAPITAL- OG STEMMERETTSENDRINGER",
+					"category_en": "TOTAL NUMBER OF VOTING RIGHTS AND CAPITAL"
+				}
+			],
+			"markets": [
+				"MERK"
+			],
+			"issuerId": 12387,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "GEOS",
+			"issuerName": "Golden Energy Offshore Services ASA",
+			"instrId": 1303963,
+			"instrumentName": "GEOS",
+			"instrumentFullName": "GOLDEN ENERGY OFF",
+			"publishedTime": "2026-08-07T06:49:24.132Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "521ec36c-58a6-437b-ac09-a9905f5310db",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

@@ -1,0 +1,728 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "874f76d8-6c3f-49c1-b372-7fa7618a5959",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"messages": [
+			{
+				"id": 679273,
+				"messageId": 679273,
+				"newsId": 631771,
+				"title": "Otello Corporation share buyback program status",
+				"category": [
+					{
+						"id": 1007,
+						"category_no": "UTSTEDERS MELDEPLIKT VED HANDEL I EGNE AKSJER",
+						"category_en": "ACQUISITION OR DISPOSAL OF AN ISSUER'S OWN SHARES"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 7759,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "OTEC",
+				"issuerName": "Otello Corporation ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-08T13:46:54.896Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "1715a76d-fd1a-4e09-8f26-2d2c790c7544",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679272,
+				"messageId": 679272,
+				"newsId": 631770,
+				"title": "Notification of Major Holdings",
+				"category": [
+					{
+						"id": 1006,
+						"category_no": "FLAGGING",
+						"category_en": "MAJOR SHAREHOLDINGS NOTIFICATION"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 11280,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "HBC",
+				"issuerName": "Hofseth BioCare ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T16:49:31.729Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "7e0fa794-bd3c-4644-bc0d-c2cce03dc514",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679271,
+				"messageId": 679271,
+				"newsId": 631769,
+				"title": "Transactions made under the share buyback program",
+				"category": [
+					{
+						"id": 1007,
+						"category_no": "UTSTEDERS MELDEPLIKT VED HANDEL I EGNE AKSJER",
+						"category_en": "ACQUISITION OR DISPOSAL OF AN ISSUER'S OWN SHARES"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 6047,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "AKER",
+				"issuerName": "Aker ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T16:42:07.189Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "8e0f55d7-f4e0-460c-b6d5-7dc0923788b0",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679270,
+				"messageId": 679270,
+				"newsId": 631768,
+				"title": "Photocure ASA: Notification of primary insider transactions",
+				"category": [
+					{
+						"id": 1102,
+						"category_no": "MELDEPLIKTIG HANDEL FOR PRIMÆRINNSIDERE",
+						"category_en": "MANAGERS’ TRANSACTION"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 6357,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "PHO",
+				"issuerName": "Photocure ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T16:03:35.554Z",
+				"test": false,
+				"numbAttachments": 2,
+				"clientAnnouncementId": "8d9b3b42-2d1a-4ad4-9596-d85bcb0feb9e",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679268,
+				"messageId": 679268,
+				"newsId": 631760,
+				"title": "ShaMaran Notice of Annual General Meeting 2026",
+				"category": [
+					{
+						"id": 1010,
+						"category_no": "ANNEN INFORMASJONSPLIKTIG REGULATORISK INFORMASJON",
+						"category_en": "ADDITIONAL REGULATED INFORMATION REQUIRED TO BE DISCLOSED UNDER THE LAWS OF A MEMBER STATE"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 13154,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "SNM",
+				"issuerName": "ShaMaran Petroleum Ltd.",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T16:00:00.000Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "74b6f952-0871-4e1d-b579-c500ef89e7cf",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679266,
+				"messageId": 679266,
+				"newsId": 631763,
+				"title": "Diana Shipping Inc. Announces Time Charter Contract for m/v Florida with NYK",
+				"category": [
+					{
+						"id": 1104,
+						"category_no": "IKKE-INFORMASJONSPLIKTIGE PRESSEMELDINGER",
+						"category_en": "NON-REGULATORY PRESS RELEASES"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 12676,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "DIASH",
+				"issuerName": "Diana Shipping Inc",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T13:16:55.079Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "4f7e272c-7188-4ca4-af3d-333ce9357916",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679262,
+				"messageId": 679262,
+				"newsId": 631756,
+				"title": "Ny rente",
+				"category": [
+					{
+						"id": 1105,
+						"category_no": "RENTEREGULERING",
+						"category_en": "ADJUSTMENT OF INTEREST RATE"
+					}
+				],
+				"markets": [
+					"XOAM"
+				],
+				"issuerId": 13123,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "MOBAN",
+				"issuerName": "Morrow Bank AB",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T10:56:28.672Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "130330db-5210-44d9-a48f-b4a7c8d5c549",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679237,
+				"messageId": 679237,
+				"newsId": 631731,
+				"title": "Pearl Operational  Corporate update_Q2 2026",
+				"category": [
+					{
+						"id": 1002,
+						"category_no": "HALVÅRSRAPPORT",
+						"category_en": "HALF YEAR FINANCIAL REPORT"
+					}
+				],
+				"markets": [
+					"XOAM"
+				],
+				"issuerId": 13083,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "PPCL",
+				"issuerName": "Pearl Petroleum Company Limited",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T06:55:30.079Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "12450f84-bd58-4823-b6d2-24f5d497527f",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679234,
+				"messageId": 679234,
+				"newsId": 631728,
+				"title": "New Share Capital Registered",
+				"category": [
+					{
+						"id": 1008,
+						"category_no": "KAPITAL- OG STEMMERETTSENDRINGER",
+						"category_en": "TOTAL NUMBER OF VOTING RIGHTS AND CAPITAL"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 12387,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "GEOS",
+				"issuerName": "Golden Energy Offshore Services ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T06:49:24.132Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "521ec36c-58a6-437b-ac09-a9905f5310db",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679229,
+				"messageId": 679229,
+				"newsId": 631721,
+				"title": "Ex Dividend NOK 4.00 Per Share Today",
+				"category": [
+					{
+						"id": 1101,
+						"category_no": "EKS.DATO",
+						"category_en": "EX DATE"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 12387,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "GEOS",
+				"issuerName": "Golden Energy Offshore Services ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T06:00:00.000Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "3b5876fc-75ff-480f-bee2-141399d7b52d",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679228,
+				"messageId": 679228,
+				"newsId": 631720,
+				"title": "Nordic Rutile (Engebø Rutile and Garnet AS) – Deferred Coupon, Covenant Waivers, PIK Rate Increase and Short-Term Financing",
+				"category": [
+					{
+						"id": 1005,
+						"category_no": "INNSIDEINFORMASJON",
+						"category_en": "INSIDE INFORMATION"
+					}
+				],
+				"markets": [
+					"XOAM"
+				],
+				"issuerId": 13008,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "ERUGA",
+				"issuerName": "Engebø Rutile and Garnet AS",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-07T06:00:00.000Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "ddd585b5-0a29-4ce5-80d5-f0fca979d8f2",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679213,
+				"messageId": 679213,
+				"newsId": 631709,
+				"title": " Induct AS – Registration of supplemental prospectus",
+				"category": [
+					{
+						"id": 1103,
+						"category_no": "PROSPEKT / OPPTAKSDOKUMENT",
+						"category_en": "PROSPECTUS / ADMISSION DOCUMENT"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 12460,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "INDCT",
+				"issuerName": "Induct AS",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-06T11:35:14.087Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "a547fbdd-5bd0-4c22-9478-686bc10340a9",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679024,
+				"messageId": 679024,
+				"newsId": 631516,
+				"title": "STOREBRAND BANK ASA - SALE AND BUYBACK OF BONDS",
+				"category": [
+					{
+						"id": 1009,
+						"category_no": "ENDRINGER I RETTIGHETENE TIL AKSJER/VERDIPAPIRER",
+						"category_en": "CHANGES IN THE RIGHTS ATTACHING TO SHARES OR SECURITIES OTHER THAN SHARES"
+					}
+				],
+				"markets": [
+					"XOSL",
+					"XOAM"
+				],
+				"issuerId": 1821,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "STORB",
+				"issuerName": "Storebrand Bank ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-04T12:09:15.875Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "8bd4edf8-995f-4a95-98fd-7f009e4eda49",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 679020,
+				"messageId": 679020,
+				"newsId": 631508,
+				"title": "Euronext Oslo Børs – Norges Bank - Mottatt søknad om notering av sentralbanksertifikat",
+				"category": [
+					{
+						"id": 1207,
+						"category_no": "MELDING FRA OSLO BØRS",
+						"category_en": "ANNOUNCEMENT FROM OSLO BØRS"
+					}
+				],
+				"markets": [],
+				"issuerId": 5188,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "-",
+				"issuerName": "Oslo Børs",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-04T10:23:25.835Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "2708d954-4e40-4cda-a854-e9889fed9bb0",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678947,
+				"messageId": 678947,
+				"newsId": 631437,
+				"title": "Pelagic Credit Plc - Second quarter results 2026",
+				"category": [
+					{
+						"id": 1002,
+						"category_no": "HALVÅRSRAPPORT",
+						"category_en": "HALF YEAR FINANCIAL REPORT"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 13130,
+				"correctionForMessageId": 678914,
+				"correctedByMessageId": 0,
+				"issuerSign": "PLGC",
+				"issuerName": "Pelagic Credit Plc",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-03T09:07:42.983Z",
+				"test": false,
+				"numbAttachments": 2,
+				"clientAnnouncementId": "51f1d1d6-0b28-4f95-a33f-63f23e8d643c",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678914,
+				"messageId": 678914,
+				"newsId": 631406,
+				"title": "Pelagic Credit Plc - Second quarter results 2026",
+				"category": [
+					{
+						"id": 1002,
+						"category_no": "HALVÅRSRAPPORT",
+						"category_en": "HALF YEAR FINANCIAL REPORT"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 13130,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 678947,
+				"issuerSign": "PLGC",
+				"issuerName": "Pelagic Credit Plc",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-08-03T05:00:00.000Z",
+				"test": false,
+				"numbAttachments": 2,
+				"clientAnnouncementId": "63b6f42d-3d4e-4c54-ad85-200e5374cae7",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678895,
+				"messageId": 678895,
+				"newsId": 631386,
+				"title": "Independent Statement on the Mandatory Offer by Coral HoldCo AS for the Shares in Atlantic Sapphire ASA",
+				"category": [
+					{
+						"id": 1010,
+						"category_no": "ANNEN INFORMASJONSPLIKTIG REGULATORISK INFORMASJON",
+						"category_en": "ADDITIONAL REGULATED INFORMATION REQUIRED TO BE DISCLOSED UNDER THE LAWS OF A MEMBER STATE"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 12625,
+				"correctionForMessageId": 678889,
+				"correctedByMessageId": 0,
+				"issuerSign": "ASA",
+				"issuerName": "Atlantic Sapphire ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-07-31T13:34:51.508Z",
+				"test": false,
+				"numbAttachments": 2,
+				"clientAnnouncementId": "2b1a5ef1-2d8f-4352-ad9f-e1d43fb7a922",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678890,
+				"messageId": 678890,
+				"newsId": 631380,
+				"title": "ACL Holdings Limited publishes Annual Accounts for the period ending 31st March 2026",
+				"category": [
+					{
+						"id": 1001,
+						"category_no": "ÅRSRAPPORT",
+						"category_en": "ANNUAL FINANCIAL REPORT"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 13044,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "ACLH",
+				"issuerName": "ACL Holdings Limited",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-07-31T11:17:09.612Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "99743a42-228c-4a14-8167-629db1df1c18",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678889,
+				"messageId": 678889,
+				"newsId": 631379,
+				"title": "Independent Statement on the Mandatory Offer by Coral HoldCo AS for the Shares in Atlantic Sapphire ASA",
+				"category": [
+					{
+						"id": 1010,
+						"category_no": "ANNEN INFORMASJONSPLIKTIG REGULATORISK INFORMASJON",
+						"category_en": "ADDITIONAL REGULATED INFORMATION REQUIRED TO BE DISCLOSED UNDER THE LAWS OF A MEMBER STATE"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 12625,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 678895,
+				"issuerSign": "ASA",
+				"issuerName": "Atlantic Sapphire ASA",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-07-31T11:06:46.019Z",
+				"test": false,
+				"numbAttachments": 2,
+				"clientAnnouncementId": "1dab36eb-3a9c-44b5-bdad-e9fe31a51e65",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678849,
+				"messageId": 678849,
+				"newsId": 631333,
+				"title": "ASA - Atlantic Sapphire ASA - Mandatory offer document approved",
+				"category": [
+					{
+						"id": 1301,
+						"category_no": "MELDING FRA FINANSTILSYNET",
+						"category_en": "ANNOUNCEMENT FROM THE FSA"
+					}
+				],
+				"markets": [],
+				"issuerId": 7623,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "FT",
+				"issuerName": "Finanstilsynet",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-07-30T14:35:00.000Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "bfc870d0-ee90-4dea-a504-88452888d36b",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 678475,
+				"messageId": 678475,
+				"newsId": 630949,
+				"title": "OSLO BØRS – TRADING SUSPENSION",
+				"category": [
+					{
+						"id": 1202,
+						"category_no": "SUSPENSJONER",
+						"category_en": "TRADING HALTS"
+					}
+				],
+				"markets": [
+					"MERK"
+				],
+				"issuerId": 13018,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "MVE",
+				"issuerName": "MatvareExpressen AS",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-07-21T06:28:09.806Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "686190d5-fc15-496e-880b-fb5fd1d02bf3",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 677210,
+				"messageId": 677210,
+				"newsId": 629673,
+				"title": "Government Debt - information for 2026 Q3",
+				"category": [
+					{
+						"id": 1302,
+						"category_no": "MELDING FRA NORGES BANK",
+						"category_en": "ANNOUNCEMENT FROM NORGES BANK"
+					}
+				],
+				"markets": [],
+				"issuerId": 2097,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "NB",
+				"issuerName": "Norges Bank",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-06-29T06:40:09.809Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "86f8e23b-0acc-4e03-ba88-032287286454",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 666818,
+				"messageId": 666818,
+				"newsId": 619167,
+				"title": "Contemplated secondary placement of existing shares in SED Energy Holdings Plc",
+				"category": [
+					{
+						"id": 1208,
+						"category_no": "MELDING FRA ANDRE AKTØRER",
+						"category_en": "ANNOUNCEMENT FROM OTHER PARTICIPANTS"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 8025,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "ENH",
+				"issuerName": "SED Energy Holdings Plc",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-02-25T15:30:14.284Z",
+				"test": false,
+				"numbAttachments": 0,
+				"clientAnnouncementId": "87b7f259-be44-4b96-bcdc-2d66be78be65",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			},
+			{
+				"id": 664555,
+				"messageId": 664555,
+				"newsId": 616900,
+				"title": "Notification of Home Member State",
+				"category": [
+					{
+						"id": 1004,
+						"category_no": "VALG AV HJEMSTAT",
+						"category_en": "HOME MEMBER STATE"
+					}
+				],
+				"markets": [
+					"XOSL"
+				],
+				"issuerId": 13117,
+				"correctionForMessageId": 0,
+				"correctedByMessageId": 0,
+				"issuerSign": "MGBC",
+				"issuerName": "Magellan BidCo 2 S.à r.l.",
+				"instrId": 0,
+				"instrumentName": "",
+				"instrumentFullName": "",
+				"publishedTime": "2026-01-30T14:54:15.304Z",
+				"test": false,
+				"numbAttachments": 1,
+				"clientAnnouncementId": "aae64f7d-3bbb-4769-a961-ff42b74a6a60",
+				"infoRequired": 0,
+				"oamMandatory": 0
+			}
+		],
+		"overflow": false
+	}
+}

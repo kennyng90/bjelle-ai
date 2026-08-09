@@ -1,0 +1,42 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "67c1afa1-ae5b-40f3-b473-cde003e01067",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679229,
+			"messageId": 679229,
+			"newsId": 631721,
+			"title": "Ex Dividend NOK 4.00 Per Share Today",
+			"body": "Ålesund, 7 August 2026: \n\nThe shares in Golden Energy Offshore Services ASA will be traded ex dividend of NOK 4.00 per share as of today, 7 August 2026. The payment will be made on or about 14 August 2026.\n\nFor further information, please contact:\n\nPer Ivar Fagervoll \nCEO\npif@geoff.no \nMobile: + 47 974 28 884\n\nThis information is published in accordance with the requirements of the Continuing Obligations and section 5-12 of the Norwegian Securities Trading Act. \n",
+			"category": [
+				{
+					"id": 1101,
+					"category_no": "EKS.DATO",
+					"category_en": "EX DATE"
+				}
+			],
+			"markets": [
+				"MERK"
+			],
+			"issuerId": 12387,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "GEOS",
+			"issuerName": "Golden Energy Offshore Services ASA",
+			"instrId": 1303963,
+			"instrumentName": "GEOS",
+			"instrumentFullName": "GOLDEN ENERGY OFF",
+			"publishedTime": "2026-08-07T06:00:00.000Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "3b5876fc-75ff-480f-bee2-141399d7b52d",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}
