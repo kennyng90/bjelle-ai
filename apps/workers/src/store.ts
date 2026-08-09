@@ -193,6 +193,119 @@ export async function strandedMessages(db: D1Database, limit: number): Promise<s
 	return results.map((r) => r.source_id);
 }
 
+/** Alt berikelsen trenger om én melding, i ett oppslag. */
+export interface MessageForEnrichment {
+	source_id: string;
+	title: string;
+	body: string;
+	source_category: string;
+	state: MessageState;
+	attempts: number;
+	company_name: string | null;
+}
+
+export async function loadMessageForEnrichment(
+	db: D1Database,
+	sourceId: string,
+): Promise<MessageForEnrichment | null> {
+	return db
+		.prepare(
+			`SELECT m.source_id, m.title, m.body, m.source_category, m.state, m.attempts, c.name AS company_name
+			 FROM message m LEFT JOIN company c ON c.issuer_id = m.issuer_id
+			 WHERE m.source_id = ?`,
+		)
+		.bind(sourceId)
+		.first<MessageForEnrichment>();
+}
+
+/** Forsøkstelleren er det som gjør "tre forsøk brukt opp" observerbart. */
+export async function countAttempt(db: D1Database, sourceId: string): Promise<number> {
+	const rad = await db
+		.prepare("UPDATE message SET attempts = attempts + 1 WHERE source_id = ? RETURNING attempts")
+		.bind(sourceId)
+		.first<{ attempts: number }>();
+	return rad?.attempts ?? 0;
+}
+
+export interface EnrichmentRow {
+	messageId: string;
+	category: string;
+	importance: Importance;
+	clampedFrom: Importance | null;
+	whatHappened: string;
+	figures: unknown;
+	terms: string[];
+	unknownTerms: string[];
+	model: string;
+	promptHash: string;
+	inputTokens: number;
+	outputTokens: number;
+	costUsd: number;
+	discardedFigures: number;
+}
+
+/**
+ * Skriver berikelsen og flytter meldingen til `enriched`. Gamle berikelsesrader
+ * overskrives aldri: to promptversjoner skal kunne sammenlignes mot ekte data.
+ */
+export async function saveEnrichment(db: D1Database, rad: EnrichmentRow, now: Date): Promise<void> {
+	const berikelse = await db
+		.prepare(
+			`INSERT INTO enrichment
+			 (message_id, category, importance, what_happened, figures, model, prompt_hash,
+			  input_tokens, output_tokens, cost_usd, discarded_figures, created_at)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
+		)
+		.bind(
+			rad.messageId,
+			rad.category,
+			rad.importance,
+			rad.whatHappened,
+			JSON.stringify(rad.figures),
+			rad.model,
+			rad.promptHash,
+			rad.inputTokens,
+			rad.outputTokens,
+			rad.costUsd,
+			rad.discardedFigures,
+			now.toISOString(),
+		)
+		.first<{ id: number }>();
+	if (!berikelse) throw new Error("klarte ikke å lagre berikelsen");
+
+	const skriv: D1PreparedStatement[] = [
+		db
+			.prepare(
+				"UPDATE message SET state = 'enriched', importance = ?, clamped_from = ? WHERE source_id = ?",
+			)
+			.bind(rad.importance, rad.clampedFrom, rad.messageId),
+	];
+
+	for (const term of rad.terms) {
+		skriv.push(
+			db
+				.prepare("INSERT OR IGNORE INTO term_hit (enrichment_id, term) VALUES (?, ?)")
+				.bind(berikelse.id, term),
+		);
+	}
+
+	// Arbeidskøen for redaksjonelt påfyll. Telleren viser hvor behovet er størst.
+	for (const term of rad.unknownTerms) {
+		skriv.push(
+			db
+				.prepare(
+					`INSERT INTO unknown_term (term, occurrences, first_seen_at, last_seen_at)
+					 VALUES (?, 1, ?, ?)
+					 ON CONFLICT (term) DO UPDATE SET
+					   occurrences = occurrences + 1, last_seen_at = excluded.last_seen_at`,
+				)
+				.bind(term, now.toISOString(), now.toISOString()),
+		);
+	}
+
+	await db.batch(skriv);
+}
+
 export function* biter<T>(liste: T[], størrelse: number): Generator<T[]> {
 	for (let i = 0; i < liste.length; i += størrelse) {
 		yield liste.slice(i, i + størrelse);

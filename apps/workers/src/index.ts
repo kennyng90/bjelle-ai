@@ -9,7 +9,9 @@
  *
  * Env-typen genereres av `pnpm --filter @bjelle/workers cf-typegen`.
  */
+import type { EnrichmentJob } from "./ingest.ts";
 import { ingest } from "./ingest.ts";
+import { handleQueue } from "./queue.ts";
 import { NewswebSource } from "./source/newsweb.ts";
 
 /** Cron-uttrykket som styrer den løpende pollingen. */
@@ -50,4 +52,8 @@ export default {
 			);
 		}
 	},
-} satisfies ExportedHandler<Env>;
+
+	async queue(batch, env) {
+		await handleQueue(batch, env, new Date());
+	},
+} satisfies ExportedHandler<Env, EnrichmentJob>;

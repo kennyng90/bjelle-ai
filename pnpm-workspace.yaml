@@ -8,6 +8,7 @@ sharedWorkspaceLockfile: true
 
 # Én versjon per delt avhengighet. Refereres som "catalog:" i package.json.
 catalog:
+  '@anthropic-ai/sdk': ^0.116.0
   '@astrojs/react': ^6.0.2
   '@biomejs/biome': 2.5.7
   '@cloudflare/vitest-pool-workers': ^0.20.3

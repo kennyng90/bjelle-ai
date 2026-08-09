@@ -95,6 +95,45 @@ export function newsweb(stubb: NewswebStubb = {}): Rute {
 	};
 }
 
+export interface AnthropicStubb {
+	/** Svaret modellen skal gi, slik det ville kommet gjennom skjemaet. */
+	// biome-ignore lint/suspicious/noExplicitAny: testen former svaret fritt, også ugyldige varianter
+	svar?: any;
+	/** Feilkode modellen svarer med i stedet. */
+	status?: number;
+	/** stop_reason på svaret. Brukes til å etterligne avslag og avkorting. */
+	stopReason?: string;
+	/** Hver forespørsel som ble sendt til modellen. */
+	kall?: unknown[];
+}
+
+/**
+ * Anthropic fanges på nettverksgrensen som alt annet utgående. Vi stubber ikke
+ * SDK-en: da ville testene bevist at vi kan kalle vår egen mock, ikke at
+ * forespørselen faktisk har den formen API-et krever.
+ */
+export function anthropic(stubb: AnthropicStubb = {}): Rute {
+	return (url, init) => {
+		if (url.hostname !== "api.anthropic.com") return undefined;
+		if (stubb.status) return new Response('{"error":{"message":"nei"}}', { status: stubb.status });
+
+		stubb.kall?.push(init?.body ? JSON.parse(String(init.body)) : null);
+
+		return json(
+			JSON.stringify({
+				id: "msg_test",
+				type: "message",
+				role: "assistant",
+				model: "claude-sonnet-5",
+				content: [{ type: "text", text: JSON.stringify(stubb.svar ?? {}) }],
+				stop_reason: stubb.stopReason ?? "end_turn",
+				stop_sequence: null,
+				usage: { input_tokens: 1200, output_tokens: 300 },
+			}),
+		);
+	};
+}
+
 /** Ekte listepayload fra kilden, filtrert til de meldingene testen bryr seg om. */
 function listePayload(stubb: NewswebStubb): string {
 	const konvolutt = JSON.parse(listeRaw);
