@@ -25,9 +25,9 @@
 		{
 			"binding": "DB",
 			"database_name": "bjelle",
-			// PLASSHOLDER. Byttes med ekte id fra `wrangler d1 create bjelle`
-			// på Bjelle-kontoen, med EU-hint. Miniflare bryr seg ikke om verdien.
-			"database_id": "00000000-0000-0000-0000-000000000000",
+			// Opprettet med EU-hint (WEUR). Datalokasjon er et åpent punkt i
+			// docs/BESLUTNINGER.md, og dette steget lagrer ingen persondata ennå.
+			"database_id": "05d53739-5847-4f21-90a5-9fa48daf6b5d",
 			"migrations_dir": "migrations"
 		}
 	],

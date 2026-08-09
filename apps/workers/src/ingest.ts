@@ -10,10 +10,10 @@ import {
 	insertMessage,
 	linkCorrection,
 	listRawKey,
+	markQueued,
 	messageRawKey,
 	putRaw,
 	type RunKind,
-	setState,
 	startRun,
 	strandedMessages,
 	upsertCompany,
@@ -46,6 +46,15 @@ export const BERIK_VINDU_MS = 92 * 24 * 60 * 60 * 1000;
 export interface IngestResult {
 	found: number;
 	stored: number;
+	/**
+	 * Hvor mange av de funne meldingene som ennå ikke finnes i databasen, uten
+	 * taket per kjøring. Backfillen bruker dette til å avgjøre om en bit er tom.
+	 *
+	 * `stored` duger ikke til det: en melding kilden svarte 502 på blir talt som
+	 * null lagret, og en bit full av slike ville sett tom ut og blitt hoppet over
+	 * for godt. Backfillen går bare bakover, så den får aldri se den igjen.
+	 */
+	remaining: number;
 	truncated: boolean;
 }
 
@@ -112,6 +121,7 @@ export async function ingest(
 		return {
 			found: listing.messages.length,
 			stored: lagredeIder.length,
+			remaining: listing.messages.length - eksisterende.size,
 			truncated: listing.truncated,
 		};
 	} catch (feil) {
@@ -202,7 +212,7 @@ async function køLegg(env: Env, ider: string[]): Promise<void> {
 		await env.ENRICHMENT.sendBatch(
 			bit.map((messageId) => ({ body: { messageId } satisfies EnrichmentJob })),
 		);
-		await setState(env.DB, bit, "queued");
+		await markQueued(env.DB, bit);
 	}
 }
 

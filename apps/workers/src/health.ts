@@ -7,6 +7,12 @@
 const SISTE_KJØRINGER = 3;
 
 /**
+ * Hvor lenge en kjøring får stå uten sluttidspunkt før den regnes som avbrutt.
+ * To cron-intervaller, slik at en kjøring som fortsatt pågår ikke gir alarm.
+ */
+const AVBRUTT_ETTER_MS = 10 * 60 * 1000;
+
+/**
  * Alarm hvis ingen poll-kjøring har lagret en eneste melding på tre timer mens
  * børsen har vært åpen.
  *
@@ -31,13 +37,24 @@ export async function checkHealth(db: D1Database, now: Date): Promise<HealthRepo
 	const reasons: string[] = [];
 
 	const { results: siste } = await db
-		.prepare("SELECT started_at, error FROM run WHERE kind = 'poll' ORDER BY id DESC LIMIT ?")
+		.prepare(
+			"SELECT started_at, finished_at, error FROM run WHERE kind = 'poll' ORDER BY id DESC LIMIT ?",
+		)
 		.bind(SISTE_KJØRINGER)
-		.all<{ started_at: string; error: string | null }>();
+		.all<{ started_at: string; finished_at: string | null; error: string | null }>();
 
-	const feilet = siste.filter((r) => r.error !== null);
+	// En kjøring uten sluttidspunkt ble drept før den rakk å skrive noe - av
+	// CPU-grensen, en timeout eller et krasj. Uten denne sjekken ser den
+	// nøyaktig ut som en vellykket, stille kjøring, og en worker som dør på
+	// hver eneste polling ville aldri gitt alarm.
+	const grense = new Date(now.getTime() - AVBRUTT_ETTER_MS).toISOString();
+	const feilet = siste.filter(
+		(r) => r.error !== null || (r.finished_at === null && r.started_at < grense),
+	);
 	if (feilet.length > 0) {
-		reasons.push(`${feilet.length} av de ${siste.length} siste pollingene feilet`);
+		reasons.push(
+			`${feilet.length} av de ${siste.length} siste pollingene feilet eller ble avbrutt`,
+		);
 	}
 
 	const åpen = exchangeOpen(now) && exchangeOpen(new Date(now.getTime() - STILLHET_MS));

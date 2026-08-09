@@ -1,6 +1,6 @@
 import { checkHealth } from "./health.ts";
 import type { EnrichmentJob } from "./ingest.ts";
-import { resetAttempts, setState } from "./store.ts";
+import { biter, resetAttempts, setState } from "./store.ts";
 
 /**
  * Operatørflaten. Ingen offentlig flate i dette steget: alt her er verktøy for
@@ -29,14 +29,17 @@ export async function handleOperator(request: Request, env: Env): Promise<Respon
 		if (ider.length === 0) {
 			return Response.json({ error: "messageId mangler" }, { status: 400 });
 		}
-		await env.ENRICHMENT.sendBatch(
-			ider.map((messageId) => ({ body: { messageId } satisfies EnrichmentJob })),
-		);
-		// Forsøkstelleren nullstilles. Uten det ville en melding som har brukt opp
-		// forsøkene sine gå rett tilbake til dødbrev, og en omkjøring etter en
-		// promptendring ville aldri fått lov til å prøve.
+		// Rekkefølgen er hele poenget. Forsøkstelleren nullstilles og tilstanden
+		// settes *før* meldingen legges på køen: gjør vi det motsatt, kan
+		// konsumenten rekke å lese den gamle telleren og sende en dødbrevmelding
+		// rett tilbake til dødbrev uten å ha forsøkt.
 		await resetAttempts(env.DB, ider);
 		await setState(env.DB, ider, "queued");
+		for (const bit of biter(ider, 100)) {
+			await env.ENRICHMENT.sendBatch(
+				bit.map((messageId) => ({ body: { messageId } satisfies EnrichmentJob })),
+			);
+		}
 		return Response.json({ queued: ider });
 	}
 

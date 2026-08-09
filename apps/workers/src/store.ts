@@ -170,6 +170,27 @@ export function insertAttachment(
 		.bind(messageId, attachmentId, filename, mediaType, key);
 }
 
+/**
+ * Flytter meldinger til `queued`, men bare de som fortsatt står i `stored`.
+ *
+ * Betingelsen er ikke pynt: konsumenten kan rekke å berike en melding før dette
+ * skrivet lander, og et ubetinget skriv ville da dratt en `enriched` melding
+ * tilbake til `queued`. Der blir den liggende for alltid - redningen ser bare
+ * etter `stored`.
+ */
+export async function markQueued(db: D1Database, ids: string[]): Promise<void> {
+	if (ids.length === 0) return;
+	for (const bit of biter(ids, 100)) {
+		await db
+			.prepare(
+				`UPDATE message SET state = 'queued'
+				 WHERE state = 'stored' AND source_id IN (${bit.map(() => "?").join(",")})`,
+			)
+			.bind(...bit)
+			.run();
+	}
+}
+
 export async function setState(db: D1Database, ids: string[], state: MessageState): Promise<void> {
 	if (ids.length === 0) return;
 	for (const bit of biter(ids, 100)) {
@@ -207,11 +228,12 @@ export interface BackfillProgress {
 	window_from: string;
 	window_to: string;
 	finished: number;
+	stalled: number;
 }
 
 export async function readBackfillProgress(db: D1Database): Promise<BackfillProgress | null> {
 	return db
-		.prepare("SELECT window_from, window_to, finished FROM backfill_progress WHERE id = 1")
+		.prepare("SELECT window_from, window_to, finished, stalled FROM backfill_progress WHERE id = 1")
 		.first<BackfillProgress>();
 }
 
@@ -219,17 +241,25 @@ export async function writeBackfillProgress(
 	db: D1Database,
 	window: RunWindow,
 	finished: boolean,
+	stalled: number,
 	now: Date,
 ): Promise<void> {
 	await db
 		.prepare(
-			`INSERT INTO backfill_progress (id, window_from, window_to, finished, updated_at)
-			 VALUES (1, ?, ?, ?, ?)
+			`INSERT INTO backfill_progress (id, window_from, window_to, finished, stalled, updated_at)
+			 VALUES (1, ?, ?, ?, ?, ?)
 			 ON CONFLICT (id) DO UPDATE SET
 			   window_from = excluded.window_from, window_to = excluded.window_to,
-			   finished = excluded.finished, updated_at = excluded.updated_at`,
+			   finished = excluded.finished, stalled = excluded.stalled,
+			   updated_at = excluded.updated_at`,
 		)
-		.bind(window.from.toISOString(), window.to.toISOString(), finished ? 1 : 0, now.toISOString())
+		.bind(
+			window.from.toISOString(),
+			window.to.toISOString(),
+			finished ? 1 : 0,
+			stalled,
+			now.toISOString(),
+		)
 		.run();
 }
 

@@ -171,7 +171,9 @@ export class NewswebSource implements Source {
 			attachments: (melding.attachments ?? []).map((v) => ({
 				sourceId: String(v.id),
 				messageId: id,
-				filename: v.name,
+				// Uten reserveverdien ville et vedlegg uten navn kastet lenger nede
+				// og tatt hele meldingen med seg. Et vedlegg er aldri verdt en melding.
+				filename: typeof v.name === "string" && v.name !== "" ? v.name : `vedlegg-${v.id}`,
 			})),
 		};
 	}

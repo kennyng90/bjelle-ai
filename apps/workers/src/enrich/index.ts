@@ -64,11 +64,13 @@ export async function enrich(apiKey: string, melding: StoredMessage): Promise<En
 	const { kept, discarded } = verifyFigures(output.figures ?? [], melding.body);
 
 	// Modellen får kun velge blant nøklene i skjemaet, men vi stoler ikke på det
-	// alene: et begrep uten forklaring i lista er et ukjent begrep.
+	// alene: et begrep uten forklaring i lista er et ukjent begrep. hasOwn og
+	// ikke `in`, ellers slipper "toString" og "constructor" gjennom som kjente
+	// begreper - uten forklaring å vise.
 	const terms: string[] = [];
 	const unknownTerms = new Set((output.unknown_terms ?? []).map((t) => t.trim().toLowerCase()));
 	for (const term of output.terms ?? []) {
-		if (term in GLOSSARY) terms.push(term);
+		if (Object.hasOwn(GLOSSARY, term)) terms.push(term);
 		else unknownTerms.add(term.trim().toLowerCase());
 	}
 

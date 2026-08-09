@@ -144,5 +144,8 @@ CREATE TABLE backfill_progress (
 	window_to TEXT NOT NULL,
 	-- Satt når hele det tolv måneder lange vinduet er hentet inn.
 	finished INTEGER NOT NULL DEFAULT 0,
+	-- Kjøringer på rad der biten hadde meldinger igjen, men ingen lot seg lagre.
+	-- Uten telleren står backfillen fast for alltid på én giftig melding.
+	stalled INTEGER NOT NULL DEFAULT 0,
 	updated_at TEXT NOT NULL
 );

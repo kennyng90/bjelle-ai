@@ -12,6 +12,13 @@ import { OUTPUT_SCHEMA } from "./schema.ts";
 export const MODEL = "claude-sonnet-5";
 
 /**
+ * Taket dekker tenketokens *og* svaret. En lang børsmelding kan bruke opp et
+ * knapt tak før JSON-en er ferdig, og en avkortet melding feiler likt hver
+ * gang - tre forsøk senere ligger den i dødbrevkø uten at noe var galt med den.
+ */
+const MAKS_TOKENS = 16000;
+
+/**
  * Listepris per million tokens. Introduksjonsprisen ($2/$10) gjelder ut
  * august 2026, så tallet her er konservativt til den utløper - kostnaden vi
  * viser skal aldri være lavere enn den faktiske.
@@ -46,7 +53,7 @@ export async function callModel(apiKey: string, melding: MessageForModel): Promi
 
 	const svar = await client.messages.create({
 		model: MODEL,
-		max_tokens: 2000,
+		max_tokens: MAKS_TOKENS,
 		system: SYSTEM_PROMPT,
 		messages: [{ role: "user", content: buildUserPrompt(melding) }],
 		// Skjemastyrt utdata er det som gjør investeringsråd strukturelt umulig.

@@ -61,6 +61,80 @@ it("gjenopptar backfillen der den slapp, uten hull og uten dubletter", async () 
 	expect(dubletter.results).toEqual([]);
 });
 
+it("går ikke videre fra en bit der ingen meldinger lot seg hente", async () => {
+	// Kilden svarer på lista, men ikke på enkeltmeldingene. Null lagret betyr
+	// her "kilden sviktet", ikke "biten er tom". Går backfillen videre nå, er
+	// meldingene tapt for godt: den går bare bakover og ser aldri biten igjen.
+	stubbHttp(newsweb({ meldingStatus: 502 }));
+
+	await kjør(BACKFILL);
+	const første = await env.DB.prepare(
+		"SELECT window_from, stalled FROM backfill_progress WHERE id = 1",
+	).first<{ window_from: string; stalled: number }>();
+
+	await kjør(BACKFILL);
+	const andre = await env.DB.prepare(
+		"SELECT window_from, stalled FROM backfill_progress WHERE id = 1",
+	).first<{ window_from: string; stalled: number }>();
+
+	// Samme vindu, og telleren for kjøringer uten framgang stiger.
+	expect(andre?.window_from).toBe(første?.window_from);
+	expect(andre?.stalled).toBeGreaterThan(første?.stalled ?? 0);
+});
+
+it("gir opp en bit til slutt, men bråker først", async () => {
+	// Uten taket ville backfillen stått fast for alltid på én giftig melding.
+	stubbHttp(newsweb({ meldingStatus: 502 }));
+	const feil: unknown[] = [];
+	const opprinnelig = console.error;
+	console.error = (...args: unknown[]) => feil.push(args[0]);
+
+	let start: string | undefined;
+	try {
+		await kjør(BACKFILL);
+		start = (
+			await env.DB.prepare("SELECT window_from FROM backfill_progress WHERE id = 1").first<{
+				window_from: string;
+			}>()
+		)?.window_from;
+		for (let i = 0; i < 3; i++) await kjør(BACKFILL);
+	} finally {
+		console.error = opprinnelig;
+	}
+
+	// Den ga opp høyt. En bit vi hopper over er noe noen må se på.
+	expect(feil.some((f) => (f as { hendelse?: string })?.hendelse === "backfill_ga_opp_bit")).toBe(
+		true,
+	);
+
+	// Og den står ikke fast: vinduet har flyttet seg bakover.
+	const nå = await env.DB.prepare("SELECT window_from FROM backfill_progress WHERE id = 1").first<{
+		window_from: string;
+	}>();
+	expect(new Date(nå?.window_from ?? 0).getTime()).toBeLessThan(new Date(start ?? 0).getTime());
+});
+
+it("slår alarm på en polling som ble avbrutt uten å skrive feil", async () => {
+	// En kjøring drept av CPU-grensen rekker aldri å skrive noe i error. Uten
+	// denne sjekken ser den ut som en helt vanlig stille kjøring.
+	await env.DB.prepare(
+		"INSERT INTO run (kind, started_at, finished_at, error) VALUES ('poll', ?, NULL, NULL)",
+	)
+		.bind(new Date(Date.now() - 60 * 60 * 1000).toISOString())
+		.run();
+
+	const svar = await worker.fetch(
+		new Request("https://bjelle.test/operator/status", {
+			headers: { authorization: "Bearer test-operator" },
+		}),
+		env,
+	);
+	const status = (await svar.json()) as { health: { alarm: boolean; reasons: string[] } };
+
+	expect(status.health.alarm).toBe(true);
+	expect(status.health.reasons.join(" ")).toMatch(/avbrutt/);
+});
+
 it("lagrer meldinger eldre enn tre måneder uten å berike dem", async () => {
 	// Backfillen lagrer hele året, men bare de siste tre månedene skal koste
 	// språkmodellkall. Resten berikes ved første lesing.

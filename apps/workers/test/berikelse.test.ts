@@ -232,6 +232,26 @@ it("samler opp begreper modellen møtte, men ikke fant i ordlista", async () => 
 	expect(rad.results).toEqual([{ term: "covenant waiver", occurrences: 1 }]);
 });
 
+it("regner et arvet objektfelt som ukjent begrep, ikke som ordlistetreff", async () => {
+	// GLOSSARY er et vanlig objekt, så "toString" og "constructor" finnes på
+	// prototypen. Slipper de gjennom som kjente begreper, vises de som noe vi
+	// kan forklare - og det finnes ingen forklaring.
+	await lagre(INNSIDE);
+	stubbHttp(anthropic({ svar: modellsvar({ terms: ["toString", "refinansiering"] }) }));
+
+	await berik(INNSIDE);
+
+	const treff = await env.DB.prepare(
+		"SELECT term FROM term_hit JOIN enrichment ON enrichment.id = term_hit.enrichment_id WHERE message_id = ?",
+	)
+		.bind(INNSIDE)
+		.all<{ term: string }>();
+	expect(treff.results.map((r) => r.term)).toEqual(["refinansiering"]);
+
+	const ukjent = await env.DB.prepare("SELECT term FROM unknown_term").all<{ term: string }>();
+	expect(ukjent.results.map((r) => r.term)).toEqual(["tostring"]);
+});
+
 it("lar meldingen være lesbar når språkmodellen svarer med feil", async () => {
 	await lagre(INNSIDE);
 	stubbHttp(anthropic({ status: 500 }));
