@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import listeRaw from "./fixtures/newsweb/liste.json?raw";
+import utstedereRaw from "./fixtures/newsweb/utstedere.json?raw";
 
 /**
  * Utgående HTTP fanges på nettverksgrensen. Alt annet i testene er ekte: D1, R2
@@ -54,6 +55,10 @@ export interface NewswebStubb {
 	listeStatus?: number;
 	/** Feilkode kilden svarer med på enkeltmeldinger. */
 	meldingStatus?: number;
+	/** Erstatter utstederlista i sin helhet. */
+	utstedereBody?: string;
+	/** Feilkode kilden svarer med på utstederlista. */
+	utstedereStatus?: number;
 	/**
 	 * Endrer en ekte fixture før den serveres, i både lista og enkeltmeldingen.
 	 * For tilfeller kilden ikke produserer i dag - en kategori vi ikke kjenner
@@ -69,7 +74,7 @@ export function newsweb(stubb: NewswebStubb = {}): Rute {
 
 		if (url.pathname.endsWith("/list")) {
 			if (stubb.listeStatus) return new Response("nei", { status: stubb.listeStatus });
-			return json(stubb.listeBody ?? listePayload(stubb));
+			return json(stubb.listeBody ?? listePayload(stubb, url));
 		}
 
 		if (url.pathname.endsWith("/message")) {
@@ -82,6 +87,13 @@ export function newsweb(stubb: NewswebStubb = {}): Rute {
 			const endret = JSON.parse(melding);
 			variant(endret.data.message);
 			return json(JSON.stringify(endret));
+		}
+
+		if (url.pathname.endsWith("/issuers")) {
+			if (stubb.utstedereStatus) {
+				return new Response("nei", { status: stubb.utstedereStatus });
+			}
+			return json(stubb.utstedereBody ?? utstedereRaw);
 		}
 
 		if (url.pathname.endsWith("/attachment")) {
@@ -134,14 +146,29 @@ export function anthropic(stubb: AnthropicStubb = {}): Rute {
 	};
 }
 
-/** Ekte listepayload fra kilden, filtrert til de meldingene testen bryr seg om. */
-function listePayload(stubb: NewswebStubb): string {
+/**
+ * Ekte listepayload fra kilden, filtrert til de meldingene testen bryr seg om.
+ *
+ * Oppgir testen `ider`, er det den som bestemmer - da sier testen "kilden
+ * returnerer disse". Ellers filtreres lista på det etterspurte vinduet, slik
+ * kilden faktisk gjør. Uten det ville en backfill-test fått hele fixturen i
+ * hvert eneste vindu, og "eldre enn tre måneder berikes ikke" ville aldri blitt
+ * prøvd.
+ */
+function listePayload(stubb: NewswebStubb, url: URL): string {
 	const konvolutt = JSON.parse(listeRaw);
 	if (stubb.ider) {
 		const ønsket = new Set(stubb.ider);
 		konvolutt.data.messages = konvolutt.data.messages.filter((m: { messageId: number }) =>
 			ønsket.has(String(m.messageId)),
 		);
+	} else {
+		const fra = url.searchParams.get("fromDate") ?? "0000-01-01";
+		const til = url.searchParams.get("toDate") ?? "9999-12-31";
+		konvolutt.data.messages = konvolutt.data.messages.filter((m: { publishedTime: string }) => {
+			const dag = m.publishedTime.slice(0, 10);
+			return dag >= fra && dag <= til;
+		});
 	}
 	for (const m of konvolutt.data.messages) {
 		stubb.varianter?.[String(m.messageId)]?.(m);

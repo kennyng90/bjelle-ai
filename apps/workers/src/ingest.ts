@@ -37,10 +37,24 @@ const SAMTIDIGE_KALL = 4;
 /** Tak på hvor mange strandede meldinger én kjøring rydder opp i. */
 const MAKS_REDNING = 50;
 
+/**
+ * Hvor gammel en melding kan være og likevel berikes proaktivt. Eldre enn dette
+ * lagres, men berikes først ved første lesing - jf. docs/BESLUTNINGER.md.
+ */
+export const BERIK_VINDU_MS = 92 * 24 * 60 * 60 * 1000;
+
 export interface IngestResult {
 	found: number;
 	stored: number;
 	truncated: boolean;
+}
+
+export interface IngestOptions {
+	/**
+	 * Om meldingene skal legges i berikelseskøen. Backfill av noe eldre enn tre
+	 * måneder lagrer uten å berike.
+	 */
+	enqueue: boolean;
 }
 
 /**
@@ -54,6 +68,7 @@ export async function ingest(
 	kind: RunKind,
 	window: TimeWindow,
 	now: Date,
+	options: IngestOptions = { enqueue: true },
 ): Promise<IngestResult> {
 	const startet = Date.now();
 	const runId = await startRun(env.DB, kind, window, now);
@@ -76,10 +91,16 @@ export async function ingest(
 		const lagret = await iParallell(nye, SAMTIDIGE_KALL, (m) => lagreMelding(env, source, m, now));
 		const lagredeIder = lagret.filter((id): id is string => id !== null);
 
-		// Meldinger fra tidligere kjøringer som aldri kom i kø tas med her. Uten
-		// dette blir en melding liggende usett for alltid hvis køen var nede.
-		const strandede = await strandedMessages(env.DB, MAKS_REDNING);
-		await køLegg(env, [...new Set([...lagredeIder, ...strandede])]);
+		if (options.enqueue) {
+			// Meldinger fra tidligere kjøringer som aldri kom i kø tas med her. Uten
+			// dette blir en melding liggende usett for alltid hvis køen var nede.
+			const strandede = await strandedMessages(
+				env.DB,
+				MAKS_REDNING,
+				new Date(now.getTime() - BERIK_VINDU_MS),
+			);
+			await køLegg(env, [...new Set([...lagredeIder, ...strandede])]);
+		}
 
 		await finishRun(
 			env.DB,

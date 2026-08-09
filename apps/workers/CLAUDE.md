@@ -112,6 +112,21 @@ melding, en med vedlegg, en korreksjon og en med tett formaterte tall. Modellsva
 også fixtures, og ett av dem inneholder et oppdiktet sitat, slik at forkastingen faktisk
 blir testet i stedet for bare beskrevet.
 
+## Operatørflaten
+
+`/health` er ren liveness. Alt som koster penger eller sier noe om drift ligger
+under `/operator/` bak `OPERATOR_TOKEN`, fordi en omkjøring av berikelsen er et
+språkmodellkall per melding.
+
+| Endepunkt | Hva det er til |
+| --- | --- |
+| `GET /operator/status` | Helse og alarm, tilstandsfordeling, forkastningsrate og kostnad per prompt-hash, ukjente begreper |
+| `POST /operator/enrich?messageId=…` | Kjør berikelsen om igjen, eller berik en gammel melding første gang |
+| `GET /operator/sample?messageId=…` | Sammendraget ved siden av originalteksten |
+
+To hemmeligheter, begge satt med `wrangler secret put`: `ANTHROPIC_API_KEY` og
+`OPERATOR_TOKEN`.
+
 ## Kommandoer
 
 ```bash

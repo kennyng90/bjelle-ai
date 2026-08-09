@@ -184,13 +184,80 @@ export async function setState(db: D1Database, ids: string[], state: MessageStat
  * Meldinger som ble lagret, men aldri kom i kø. Skjer hvis køen var nede eller
  * kjøringen døde mellom lagring og utsending. Uten dette blir de liggende
  * usett for alltid, og løftet om at ingen melding går tapt er ikke sant.
+ *
+ * `publishedSince` avgrenser til meldinger som skal berikes proaktivt. Uten den
+ * ville redningen dratt hele backfillen inn i køen, stikk i strid med at bare
+ * de siste tre månedene berikes i batch.
  */
-export async function strandedMessages(db: D1Database, limit: number): Promise<string[]> {
+export async function strandedMessages(
+	db: D1Database,
+	limit: number,
+	publishedSince: Date,
+): Promise<string[]> {
 	const { results } = await db
-		.prepare("SELECT source_id FROM message WHERE state = 'stored' ORDER BY published_at LIMIT ?")
-		.bind(limit)
+		.prepare(
+			"SELECT source_id FROM message WHERE state = 'stored' AND published_at >= ? ORDER BY published_at LIMIT ?",
+		)
+		.bind(publishedSince.toISOString(), limit)
 		.all<{ source_id: string }>();
 	return results.map((r) => r.source_id);
+}
+
+export interface BackfillProgress {
+	window_from: string;
+	window_to: string;
+	finished: number;
+}
+
+export async function readBackfillProgress(db: D1Database): Promise<BackfillProgress | null> {
+	return db
+		.prepare("SELECT window_from, window_to, finished FROM backfill_progress WHERE id = 1")
+		.first<BackfillProgress>();
+}
+
+export async function writeBackfillProgress(
+	db: D1Database,
+	window: RunWindow,
+	finished: boolean,
+	now: Date,
+): Promise<void> {
+	await db
+		.prepare(
+			`INSERT INTO backfill_progress (id, window_from, window_to, finished, updated_at)
+			 VALUES (1, ?, ?, ?, ?)
+			 ON CONFLICT (id) DO UPDATE SET
+			   window_from = excluded.window_from, window_to = excluded.window_to,
+			   finished = excluded.finished, updated_at = excluded.updated_at`,
+		)
+		.bind(window.from.toISOString(), window.to.toISOString(), finished ? 1 : 0, now.toISOString())
+		.run();
+}
+
+/**
+ * Selskapslista. Navn, ticker og notering oppdateres; markedet røres ikke,
+ * fordi kilden ikke oppgir det her - det kommer fra meldingene. Ingen rader
+ * slettes: et avnotert selskap skal beholde historikken sin.
+ */
+export function upsertCompanyRecord(
+	db: D1Database,
+	selskap: { sourceId: string; name: string; ticker: string | null; listed: boolean },
+	now: Date,
+): D1PreparedStatement {
+	return db
+		.prepare(
+			`INSERT INTO company (issuer_id, name, ticker, market, status, updated_at)
+			 VALUES (?, ?, ?, 'other', ?, ?)
+			 ON CONFLICT (issuer_id) DO UPDATE SET
+			   name = excluded.name, ticker = excluded.ticker,
+			   status = excluded.status, updated_at = excluded.updated_at`,
+		)
+		.bind(
+			selskap.sourceId,
+			selskap.name,
+			selskap.ticker,
+			selskap.listed ? "listed" : "delisted",
+			now.toISOString(),
+		);
 }
 
 /** Alt berikelsen trenger om én melding, i ett oppslag. */

@@ -1,0 +1,202 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "f0791389-d701-4ca5-aacb-7fa392919f1f",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"issuers": [
+			{
+				"issuerId": 13044,
+				"id": "ACLH",
+				"symbol": "ACLH",
+				"issuerSign": "ACLH",
+				"name": "ACL Holdings Limited",
+				"isActive": 1
+			},
+			{
+				"issuerId": 6047,
+				"id": "AKER",
+				"symbol": "AKER",
+				"issuerSign": "AKER",
+				"name": "Aker ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 12625,
+				"id": "ASA",
+				"symbol": "ASA",
+				"issuerSign": "ASA",
+				"name": "Atlantic Sapphire ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 12676,
+				"id": "DIASH",
+				"symbol": "DIASH",
+				"issuerSign": "DIASH",
+				"name": "Diana Shipping Inc",
+				"isActive": 1
+			},
+			{
+				"issuerId": 13008,
+				"id": "ERUGA",
+				"symbol": "ERUGA",
+				"issuerSign": "ERUGA",
+				"name": "Engebø Rutile and Garnet AS",
+				"isActive": 1
+			},
+			{
+				"issuerId": 7623,
+				"id": "FT",
+				"symbol": "FT",
+				"issuerSign": "FT",
+				"name": "Finanstilsynet",
+				"isActive": 1
+			},
+			{
+				"issuerId": 12387,
+				"id": "GEOS",
+				"symbol": "GEOS",
+				"issuerSign": "GEOS",
+				"name": "Golden Energy Offshore Services ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 11280,
+				"id": "HBC",
+				"symbol": "HBC",
+				"issuerSign": "HBC",
+				"name": "Hofseth BioCare ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 12460,
+				"id": "INDCT",
+				"symbol": "INDCT",
+				"issuerSign": "INDCT",
+				"name": "Induct AS",
+				"isActive": 1
+			},
+			{
+				"issuerId": 13117,
+				"id": "MGBC",
+				"symbol": "MGBC",
+				"issuerSign": "MGBC",
+				"name": "Magellan BidCo 2 S.à r.l.",
+				"isActive": 1
+			},
+			{
+				"issuerId": 13018,
+				"id": "MVE",
+				"symbol": "MVE",
+				"issuerSign": "MVE",
+				"name": "MatvareExpressen AS",
+				"isActive": 0
+			},
+			{
+				"issuerId": 13123,
+				"id": "MOBAN",
+				"symbol": "MOBAN",
+				"issuerSign": "MOBAN",
+				"name": "Morrow Bank AB",
+				"isActive": 1
+			},
+			{
+				"issuerId": 2097,
+				"id": "NB",
+				"symbol": "NB",
+				"issuerSign": "NB",
+				"name": "Norges Bank",
+				"isActive": 1
+			},
+			{
+				"issuerId": 5188,
+				"symbol": "-",
+				"name": "Oslo Børs",
+				"isActive": 1
+			},
+			{
+				"issuerId": 7759,
+				"id": "OTEC",
+				"symbol": "OTEC",
+				"issuerSign": "OTEC",
+				"name": "Otello Corporation ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 13083,
+				"id": "PPCL",
+				"symbol": "PPCL",
+				"issuerSign": "PPCL",
+				"name": "Pearl Petroleum Company Limited",
+				"isActive": 1
+			},
+			{
+				"issuerId": 13130,
+				"id": "PLGC",
+				"symbol": "PLGC",
+				"issuerSign": "PLGC",
+				"name": "Pelagic Credit Plc",
+				"isActive": 1
+			},
+			{
+				"issuerId": 6357,
+				"id": "PHO",
+				"symbol": "PHO",
+				"issuerSign": "PHO",
+				"name": "Photocure ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 8025,
+				"id": "ENH",
+				"symbol": "ENH",
+				"issuerSign": "ENH",
+				"name": "SED Energy Holdings Plc",
+				"isActive": 1
+			},
+			{
+				"issuerId": 13154,
+				"id": "SNM",
+				"symbol": "SNM",
+				"issuerSign": "SNM",
+				"name": "ShaMaran Petroleum Ltd.",
+				"isActive": 1
+			},
+			{
+				"issuerId": 1821,
+				"id": "STORB",
+				"symbol": "STORB",
+				"issuerSign": "STORB",
+				"name": "Storebrand Bank ASA",
+				"isActive": 1
+			},
+			{
+				"issuerId": 8380,
+				"id": "TFSO",
+				"symbol": "TFSO",
+				"issuerSign": "TFSO",
+				"name": "24Seven Technology Group ASA",
+				"isActive": 0
+			},
+			{
+				"issuerId": 12992,
+				"id": "FFIN",
+				"symbol": "FFIN",
+				"issuerSign": "FFIN",
+				"name": "4finance S.A",
+				"isActive": 0
+			},
+			{
+				"issuerId": 2514,
+				"id": "APR",
+				"symbol": "APR",
+				"issuerSign": "APR",
+				"name": "A-pressen ASA",
+				"isActive": 0
+			}
+		]
+	}
+}

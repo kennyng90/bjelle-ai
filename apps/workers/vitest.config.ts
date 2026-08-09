@@ -20,6 +20,7 @@ export default defineConfig({
 						// Hemmeligheten er stubbet. Utgående kall til Anthropic
 						// fanges på nettverksgrensen, så verdien brukes aldri.
 						ANTHROPIC_API_KEY: "test-nokkel",
+						OPERATOR_TOKEN: "test-operator",
 					},
 				},
 			};

@@ -2,6 +2,7 @@ import type { Market, SourceCategory } from "../domain.ts";
 import { detectLanguage } from "../language.ts";
 import {
 	type AttachmentRef,
+	type CompanyRecord,
 	type Listing,
 	type MessageDetail,
 	type MessageSummary,
@@ -73,6 +74,13 @@ interface NewswebSammendrag {
 	numbAttachments: number;
 }
 
+interface NewswebUtsteder {
+	issuerId: number;
+	name: string;
+	issuerSign: string;
+	isActive: number;
+}
+
 interface NewswebMelding extends NewswebSammendrag {
 	body: string;
 	attachments?: { id: number; name: string }[];
@@ -104,6 +112,33 @@ export class NewswebSource implements Source {
 			attachmentId: ref.sourceId,
 		});
 		return hent(`${API}/attachment?${params}`);
+	}
+
+	async fetchCompanies(): Promise<RawPayload> {
+		// Utstederlista svarer kun på POST. Tom kropp gir hele lista.
+		return hent(`${API}/issuers`, {
+			method: "POST",
+			headers: { accept: "application/json", "content-type": "application/json" },
+			body: "{}",
+		});
+	}
+
+	parseCompanies(raw: RawPayload): CompanyRecord[] {
+		const data = konvolutt(raw);
+		if (!Array.isArray(data.issuers)) {
+			throw new SourceFormatError("data.issuers er ikke en liste");
+		}
+		return (data.issuers as NewswebUtsteder[]).map((u) => {
+			if (typeof u?.issuerId !== "number") {
+				throw new SourceFormatError("utsteder mangler issuerId");
+			}
+			return {
+				sourceId: String(u.issuerId),
+				name: u.name ?? "",
+				ticker: u.issuerSign || null,
+				listed: u.isActive === 1,
+			};
+		});
 	}
 
 	parseList(raw: RawPayload): Listing {
@@ -142,10 +177,10 @@ export class NewswebSource implements Source {
 	}
 }
 
-async function hent(url: string): Promise<RawPayload> {
+async function hent(url: string, init?: RequestInit): Promise<RawPayload> {
 	let svar: Response;
 	try {
-		svar = await fetch(url, { headers: { accept: "application/json" } });
+		svar = await fetch(url, init ?? { headers: { accept: "application/json" } });
 	} catch (feil) {
 		throw new SourceUnavailableError(`kilden svarte ikke: ${feil}`);
 	}

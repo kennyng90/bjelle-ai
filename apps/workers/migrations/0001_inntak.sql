@@ -133,3 +133,16 @@ CREATE TABLE run (
 );
 
 CREATE INDEX run_kind_started ON run (kind, started_at DESC);
+
+-- Framdriften til backfillen. Én rad, alltid. Ligger for seg fordi run-tabellen
+-- er én rad per kjøring, og en backfill-bit trenger flere kjøringer på å bli
+-- tom: hver kjøring tar et tak av nye meldinger, og biten er først ferdig når
+-- en kjøring ikke finner noe nytt i den.
+CREATE TABLE backfill_progress (
+	id INTEGER PRIMARY KEY CHECK (id = 1),
+	window_from TEXT NOT NULL,
+	window_to TEXT NOT NULL,
+	-- Satt når hele det tolv måneder lange vinduet er hentet inn.
+	finished INTEGER NOT NULL DEFAULT 0,
+	updated_at TEXT NOT NULL
+);

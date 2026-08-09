@@ -20,6 +20,19 @@ export interface Source {
 	parseList(raw: RawPayload): Listing;
 	/** @throws {SourceFormatError} når payloaden ikke har forventet form. */
 	parseMessage(raw: RawPayload): MessageDetail;
+
+	/** Hele utstederlista, inkludert avnoterte. Rå, ikke parset. */
+	fetchCompanies(): Promise<RawPayload>;
+	/** @throws {SourceFormatError} når payloaden ikke har forventet form. */
+	parseCompanies(raw: RawPayload): CompanyRecord[];
+}
+
+export interface CompanyRecord {
+	sourceId: string;
+	name: string;
+	ticker: string | null;
+	/** Kilden skiller på notert og avnotert. Historikken beholdes uansett. */
+	listed: boolean;
 }
 
 /** Bytene slik de kom fra kilden. Skrives til R2 før de tolkes. */

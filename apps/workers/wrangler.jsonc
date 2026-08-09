@@ -13,13 +13,13 @@
 		//
 		// Backfill og selskapssynk går sjeldnere. Cronen skiller dem på uttrykket,
 		// se scheduled-handleren.
-		"crons": ["*/5 * * * *", "17 * * * *", "23 4 * * *"]
+		"crons": ["*/5 * * * *", "7,22,37,52 * * * *", "23 4 * * *"]
 	},
 	"secrets": {
 		// Kun navnet. Verdien settes med `wrangler secret put ANTHROPIC_API_KEY`
 		// og finnes aldri i repoet. Dette gir Env-typen og en advarsel i dev
 		// hvis hemmeligheten mangler.
-		"required": ["ANTHROPIC_API_KEY"]
+		"required": ["ANTHROPIC_API_KEY", "OPERATOR_TOKEN"]
 	},
 	"d1_databases": [
 		{
