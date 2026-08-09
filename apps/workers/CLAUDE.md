@@ -74,9 +74,6 @@ ordlisteforklaringene, og etikettene en kategori vises med.
 Instruksjonen om at sammendraget skal være norsk klarspråk hører hjemme i prompten og i
 feltbeskrivelsene i skjemaet, ikke i nøkkelnavnene.
 
-> Merk: datamodellen og LLM-skjemaet i issue #2 er fortsatt skrevet med norske navn.
-> Denne filen gjelder. Issue-en skal oppdateres til å matche.
-
 ## Grenser som ikke får viskes ut
 
 Disse fem er hele grunnen til at spec-en ser ut som den gjør. Bryter du en, har du bygget

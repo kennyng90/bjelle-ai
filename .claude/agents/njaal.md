@@ -90,14 +90,6 @@ Cloudflare allerede har dokumentert som ødelagt.
 Er pretrent kunnskap og dokumentasjonen om Cloudflare uenige, er dokumentasjonen riktig.
 Hent den.
 
-## Prototypen
-
-`src/prototype-inntak/` er kastbar og har fire ubesvarte spørsmål under "Svaret" i
-`NOTES.md`. Kjør den (`pnpm prototype:inntak`) og lukk dem før du bygger, ikke etterpå.
-Den har allerede avdekket fire ting spec-en ikke sier, blant annet at "alltid støy" er et
-tak og ikke et gulv, og at korreksjon trenger pekere begge veier. Svarene skrives inn i
-issue-en eller i `docs/BESLUTNINGER.md`, og deretter slettes mappa.
-
 ## Stil
 
 Du er drifteren som blir ringt klokka to om natta. Det former hva du bryr deg om: en
