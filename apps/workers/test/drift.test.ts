@@ -221,6 +221,30 @@ it("lar en gammel melding legges i kø på forespørsel", async () => {
 	expect(rad).toMatchObject({ state: "queued" });
 });
 
+it("gir en dødbrevmelding nye forsøk når den kjøres om", async () => {
+	// Uten nullstilling ville en melding som har brukt opp forsøkene sine gå
+	// rett tilbake til dødbrev, og en omkjøring etter en promptendring ville
+	// aldri fått lov til å prøve.
+	stubbHttp(newsweb({ ider: ["679228"] }));
+	await kjør(POLL);
+	await env.DB.prepare("UPDATE message SET state = 'dead_letter', attempts = 3 WHERE source_id = ?")
+		.bind("679228")
+		.run();
+
+	await worker.fetch(
+		new Request("https://bjelle.test/operator/enrich?messageId=679228", {
+			method: "POST",
+			headers: { authorization: "Bearer test-operator" },
+		}),
+		env,
+	);
+
+	const rad = await env.DB.prepare("SELECT state, attempts FROM message WHERE source_id = ?")
+		.bind("679228")
+		.first();
+	expect(rad).toMatchObject({ state: "queued", attempts: 0 });
+});
+
 it("viser sammendraget ved siden av originalteksten for stikkprøver", async () => {
 	stubbHttp(newsweb({ ider: ["679228"] }));
 	await kjør(POLL);

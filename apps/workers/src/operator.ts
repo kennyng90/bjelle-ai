@@ -1,6 +1,6 @@
 import { checkHealth } from "./health.ts";
 import type { EnrichmentJob } from "./ingest.ts";
-import { setState } from "./store.ts";
+import { resetAttempts, setState } from "./store.ts";
 
 /**
  * Operatørflaten. Ingen offentlig flate i dette steget: alt her er verktøy for
@@ -32,6 +32,10 @@ export async function handleOperator(request: Request, env: Env): Promise<Respon
 		await env.ENRICHMENT.sendBatch(
 			ider.map((messageId) => ({ body: { messageId } satisfies EnrichmentJob })),
 		);
+		// Forsøkstelleren nullstilles. Uten det ville en melding som har brukt opp
+		// forsøkene sine gå rett tilbake til dødbrev, og en omkjøring etter en
+		// promptendring ville aldri fått lov til å prøve.
+		await resetAttempts(env.DB, ider);
 		await setState(env.DB, ider, "queued");
 		return Response.json({ queued: ider });
 	}

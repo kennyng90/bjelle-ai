@@ -285,6 +285,23 @@ export async function loadMessageForEnrichment(
 		.first<MessageForEnrichment>();
 }
 
+/**
+ * Nullstiller forsøkstelleren. Brukes når en melding legges i kø på nytt av en
+ * operatør: en melding som har brukt opp forsøkene sine skal få en ny sjanse,
+ * ellers er en omkjøring etter en promptendring umulig.
+ */
+export async function resetAttempts(db: D1Database, ids: string[]): Promise<void> {
+	if (ids.length === 0) return;
+	for (const bit of biter(ids, 100)) {
+		await db
+			.prepare(
+				`UPDATE message SET attempts = 0 WHERE source_id IN (${bit.map(() => "?").join(",")})`,
+			)
+			.bind(...bit)
+			.run();
+	}
+}
+
 /** Forsøkstelleren er det som gjør "tre forsøk brukt opp" observerbart. */
 export async function countAttempt(db: D1Database, sourceId: string): Promise<number> {
 	const rad = await db
