@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "1b5f9b47-907c-42cf-87dd-100c67a35df2",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679266,
+			"messageId": 679266,
+			"newsId": 631763,
+			"title": "Diana Shipping Inc. Announces Time Charter Contract for m/v Florida with NYK",
+			"body": "ATHENS, GREECE, August 7, 2026 – Diana Shipping Inc. (NYSE: DSX), (the “Company”), a global shipping company specializing in the ownership and bareboat charter-in of dry bulk vessels, today announced that, through a separate wholly-owned subsidiary, it has entered into a time charter contract with Nippon Yusen Kabushiki Kaisha, Tokyo, for one of its Capesize dry bulk vessels, the m/v Florida. The gross charter rate is US$30,500 per day, minus a 5.00% commission paid to third parties, for a period of minimum thirty-two (32) months up to maximum thirty-five and a half (35.5) months. The charter is expected to commence during the second quarter of 2027. The m/v Florida is currently chartered, as previously announced, to Bunge S.A., Geneva, at a gross charter rate of US$25,900 per day, minus a 5.00% commission paid to third parties.\n\nThe “Florida” is a 182,063 dwt Capesize dry bulk vessel built in 2022.\n\nThe employment of “Florida” is anticipated to generate a total of approximately US$29.28 million of gross revenue for the minimum scheduled period of the time charter.\n\nDiana Shipping Inc.’s fleet currently consists of 36 dry bulk vessels (4 Newcastlemax, 8 Capesize, 4 Post-Panamax, 6 Kamsarmax, 5 Panamax and 9 Ultramax). The Company also expects to take delivery of two methanol dual fuel new-building Kamsarmax dry bulk vessels by the second half of 2027 and the first half of 2028, respectively. As of today, the combined carrying capacity of the Company’s fleet, excluding the two vessels not yet delivered, is approximately 4.1 million dwt, with a weighted average age of 12.70 years. A table describing the current Diana Shipping Inc. fleet can be found on the Company’s website, www.dianashippinginc.com. Information contained...",
+			"category": [
+				{
+					"id": 1104,
+					"category_no": "IKKE-INFORMASJONSPLIKTIGE PRESSEMELDINGER",
+					"category_en": "NON-REGULATORY PRESS RELEASES"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 12676,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "DIASH",
+			"issuerName": "Diana Shipping Inc",
+			"instrId": 2165084,
+			"instrumentName": "DIASH03",
+			"instrumentFullName": "DIASH03",
+			"publishedTime": "2026-08-07T13:16:55.079Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330639,
+					"name": "DSX_Press_Release_Florida_070826.pdf"
+				}
+			],
+			"clientAnnouncementId": "4f7e272c-7188-4ca4-af3d-333ce9357916",
+			"infoRequired": 0,
+			"oamMandatory": 0
+		}
+	}
+}

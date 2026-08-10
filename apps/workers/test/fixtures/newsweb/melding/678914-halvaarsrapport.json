@@ -1,0 +1,51 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "3539ac17-d24e-458d-80da-0ca517283ee0",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 678914,
+			"messageId": 678914,
+			"newsId": 631406,
+			"title": "Pelagic Credit Plc - Second quarter results 2026",
+			"body": "Limassol, Cyprus, 3 August 2026\n\nPelagic Credit Plc (\"Pelagic Credit\" or the \"Company\") today announces results for the second quarter of 2026. The quarter represents the first full reporting period for the Company as a listed entity, following its admission to trading on Euronext Growth Oslo on 9 March 2026. \n\nPerformance remained stable during the second quarter, consistent with Pelagic Credit’s business model, where most revenues and expenses are underpinned by predictable, contracted cash flows. Pelagic Credit generated revenues of USD 1.7 million for the second quarter, and a net profit of USD 0.7 million. For the first half year revenues came in at USD 3.2 million, and net profit at USD 1.6 million. \n\nNo new transactions closed in the second quarter. Business development activity nevertheless remained high, with transactions lined up for closing in Q3 2026. Two such transactions were announced in separate press releases published after the end of the second quarter. The firm-period lease-adjusted revenue backlog on 30 June 2026, adjusted to include transactions closed in July 2026, stood at US$ 107.1 million with an average remaining charter tenor of 5.1 years. \n\nFollowing its first full fiscal quarter as a listed company, Pelagic Credit declared its first quarterly dividend. Total dividends for the quarter amounted to approximately USD 1.5 million or USD 0.04 per share.\n\nAttached is the report for the second quarter and the presentation material.\n\nCEO Tobias Backer will present the results today at 14:00 CEST. Participants are welcome to follow the event via webcast. \n\nPlease use the following link to register for the webcast:\n\nhttps://qcnl.tv/p/W6kmULBx14UFV5XkxxKpig\n\nFor further information, please contact: \n\nTobias Backer, CEO\ntobias@pelagic-credit.com\n+357 97 771 170 / +44 7799 815 020 / +1 917 207-8680\n\nABOUT PELAGIC CREDIT \nPelagic Credit is a yield-oriented ship owning company focused on generating stable cash flows through long-term contracted employment of maritime assets. The Company originates and structures long-term leasing and credit transactions designed to generate predictable, contracted cash flows. Pelagic Credit is listed on Euronext Growth Oslo and headquartered in Limassol, Cyprus.\n\nFor more information: www.pelagic-credit.com. \n\nThis information is subject to the disclosure requirements in the Norwegian Securities Trading Act § 5-12.",
+			"category": [
+				{
+					"id": 1002,
+					"category_no": "HALVÅRSRAPPORT",
+					"category_en": "HALF YEAR FINANCIAL REPORT"
+				}
+			],
+			"markets": [
+				"MERK"
+			],
+			"issuerId": 13130,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 678947,
+			"issuerSign": "PLGC",
+			"issuerName": "Pelagic Credit Plc",
+			"instrId": 2166062,
+			"instrumentName": "PLGC",
+			"instrumentFullName": "PELAGIC CREDIT",
+			"publishedTime": "2026-08-03T05:00:00.000Z",
+			"test": false,
+			"numbAttachments": 2,
+			"attachments": [
+				{
+					"id": 330375,
+					"name": "PLGC Q2 Report 2026 Presentation.pdf"
+				},
+				{
+					"id": 330376,
+					"name": "PLGC Q2 Report 2026.pdf"
+				}
+			],
+			"clientAnnouncementId": "63b6f42d-3d4e-4c54-ad85-200e5374cae7",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

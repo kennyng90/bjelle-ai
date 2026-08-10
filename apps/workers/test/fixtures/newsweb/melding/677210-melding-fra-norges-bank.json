@@ -1,0 +1,40 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "1b26939f-4b99-41dc-9484-692b2ea93edf",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 677210,
+			"messageId": 677210,
+			"newsId": 629673,
+			"title": "Government Debt - information for 2026 Q3",
+			"body": "Information on borrowing ranges for government bonds and T-bills, the requirements for maximum spreads between the bid and offer prices and the minimum size of visible orders in the Interdealer Market, in Q3 is published at www.debtnorway.no.",
+			"category": [
+				{
+					"id": 1302,
+					"category_no": "MELDING FRA NORGES BANK",
+					"category_en": "ANNOUNCEMENT FROM NORGES BANK"
+				}
+			],
+			"markets": [],
+			"issuerId": 2097,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "NB",
+			"issuerName": "Norges Bank",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-06-29T06:40:09.809Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "86f8e23b-0acc-4e03-ba88-032287286454",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}

@@ -1,0 +1,51 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "dcb62d8a-ec2c-4f35-a32c-9a47f31a377b",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679270,
+			"messageId": 679270,
+			"newsId": 631768,
+			"title": "Photocure ASA: Notification of primary insider transactions",
+			"body": "Oslo, Norway, August 7, 2026 - Chairman of the Board of Directors Dylan\nHallerberg has acquired 20,658 shares at an average price of NOK 48.48. Board\nmember Neal Shore has acquired 27,675 shares at an average price of NOK 48.70.\n\nPrimary insider notification pursuant to the market abuse regulation article 19\nis attached.\n\nFor further information, please contact:\n\nPriyam Shah\nVice President Investor Relations\nTel : +17176815072\nEmail: priyam.shah@photocure.com\n\nAbout Photocure ASA\n\nPhotocure is a commercial diagnostic company with global reach, committed to\ndriving progress in uro-oncology precision diagnostics, delivering meaningful\nadvances for patients with urological cancers. Our unique core technology has\nled to better health outcomes for patients worldwide. The company aims to\nprovide an array of transformative solutions that help physicians with timely\ndiagnostic information, to inform more personalized decisions on how best to\nmanage each individual patient. Photocure is headquartered in Oslo, Norway and\nlisted on the Oslo Stock Exchange (OSE: PHO). For more information, please\nvisit www.photocure.com/news\n\nThis information is subject to the disclosure requirements pursuant to Section 5\n-12 the Norwegian Securities Trading Act.\n\n\n",
+			"category": [
+				{
+					"id": 1102,
+					"category_no": "MELDEPLIKTIG HANDEL FOR PRIMÆRINNSIDERE",
+					"category_en": "MANAGERS’ TRANSACTION"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 6357,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "PHO",
+			"issuerName": "Photocure ASA",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-08-07T16:03:35.554Z",
+			"test": false,
+			"numbAttachments": 2,
+			"attachments": [
+				{
+					"id": 330647,
+					"name": "Release.pdf"
+				},
+				{
+					"id": 330648,
+					"name": "20260807_PHO_Primary_insider_notifications_MAR_art_19_Board_14580537_2.pdf"
+				}
+			],
+			"clientAnnouncementId": "8d9b3b42-2d1a-4ad4-9596-d85bcb0feb9e",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

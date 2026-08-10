@@ -1,0 +1,40 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "9311f0ef-9025-460e-a280-a15ee326b8cf",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679020,
+			"messageId": 679020,
+			"newsId": 631508,
+			"title": "Euronext Oslo Børs – Norges Bank - Mottatt søknad om notering av sentralbanksertifikat",
+			"body": "Euronext Oslo Børs har mottatt søknad om børsnotering av ISIN NO0013741173.",
+			"category": [
+				{
+					"id": 1207,
+					"category_no": "MELDING FRA OSLO BØRS",
+					"category_en": "ANNOUNCEMENT FROM OSLO BØRS"
+				}
+			],
+			"markets": [],
+			"issuerId": 5188,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "-",
+			"issuerName": "Oslo Børs",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-08-04T10:23:25.835Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "2708d954-4e40-4cda-a854-e9889fed9bb0",
+			"infoRequired": 0,
+			"oamMandatory": 0
+		}
+	}
+}

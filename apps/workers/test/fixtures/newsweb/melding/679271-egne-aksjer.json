@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "4ccdc42f-b7f9-483e-ad59-4d369afc3779",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679271,
+			"messageId": 679271,
+			"newsId": 631769,
+			"title": "Transactions made under the share buyback program",
+			"body": "August 7, 2026 -- Aker ASA (\"Aker\" or the \"Company\") announced a buyback\nprogram on July 17, 2026, for up to 1,383,892 of its own shares, to be\nconducted in the period from the announcement until December 31, 2026.\n\nArctic Securities, under an irrevocable mandate from Aker, has carried out the\nfollowing transactions under the buyback program from August 3, 2026 to August\n7, 2026:\n\n+------------------+---------------+------------------+----------------------+\n| Date             |   Number of   | Weighted average |  Total transaction   |\n|                  | shares bought |   price (NOK)    |     value (NOK)      |\n+------------------+---------------+------------------+----------------------+\n| 03.08.2026       |        19,000 |       1,294.8841 |           24,602,798 |\n+------------------+---------------+------------------+----------------------+\n| 04.08.2026       |        20,000 |       1,319.8158 |           26,396,316 |\n+------------------+---------------+------------------+----------------------+\n| 05.08.2026       |        21,000 |       1,332.0904 |           27,973,898 |\n+------------------+---------------+------------------+----------------------+\n| 06.08.2026       |        22,000 |       1,302.5554 |           28,656,219 |\n+------------------+---------------+------------------+----------------------+\n| 07.08.2026       |        22,000 |       1,354.6515 |           29,802,333 |\n+------------------+---------------+------------------+----------------------+\n| Total this       |       104,000 |       1,321.4573 |          137,431,564 |\n| period           |               |                  |                      |\n+------------------+---------------+------------------+----------------------+\n| Previously       |       168,000 |       1,227.4191 |       206,206,416.90 |\n| announced under  |               |                  |                      |\n| the program      |               |                  |                      |\n+------------------+---------------+------------------+----------------------+\n| Total buybacks   |       272,000 |       1,263.3749 |          343,637,981 |\n| made under the   |               |                  |                      |\n| program          |               |                  |                      |\n+------------------+---------------+------------------+----------------------+\n\nArctic Securities has made its own trading decisions regarding the share\nrepurchases independently of and without influence from Aker.\n\nFollowing the completion of the above-mentioned transactions, Aker owns a\ntotal of 304,581 of its own shares, corresponding to 0.41% of the Company's\ntotal number of issued shares.\n\nAn overview of the transactions made under the buyback program during the\nabove-mentioned period is attached.\n\n-ENDS-\n\nThe buyback and the distribution of this announcement and other information in\nconnection therewith may be restricted by law in certain jurisdictions, and\nthe buyback is not made in any jurisdiction in which this would be unlawful,\nrequire registration or other measures. The Company does not assume any\nresponsibility in the event there is a violation by any person of such\nrestrictions. Persons into whose possession this announcement or such other\ninformation should come are required to inform themselves about and to observe\nany such restrictions.\n\nThe buyback is not being made directly or indirectly in, or by use of the\nmails of, or by any means or instrumentality of interstate or foreign commerce\nof, or any facilities of a national securities exchange of, the United States\nof America, its territories and possessions, any State of the United States\nand the District of Columbia (the \"United States\") or any other jurisdiction\nin which this would be unlawful. This includes, but is not limited to,\nfacsimile transmission, internet delivery, e-mail, telex and telephones.\nAccordingly, copies of this release and any related documents are not being,\nand must not be, mailed, e-mailed or otherwise distributed or sent in or into\nthe United States, and doing so may invalidate any purported sales offer.\n\nInvestor contact:\nFredrik Berge, Head of Investor Relations\n+47 45 03 20 90\nfredrik.berge@akerasa.com\n\nInvestor contact:\nFredrik Berge, Head of Investor Relations\n+47 45 03 20 90\nfredrik.berge@akerasa.com\n\nThis information has been submitted pursuant to the Securities Trading Act §\n5-12 and MAR. The information was submitted for publication, through the\nagency of the contact persons set out above, at 2026-08-07 18:42 CEST.",
+			"category": [
+				{
+					"id": 1007,
+					"category_no": "UTSTEDERS MELDEPLIKT VED HANDEL I EGNE AKSJER",
+					"category_en": "ACQUISITION OR DISPOSAL OF AN ISSUER'S OWN SHARES"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 6047,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "AKER",
+			"issuerName": "Aker ASA",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-08-07T16:42:07.189Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330649,
+					"name": "Trade Details Per 31 Jul 2026.pdf"
+				}
+			],
+			"clientAnnouncementId": "8e0f55d7-f4e0-460c-b6d5-7dc0923788b0",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

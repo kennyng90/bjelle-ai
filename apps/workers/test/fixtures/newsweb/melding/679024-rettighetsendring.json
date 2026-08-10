@@ -1,0 +1,43 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "f5d2635c-eb5e-4c83-96a5-00c46b74460e",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679024,
+			"messageId": 679024,
+			"newsId": 631516,
+			"title": "STOREBRAND BANK ASA - SALE AND BUYBACK OF BONDS",
+			"body": "Storebrand Bank ASA announces that it has sold bonds nominal value of NOK 1000\nmillion in the loan STORK17 (ISIN NO0010936917) and has acquired bonds with a\nnominal value of NOK 1000 million in the loan STORK19 (ISIN NO0012526211). Both\nbond issues are issued by Storebrand Boligkreditt AS.\n\nContact person:\n\nEinar Leikanger. Head of Treasury T: +47 934 20379\n\n\n",
+			"category": [
+				{
+					"id": 1009,
+					"category_no": "ENDRINGER I RETTIGHETENE TIL AKSJER/VERDIPAPIRER",
+					"category_en": "CHANGES IN THE RIGHTS ATTACHING TO SHARES OR SECURITIES OTHER THAN SHARES"
+				}
+			],
+			"markets": [
+				"XOSL",
+				"XOAM"
+			],
+			"issuerId": 1821,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "STORB",
+			"issuerName": "Storebrand Bank ASA",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-08-04T12:09:15.875Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "8bd4edf8-995f-4a95-98fd-7f009e4eda49",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

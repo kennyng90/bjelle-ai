@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "5be5c4aa-7a19-4508-9f8d-05480ed18202",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679228,
+			"messageId": 679228,
+			"newsId": 631720,
+			"title": "Nordic Rutile (Engebø Rutile and Garnet AS) – Deferred Coupon, Covenant Waivers, PIK Rate Increase and Short-Term Financing",
+			"body": "Oslo, 7 August 2026\nINSIDE INFORMATION pursuant to Article 17 of the Market Abuse Regulation (MAR)\n\nIssuer: Engebø Rutile and Garnet AS (formerly Nordic Rutile AS) - Senior Secured Bonds (ISIN: NO0012734112).\n\nEngebø Rutile and Garnet AS (\"ERG\" or the \"Company\"), issuer of Senior Secured Bonds listed under the ticker Nordic Rutile (the \"Bonds\"), today publishes the following update. The Company is simultaneously publishing a separate stock exchange announcement from Nordic Mining ASA covering the group's overall operational and financial position.\n\nThe Company is in an advanced production ramp-up at Engebø, which is behind the original schedule. As a result of the current liquidity position, ERG has entered into negotiations with Nordic Trustee AS and an ad hoc group of bondholders, regarding temporary amendments to the Bond terms. The Company and ERG have been informed that Bondholders representing more than two-thirds (2/3) of the Voting Bonds have indicated their agreement, subject to Written Resolution of bondholders to:\n\nDeferred coupon: The cash coupon due 9 August 2026 (NOK 46.2 million) is deferred to 4 September 2026.\n\nPIK rate increase: The interest rate on the Bonds is increased by 250 basis points, from 12.50% to 15.00% p.a., and the increase shall be paid in kind\n\nConsent fee: A consent fee of USD 3.1 million (2.0%) shall apply and be paid in kind.\n\nLiquidity covenant – temporary waiver: The minimum liquidity covenant is temporarily waived through 4 September 2026, and reduced during that period from USD 10 million to USD 2.0 million.\n\nEquity ratio covenant – temporary waiver: The minimum equity ratio covenant is temporarily waived through 4 September 2026.\n\nThe amendments are conditional upon terms and conditions which among other ordinary conditions also requires an independent technical review which has been commissioned with SRK Consulting. The results of the review will determine the further financing arrangement within 4 September 2026. \n\nAn updated presentation containing detailed information regarding ERG's operational status, financial projections, regulatory situation, and strategic outlook is attached to this announcement and made available on the Company's website at nordicmining.com .\n\n\nContact \nFinn Ivar Marum, CEO Nordic Mining\nfinn.ivar.marum@nordicmining.com\n\nThis announcement has been prepared pursuant to Article 17 of MAR, cf. the Norwegian Securities Trading Act section 5-2. A number of figures and dates remain preliminary and are subject to confirmation before final publication. Forward-looking statements are subject to uncertainty and risk, and actual results may differ materially.\n\n",
+			"category": [
+				{
+					"id": 1005,
+					"category_no": "INNSIDEINFORMASJON",
+					"category_en": "INSIDE INFORMATION"
+				}
+			],
+			"markets": [
+				"XOAM"
+			],
+			"issuerId": 13008,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "ERUGA",
+			"issuerName": "Engebø Rutile and Garnet AS",
+			"instrId": 2163675,
+			"instrumentName": "ERUGA01 PRO",
+			"instrumentFullName": "ERUGA01 PRO",
+			"publishedTime": "2026-08-07T06:00:00.000Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330594,
+					"name": "20260807 Company update Nordic Mining ASA.pdf"
+				}
+			],
+			"clientAnnouncementId": "ddd585b5-0a29-4ce5-80d5-f0fca979d8f2",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}

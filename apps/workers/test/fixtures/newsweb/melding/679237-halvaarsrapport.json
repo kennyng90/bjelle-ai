@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "372e075e-4c56-4a6f-9e7c-a8c9e2c3cffc",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679237,
+			"messageId": 679237,
+			"newsId": 631731,
+			"title": "Pearl Operational  Corporate update_Q2 2026",
+			"body": "Pearl Operational  Corporate update_Q2 2026",
+			"category": [
+				{
+					"id": 1002,
+					"category_no": "HALVÅRSRAPPORT",
+					"category_en": "HALF YEAR FINANCIAL REPORT"
+				}
+			],
+			"markets": [
+				"XOAM"
+			],
+			"issuerId": 13083,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "PPCL",
+			"issuerName": "Pearl Petroleum Company Limited",
+			"instrId": 2165431,
+			"instrumentName": "PPCL01 PRO",
+			"instrumentFullName": "PPCL01 PRO",
+			"publishedTime": "2026-08-07T06:55:30.079Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330610,
+					"name": "Pearl Operational  Corporate update_Q2 2026.pdf"
+				}
+			],
+			"clientAnnouncementId": "12450f84-bd58-4823-b6d2-24f5d497527f",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}

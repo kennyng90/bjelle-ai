@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "46a853a3-e0f0-418e-946f-b75dcfc40c05",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 678890,
+			"messageId": 678890,
+			"newsId": 631380,
+			"title": "ACL Holdings Limited publishes Annual Accounts for the period ending 31st March 2026",
+			"body": "Enclosed is the ACL Holdings Annual Accounts for the period ending 31st March 2026. The report will also be published on the company's web site.",
+			"category": [
+				{
+					"id": 1001,
+					"category_no": "ÅRSRAPPORT",
+					"category_en": "ANNUAL FINANCIAL REPORT"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 13044,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "ACLH",
+			"issuerName": "ACL Holdings Limited",
+			"instrId": 2164840,
+			"instrumentName": "ACLH01",
+			"instrumentFullName": "ACLH01",
+			"publishedTime": "2026-07-31T11:17:09.612Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330347,
+					"name": "ACL Holdings (Guernsey) Limited - 2026 - Final filing accounts.pdf"
+				}
+			],
+			"clientAnnouncementId": "99743a42-228c-4a14-8167-629db1df1c18",
+			"infoRequired": 1,
+			"oamMandatory": 0
+		}
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "cd57fa64-f35b-49cd-b460-11ba8641e078",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 678475,
+			"messageId": 678475,
+			"newsId": 630949,
+			"title": "OSLO BØRS – TRADING SUSPENSION",
+			"body": "Reference is made to the announcement made by MatvareExpressen AS today regarding the compulsory acquistion of shares. Based on this the shares have been suspended from trading.",
+			"category": [
+				{
+					"id": 1202,
+					"category_no": "SUSPENSJONER",
+					"category_en": "TRADING HALTS"
+				}
+			],
+			"markets": [
+				"MERK"
+			],
+			"issuerId": 13018,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "MVE",
+			"issuerName": "MatvareExpressen AS",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-07-21T06:28:09.806Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "686190d5-fc15-496e-880b-fb5fd1d02bf3",
+			"infoRequired": 0,
+			"oamMandatory": 0
+		}
+	}
+}

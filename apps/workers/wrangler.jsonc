@@ -10,7 +10,62 @@
 	"triggers": {
 		// Newsweb-polling. Fem minutter er innenfor "varsler innen minutter"-løftet
 		// i konseptet, uten å hamre kilden.
-		"crons": ["*/5 * * * *"]
+		//
+		// Backfill og selskapssynk går sjeldnere. Cronen skiller dem på uttrykket,
+		// se scheduled-handleren.
+		"crons": ["*/5 * * * *", "7,22,37,52 * * * *", "23 4 * * *"]
+	},
+	"secrets": {
+		// Kun navnet. Verdien settes med `wrangler secret put ANTHROPIC_API_KEY`
+		// og finnes aldri i repoet. Dette gir Env-typen og en advarsel i dev
+		// hvis hemmeligheten mangler.
+		"required": ["ANTHROPIC_API_KEY", "OPERATOR_TOKEN"]
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "bjelle",
+			// Opprettet med EU-hint (WEUR). Datalokasjon er et åpent punkt i
+			// docs/BESLUTNINGER.md, og dette steget lagrer ingen persondata ennå.
+			"database_id": "05d53739-5847-4f21-90a5-9fa48daf6b5d",
+			"migrations_dir": "migrations"
+		}
+	],
+	"r2_buckets": [
+		{
+			// Rålageret. Kildens payload og vedlegg skrives hit før noe parses,
+			// slik at parsingen alltid kan kjøres om, også med en ny parser.
+			"binding": "RAW",
+			"bucket_name": "bjelle-raw"
+		}
+	],
+	"queues": {
+		"producers": [
+			{
+				"queue": "bjelle-enrichment",
+				"binding": "ENRICHMENT"
+			}
+		],
+		"consumers": [
+			{
+				"queue": "bjelle-enrichment",
+				// Små batcher: hver melding er ett språkmodellkall, og en batch
+				// som ikke rekker å bli ferdig blir levert om igjen i sin helhet.
+				"max_batch_size": 5,
+				"max_batch_timeout": 30,
+				// Køens eget tak er én høyere enn vårt. Vi teller forsøk i D1 og
+				// setter dead_letter selv på tredje feil, slik at "tre forsøk brukt
+				// opp" er observerbart. Dette taket fanger bare krasj og timeout.
+				"max_retries": 3,
+				"dead_letter_queue": "bjelle-enrichment-dlq"
+			},
+			{
+				// Dødbrevkøen konsumeres av samme worker. Den skriver tilstanden
+				// dead_letter og gjør ikke annet: en giftig melding skal stoppe her.
+				"queue": "bjelle-enrichment-dlq",
+				"max_batch_size": 10,
+				"max_retries": 0
+			}
+		]
 	}
-	// Bindings (D1, KV, Queues) legges til når datamodellen er bestemt.
 }

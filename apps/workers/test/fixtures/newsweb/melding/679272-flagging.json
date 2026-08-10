@@ -1,0 +1,47 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "bc3117e0-238c-4e44-a841-0d31402fbfb0",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 679272,
+			"messageId": 679272,
+			"newsId": 631770,
+			"title": "Notification of Major Holdings",
+			"body": "IFM Independent Fund Management AG, are a Liechtenstein-based fund management\ncompany acting as trustee for the following three investment funds:\n\n  * Bonafide Global Fish Fund\n  * Bonafide Investment Fund - HBC II\n\nAccording to the information published on the website of the Oslo Stock\nExchange, the total number of outstanding ordinary shares of Hofseth Biocare ASA\ncurrently amounts to 506,235,638. Based on this figure, IFM Independent Fund\nManagement AG will hold a total of 9.59% of the voting rights in Hofseth Biocare\nASA as of August 06, 2026.\n\nPlease find attached the ESMA standard form for the notification of major\nholdings.\n",
+			"category": [
+				{
+					"id": 1006,
+					"category_no": "FLAGGING",
+					"category_en": "MAJOR SHAREHOLDINGS NOTIFICATION"
+				}
+			],
+			"markets": [
+				"XOSL"
+			],
+			"issuerId": 11280,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "HBC",
+			"issuerName": "Hofseth BioCare ASA",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-08-07T16:49:31.729Z",
+			"test": false,
+			"numbAttachments": 1,
+			"attachments": [
+				{
+					"id": 330650,
+					"name": "esma-2015-1597_standard_form_for_major_holdings_082026.pdf"
+				}
+			],
+			"clientAnnouncementId": "7e0fa794-bd3c-4644-bc0d-c2cce03dc514",
+			"infoRequired": 1,
+			"oamMandatory": 1
+		}
+	}
+}

@@ -1,0 +1,40 @@
+{
+	"header": {
+		"OB_REQUEST_ID": "b8c3cc63-955d-480c-b51f-08bf2afcfa84",
+		"result.val": 0,
+		"http.code": 200,
+		"result.text": "OK"
+	},
+	"data": {
+		"message": {
+			"id": 678849,
+			"messageId": 678849,
+			"newsId": 631333,
+			"title": "ASA - Atlantic Sapphire ASA - Mandatory offer document approved",
+			"body": "Finanstilsynet has approved the offer set out in the offer document dated 30 July 2026 in respect of:\n\nMandatory offer to acquire the shares in Atlantic Sapphire ASA made by Coral HoldCo AS\n\nOffer price: NOK 0.80 per share in cash\n\nAcceptance period: From and including 31 July 2026 to 16:30 hours (CEST) on 28 August 2026 (subject to extension)\n\nReceiving agent: DNB Carnegie, a part of DNB Bank ASA\n\nAvailability of the offer document: https://atlanticsapphire.com/investor-relations/",
+			"category": [
+				{
+					"id": 1301,
+					"category_no": "MELDING FRA FINANSTILSYNET",
+					"category_en": "ANNOUNCEMENT FROM THE FSA"
+				}
+			],
+			"markets": [],
+			"issuerId": 7623,
+			"correctionForMessageId": 0,
+			"correctedByMessageId": 0,
+			"issuerSign": "FT",
+			"issuerName": "Finanstilsynet",
+			"instrId": 0,
+			"instrumentName": "",
+			"instrumentFullName": "",
+			"publishedTime": "2026-07-30T14:35:00.000Z",
+			"test": false,
+			"numbAttachments": 0,
+			"attachments": [],
+			"clientAnnouncementId": "bfc870d0-ee90-4dea-a504-88452888d36b",
+			"infoRequired": 0,
+			"oamMandatory": 0
+		}
+	}
+}
