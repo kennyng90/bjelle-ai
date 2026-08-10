@@ -1,5 +1,5 @@
-import type { HTMLAttributes, KeyboardEvent, ReactElement, ReactNode } from "react";
-import { cloneElement, useId, useState } from "react";
+import type { HTMLAttributes, ReactElement, ReactNode } from "react";
+import { cloneElement, useEffect, useId, useState } from "react";
 
 export type TooltipSide = "top" | "bottom" | "left" | "right";
 
@@ -44,6 +44,10 @@ const sides: Record<TooltipSide, string> = {
 export function Tooltip({ label, side = "top", children, className, ...props }: TooltipProps) {
 	const id = useId();
 	const [open, setOpen] = useState(false);
+	// Escape holder tipset lukket til pekeren faktisk forlater utløseren, eller
+	// fokus flyttes. Uten den ville det neste `mousemove` åpne det igjen med én
+	// gang, og brukeren fikk aldri lukket noe.
+	const [dismissed, setDismissed] = useState(false);
 
 	// Koblingen settes bare mens tipset finnes. En `aria-describedby` som peker
 	// på et element som ikke er i dokumentet er en referanse uten dekning.
@@ -53,11 +57,61 @@ export function Tooltip({ label, side = "top", children, className, ...props }: 
 
 	const trigger = cloneElement(children, { "aria-describedby": describedBy || undefined });
 
-	const handleKeyDown = (event: KeyboardEvent<HTMLSpanElement>) => {
-		if (event.key === "Escape") {
-			// Lukkes uten å flytte fokus - utløseren skal beholde det.
-			setOpen(false);
+	/*
+	 * Escape lyttes på dokumentet, ikke på wrapperen.
+	 *
+	 * WCAG 1.4.13 Dismissible krever at tipset kan lukkes uten å flytte peker
+	 * eller fokus. Åpnes det med pekeren, står fokus fortsatt på `<body>` -
+	 * en `onKeyDown` på wrapperen ser da aldri tasten, og pekerbrukeren har
+	 * ingen måte å bli kvitt tipset på. Lytteren finnes bare mens tipset er
+	 * åpent og fjernes i opprydningen, så den overlever ikke unmount.
+	 */
+	useEffect(() => {
+		if (!open) {
+			return;
 		}
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				// Lukkes uten å flytte fokus - utløseren skal beholde det.
+				setOpen(false);
+				setDismissed(true);
+			}
+		};
+		document.addEventListener("keydown", handleKeyDown);
+		return () => document.removeEventListener("keydown", handleKeyDown);
+	}, [open]);
+
+	/*
+	 * Åpnes på `mousemove`, ikke på `mouseenter`.
+	 *
+	 * Nettleseren syntetiserer en full enter-kjede uten at pekeren har rørt
+	 * seg, hver gang DOM-en under den endrer seg - komponenten monteres under
+	 * en hvilende peker, eller boblen fjernes. `mouseenter` alene åpnet da et
+	 * tips ingen ba om, og gjenåpnet det brukeren nettopp lukket med Escape.
+	 * Et ekte pekerbesøk gir alltid `mousemove` etterpå.
+	 */
+	const handleMouseMove = () => {
+		// Kjører på hver pekerbevegelse over utløseren, så den skal ikke sende en
+		// tilstandsendring nettleseren uansett kaster.
+		if (!open && !dismissed) {
+			setOpen(true);
+		}
+	};
+
+	const handleMouseLeave = () => {
+		setOpen(false);
+		setDismissed(false);
+	};
+
+	const handleFocus = () => {
+		if (!dismissed) {
+			setOpen(true);
+		}
+	};
+
+	const handleBlur = () => {
+		setOpen(false);
+		setDismissed(false);
 	};
 
 	return (
@@ -68,11 +122,10 @@ export function Tooltip({ label, side = "top", children, className, ...props }: 
 		<span
 			className={["relative inline-flex", className].filter(Boolean).join(" ")}
 			{...props}
-			onBlur={() => setOpen(false)}
-			onFocus={() => setOpen(true)}
-			onKeyDown={handleKeyDown}
-			onMouseEnter={() => setOpen(true)}
-			onMouseLeave={() => setOpen(false)}
+			onBlur={handleBlur}
+			onFocus={handleFocus}
+			onMouseLeave={handleMouseLeave}
+			onMouseMove={handleMouseMove}
 		>
 			{trigger}
 			{open && (
